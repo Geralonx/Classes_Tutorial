@@ -67,5 +67,7 @@ Verwendung einer 'Dunder'-Method eigentlich erwarten? Bzw. warum sollte man
 diese Methode überhaupt anwenden. \_\_len\_\_(self) ist nur ein Beispiel.
 
 Für Vergleiche oder arithmetische Operationen gilt das Gleiche.
+
 \_\_add\_\_(self, other): # instance1 + instance2 -> instance1.\_\_add\_\_(instance2)
+
 \_\_sub\_\_(self, other): # instance1 - instance2 -> instance1.\_\_sub\_\_(instance2)
