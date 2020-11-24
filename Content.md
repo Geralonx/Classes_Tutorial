@@ -66,10 +66,20 @@ muss/möchte. Also sollte man sich fragen, was würde jemand anderes bei der
 Verwendung einer 'Dunder'-Method eigentlich erwarten? Bzw. warum sollte man
 diese Methode überhaupt anwenden. \_\_len\_\_(self) ist nur ein Beispiel.
 
+> A dunder method is an implicit function, that is being called behind the scenes of an explicit operation or a function.
+
 Für Vergleiche oder arithmetische Operationen gilt das Gleiche.
 
 ```py
-def __add__(self, other): # instance1 + instance2 -> instance1.\_\_add\_\_(instance2)
+def __add__(self, other):
+# -> instance1 + instance2
+# -> instance1.__add__(instance2)
 
-def __sub__(self, other): # instance1 - instance2 -> instance1.\_\_sub\_\_(instance2)
+def __sub__(self, other):
+# -> instance1 - instance2
+# -> instance1.__sub__(instance2)
 ```
+
+Die 'Dunder'-Methods sind inzwischen so umfangreich, dass es nicht einmal
+möglich ist alle unter einer allgemeinen Beschreibung zusammenzufassen. Man kann
+nur sagen, dass 'Dunder'-Methods
