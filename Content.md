@@ -46,6 +46,8 @@ sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten
 
 Um das Klassendesign im fortgeschrittenen Stil zu verstehen möchte ich bei den
 'Dunder'- oder 'Magic'-Methods anfangen.(Dunder steht für 'Double Underscores').
-Jeder der in Python bereits eine Klasse geschrieben hat wird mindestens
+Jeder der in Python bereits eine Klasse geschrieben hat wird mindestens die
 
-/_/\_init/_/\_
+\_\_init\_\_(self, ...)
+
+verwendet haben.
