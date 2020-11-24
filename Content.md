@@ -51,6 +51,11 @@ Wie, wo, wann und warum man Klassen verwenden sollte möchte ich hier gar Nicht 
 > guide, a guide, not a lawbook." - Raymond Hettinger
 > [YouTube: Beyond PEP 8](https://www.youtube.com/watch?v=wf-BqAjZb8M)
 
+und
+
+> "Isn't it great, when you write code that is PEP8 compliant and out of a room of 500 people one person can figure it out?" - Raymond Hettinger
+> [YouTube: Beyond PEP 8](https://www.youtube.com/watch?v=wf-BqAjZb8M)
+
 [The Zen of Python](https://www.python.org/dev/peps/pep-0020/) ist meiner Meinung nach die beste Formulierung für clean code.
 
 Ich sebst verwende Klassen auch manchmal, wo der ein oder andere sicherlich sagen würde, dass die dort überflüssig seien. Der Hauptgrund warum ich Klasse überhaupt verwende ist 'Encapsulation'. Das heißt so viel wie, dass die Daten und die Methoden, welche jene Daten modifizieren einfach zusammengepackt werden, damit eine eineindeutiger Zusammenhang besteht.
