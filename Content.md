@@ -30,15 +30,22 @@ einzelnen Beiträge kürzer halten.
 ### Hater
 
 Für die, die sagten pr0 sei nicht die Plattform für sowas, bitte Minus geben und
-weiter ziehn.
+weiterziehn.
 
 ### Prerequisites / Vorraussetzungen
 
 Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von
 Python kennen. Dazu gehört allgemein die Syntax, ihr solltet wissen, wie man
 Funktionen und Klassen erstellt und eventuell soagr, dass alle Funktionen
-sogenannte 'First-Class-Objects' sind.
+sogenannte 'First-Class-Objects' sind. Des Weiteren solltet ihr auch ungefähr
+wissen, wie Vererbungen/Inheritance funktionieren. Die letzte Vorraussetzung
+sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten
+'Tutorial' erklärt habe (Link im Kommentar).
 
 ## Kapitel 1: Fortgeschrittene Klassen
 
-Um das Klassendesign im fortgeschrittenen Stil zu verstehen m
+Um das Klassendesign im fortgeschrittenen Stil zu verstehen möchte ich bei den
+'Dunder'- oder 'Magic'-Methods anfangen.(Dunder steht für 'Double Underscores').
+Jeder der in Python bereits eine Klasse geschrieben hat wird mindestens
+
+/_/\_init/_/\_
