@@ -50,4 +50,22 @@ Jeder der in Python bereits eine Klasse geschrieben hat wird mindestens die
 
 \_\_init\_\_(self, ...)
 
-verwendet haben.
+verwendet haben. 'Dunder'-Methods sind Methoden, welche **nicht** direkt über ihre
+Bezeichnung aufgerufen, sondern über die Syntax oder andere 'Built-In' Methoden
+von Python.
+
+Beispiel: Die 'Dunder'-Method \_\_len\_\_(self) wird über die 'Built-In' Method
+len() aufgerufen. Was diese \_\_len\_\_(self) Methode am Ende durchführt ist
+komplett euch überlassen. Die einzige Vorraussetzung ist, dass diese Methode
+einen Integer >=0 zürkgibt. Bevor ihr die Vorraussetzung erfüllt, könnt ihr
+ausführen, berechnen und hacken was ihr wollt, solange die Vorrausetzung erfüllt
+wird, ist alles in Ordnung mit der Implementation. Sobald man aber in dieses
+Thema des fortgeschrittenen Designs kommt ist man mindestens an einem Punkt, wo
+man den Code wiederverwenden will, wenn nicht sogar für Andere bereitstellen
+muss/möchte. Also sollte man sich fragen, was würde jemand anderes bei der
+Verwendung einer 'Dunder'-Method eigentlich erwarten? Bzw. warum sollte man
+diese Methode überhaupt anwenden. \_\_len\_\_(self) ist nur ein Beispiel.
+
+Für Vergleiche oder arithmetische Operationen gilt das Gleiche.
+\_\_add\_\_(self, other): # instance1 + instance2 -> instance1.\_\_add\_\_(instance2)
+\_\_sub\_\_(self, other): # instance1 - instance2 -> instance1.\_\_sub\_\_(instance2)
