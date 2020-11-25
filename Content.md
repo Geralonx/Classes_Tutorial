@@ -48,8 +48,6 @@ Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Din
 
 ## Kapitel 1: Fortgeschrittenes (Klassen) Design
 
-<br/>
-
 ### 1.0 Style-Guides
 
 Ich möchte am Anfang einmal auf die Style-Guides und ein paar Zitate/Aussagen von Python-Core-Developer hinweisen. Ich möchte bezüglich dem Styling keine Ratschläge geben oder verschiedene Guides vergleichen. Es gibt [PEP8](https://www.python.org/dev/peps/pep-0008/), es gibt eine [Vorlage von Google](https://google.github.io/styleguide/pyguide.html) und sicherlich noch andere, aber selbst Raymond Hettinger sagte in seinem Vortrag:
