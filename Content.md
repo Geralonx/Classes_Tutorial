@@ -33,11 +33,7 @@ Für die, die sagten pr0 sei nicht die Plattform für sowas, bitte Minus geben u
 
 ### Prerequisites / Vorraussetzungen
 
-Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, ihr solltet wissen, wie man
-Funktionen und Klassen erstellt und eventuell soagr, dass alles in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr
-wissen, wie Vererbungen/Inheritance funktionieren. Die letzte Vorraussetzung
-sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten
-'Tutorial' erklärt habe (Link im Kommentar).
+Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen, wie Vererbungen/Inheritance funktionieren. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
 <br/><br/>
 
 ### IDE
@@ -113,12 +109,14 @@ Ausgabe:
 
 Die List-Comprehension vereinigt 3 Zeilen Code von einer Empty-List-Initialisierung und das Füllen mit einer for-Loop zu einer einzigen. Es ist auch möglich Bedingungen in die List-Comprehension einzubauen.
 
+<br/>
+
 ```py
 # List Comprehension mit einer Bedingung, welche nur die geraden Zahlen erfasst.
 new_list = [i*i for i in range(10) if i%2 == 0]
 print(new_list)
 
-# Das Gleiche Ergebnis ließe sich beisßielsweise mit folgendem Code erreichen
+# Das Gleiche Ergebnis ließe sich beispielsweise mit folgendem Code erreichen
 new_list = []
 for i in range(10):
     if i%2==0:
@@ -150,7 +148,6 @@ Hier sind mal ein paar Methoden aus einer Klasse, welche ich zum WebScrapen der 
         all_tags_flat = [tag for game in self.steam_discount_list if game['tag_list'] is not None for tag in game['tag_list']]
         occur = [[tag, all_tags_flat.count(tag)] for tag in set(all_tags_flat)]
         self.most_common_tags = sorted(occur, key = lambda x: x[1], reverse=True)
-
 ```
 
 Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr diese Konstrukte ja mal auseinander nehmen, gerade die Methode 'most_common_tags' ist übel, wenn man noch nicht genau verstanden hat, wie diese aufgebaut sind.
@@ -173,12 +170,14 @@ und
 > "Isn't it great, when you write code that is PEP8 compliant and out of a room of 500 people one person can figure it out?" - Raymond Hettinger
 > [YouTube: Beyond PEP 8](https://www.youtube.com/watch?v=wf-BqAjZb8M)
 
-Im Vortrag weist er mit diesen Aussagen darauf hin, dass man die Qualität von Code nicht nach dem Grad der Übereinstimmung von PEP8 bestimmen sollte, sondern ein bisschen weiter denken muss, um den nächsten Lesern das Leben zu vereinfachen. PEP8 hat nicht zu Allem eine Antwort, das wäre unmöglich, deswegen sollte man sich selbst Gedanken machen, wie man seinen Stil im Coden so umsetzt, dass dieser am Ende von (im besten Fall) jedem verstanden werden kann.
+Im Vortrag weist er mit diesen Aussagen darauf hin, dass man die Qualität von Code nicht nach dem Grad der Übereinstimmung von PEP8 bestimmen sollte, sondern ein bisschen weiter denken muss, um den nächsten Lesern das Leben zu vereinfachen. PEP8 hat nicht zu Allem eine Antwort, das wäre unmöglich, deswegen sollte man sich selbst Geanken machen, wie man seinen Stil im Coden so umsetzt, dass dieser am Ende von (im besten Fall) jedem verstanden werden kann.
 
 [The Zen of Python](https://www.python.org/dev/peps/pep-0020/) gefällt mir am besten, wenn ich über die Wege für clean code nachdenke.
 <br/><br/>
 
 ### 1.1 Klassen Recap
+
+#### 1.1.1 Allgemeines
 
 Wie, wann und wo man Klassen verwenden sollte oder nicht möchte ich gar nicht disskutieren. Ich sebst verwende Klassen auch manchmal, wo der ein oder andere sicherlich sagen würde, dass die dort überflüssig seien. Der Hauptgrund warum ich Klasse überhaupt verwende ist 'Encapsulation'. Das heißt so viel wie, dass die Daten und die Methoden, welche jene Daten modifizieren einfach zusammengepackt werden, damit eine eineindeutiger Zusammenhang besteht.
 
@@ -190,10 +189,80 @@ Die einzige Regel die auch ich grundsätzlich beachte ist aus folgendem Zitat ab
 
 <br/>
 
+#### 1.1.2 Public, Private und Protected
+
+Meine beste Sprache ist Python, ich habe C und C++ als erste Sprachen gelernt, aber damit habe ich schon ewig nicht gearbeitet. Weswegen ich hier nicht generell für alle OOP-Sprachen sprechen kann. Mein Verständnis für Public, Private, Protected kommt eben aus C++ und das liegt bei mir schon Jahre zurück. Also verzeiht, wenn ich diesbezüglich nicht alles so genau weiß und hier etwas Erkläre, was selbtsverständlich ist, wenn man sich in der anderen Sprache tief genug auskennt.
+
+**Private**<br/>
+Wer aus anderen objektorentieren Sprachen kommt wird das Konzept von Public, Proteced und Private kennen. Und direkt mal vorweg, soetwas gibt es in Python nicht. Wer jetzt schonmal die Basics von Klassen in Python kennt wird vielleicht den Finger heben und Fragen: "Was ist denn mit den \_\_vars und \_\_methods()?" (Zwei Unterstriche, falls dies im Text nicht deutlich raus kommt.)
+
+Wenn der Python-Interpreter innerhalb einer Klasse ein Attrribut oder Methode mit zwei führenden Unterstrichen und maximal einem nachfolgenden Unterstrich erkennt führt dieser ein sogenanntes 'Name Mangeling' durch. Das heißt, er bennent die Attribute und die Methode, die dieser Form folgen, für die Außenwelt um.
+
+Hier ein Beispiel:
+
+```py
+01  class PC:
+02     class_attribute = 'Ich bin ein Klassenattribut'
+03
+04     def __init__(self, prozessor, grafikkarte, ram):
+05         self.prozessor = prozessor
+06         self.grafikkarte = grafikkarte
+07         self.__ram = ram
+08
+09  meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super', 'GSkill')
+10
+11  print(meine_pc_instanz.prozessor)
+12  print(meine_pc_instanz.grafikkarte)
+13  print(meine_pc_instanz.__ram)
+```
+
+Die prints haben folgende Ausgabe:
+
+<pre>
+> Ryzen 7
+> RTX2070Super
+> Traceback (most recent call last):
+>   File "f:/Python-Projects/Projects/Classes_Tutorial/name_mangeling.py", line 13, in <module>
+>     print(meine_pc_instanz.ram)
+> AttributeError: 'PC' object has no attribute '__ram'
+</pre>
+
+So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Das Attribut \_\_dict\_\_ einer Instanz enthält **alle** instanzspezifischen Attribute, also alles was zu self. zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
+
+```py
+print(meine_pc_instanz.__dict__)
+```
+
+<pre>
+> {'prozessor': 'Ryzen 7', 'grafikkarte': 'RTX2070Super', '_PC__ram': 'GSkill'}
+</pre>
+
+Wir sehen, dass prozessor und grafikkarte wie zu erwarten enthalten sind, aber wir sehen auch, dass unser \_\_ram wieder da ist. Das Name Mangeling hat dafür gesorgt, dass der Klassenname mit einem führenden Unterstrich an den Anfang des Attributs gesetzt wurde. Versuche ich folgendes,
+
+```py
+print(meine_pc_instanz._PC__ram)
+```
+
+<pre>
+> GSkill
+</pre>
+
+habe ich dennoch Zugang zu den eigentlich 'Privaten' Attributen innerhalb einer Klasse. Die sogesehen privaten Attribute finden dennoch Anwendung. Das Name Mangeling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form.
+
+<sub>(Randnotiz 1: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist das immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken'.)</sub>
+
+<br/>
+
+**Protected**<br/>
+Protected, also das Attribute und Methoden nur von der Klasse und von vererbten Klassen 'gesehen/verwendet' werden können gibt es gar nicht. (Warum auch, nicht einmal ein echtes Private gibt es.)
+
+Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von Klassen mittels einem Unterstrich gekennzeichnet werden. Das ist aber lediglich ein Hinweis für Andere. Python selbst behandelt Attrubute und Methoden mit einem führenden Unterstrich nicht anders als ohne.
+<br/><br/>
+
 ### 1.2 'Dunder'-Methods
 
 Um das Klassendesign im fortgeschrittenen Stil zu verstehen möchte ich bei den
-'Dunder'- oder 'Magic'-Methods anfangen. (Dunder steht für 'Double Underscores'). Diese speziellen Methoden erfüllen einzigartige Aufgaben, welche durch die allgemeine Syntax und die 'Built-In' Methods abgerufen/aufgefragt werden können.
+'Dunder'- oder 'Magic'-Methods anfangen. (Dunder steht für 'Double Underscores'). Diese speziellen Methoden erfüllen einzigartige Aufgaben, welche durch die allgemeine Syntax und die 'Built-In' Methods abgerufen/aufgefragt werden können. Ich werde selbstverständlich nicht alle im Detail vopstellen und zeigen, sondern anhand von einzelnen Beispielen die Funktion von 'Dunder'-Methods erklären und auf ein paar besondere hinweisen. Um sie sinnvoll anzuwenden müsste ihr die Dokumentation regeln, da es für manche 'Dunder'-Methods gewisse Regeln gibt, wie beispielsweise, dass die Rückgabe ein bestimmten Datentype hat oder in einem definierten Bereich liegen muss.
 
 #### 1.2.1 Allgemein
 
@@ -233,20 +302,20 @@ ausführen, berechnen und hacken was ihr wollt, solange die Vorrausetzung erfül
 
 Sobald man aber in dieses Thema des fortgeschrittenen Designs kommt ist man mindestens an einem Punkt, wo man den Code wiederverwenden will, wenn nicht sogar für Andere bereitstellen muss/möchte. Also sollte man sich fragen, was würde jemand anderes bei der Verwendung einer 'Dunder'-Method eigentlich erwarten? Bzw. warum sollte man diese Methode überhaupt auf die Klasse anwenden können?
 
-<sub>(Randnotiz: \_\_len\_\_(self) ist übrigens die Falback-Methode für \_\_bool\_\_(self). Das heißt, wenn keine Dunder-Bool-Method definiert ist wird die Dunder-Len-Method verwendet. Alles was >0 ist entspricht dann eben True)</sub>
+<sub>(Randnotiz: \_\_len\_\_(self) ist übrigens die Fallback-Methode für \_\_bool\_\_(self). Das heißt, wenn keine Dunder-bool-Method definiert ist wird die Dunder-len-Method verwendet. Alles was >0 ist wird von Python als True interpretiert.)</sub>
 <br/>
 
 Für Vergleiche oder arithmetische Operationen gilt das Gleiche.
 
 ```py
 def __add__(self, other):
-# -> instance1 + instance2
-# -> instance1.__add__(instance2)
+# > instance1 + instance2
+# > instance1.__add__(instance2)
 
 # gt -> Greater Than
 def __gt__(self, other):
-# -> instance1 > instance2
-# -> instance1.__gt__(instance2)
+# > instance1 > instance2
+# > instance1.__gt__(instance2)
 ...
 ```
 
@@ -340,9 +409,11 @@ Was zu folgender Ausgabe führen wird:
 > PC(prozessor='Ryzen 7', grafikkarte='RTX2070Super')
 </pre>
 
-<sub>(Randnotiz 1: Die Single-Quotes sind in diesem Fall hardcoded um alle Argumente. Das funktioniert in diesem Fall nur, weil es bei sich bei Allen um Strings handelt. Man müsste die Dunder-repr-Method noch expliziter gestalten, um verschiedene Datentypen richtig zu unterscheiden. Dieses Beispiel geht lediglich allgemein auf die Dunder-repr-Method ein.)</sub>
+<sub>(Randnotiz 1: Die Single-Quotes, welche um die '{value}' gepackt sind, sind in diesem Fall hardcoded um alle Argumente. Das funktioniert in diesem Fall nur, weil es bei sich bei Allen um Strings handelt. Man müsste die Dunder-repr-Method noch expliziter gestalten, um verschiedene Datentypen richtig zu unterscheiden. Dieses Beispiel geht lediglich allgemein auf die Dunder-repr-Method ein.)</sub>
 
-<sub>(Randnotiz 2: Wer die join() Method nich kennt sollte sich die anschauen. Sie nimmt eine iteriebares Obejekt and und verknüpft alle Elemente zu einem String, sofern sich die str() Method auf die Inhalte anwenden lässt. Wenn sich die Elemente nicht in einen String umwandeln lassen wird ein TypeError erhoben. Der erste Teil (In diesem Fall ', ') ist der Seperator. Der Seperator wird zwischen die einzelnen Teilelemente gepackt)</sub>
+<sub>(Randnotiz 2: Wer die join() Method nich kennt sollte sich die anschauen. Sie nimmt eine iteriebares Obejekt and und verknüpft alle Elemente zu einem String, sofern sich die str() Method auf die Inhalte anwenden lässt. Wenn sich die Elemente nicht in einen String umwandeln lassen wird ein TypeError erhoben. Der erste Teil (In diesem Fall ', ') ist der Seperator. Der Seperator wird zwischen die einzelnen Teilelemente gepackt.)</sub>
+
+<sub>(Randnotiz 3: Der repr, also die Represenation eines Objekts, wird von VSCode beispielsweise beim Debuggen verwendet. Wenn man an einem Breakpoint steht, sieht man die Variablen an der Seite. Hinter der Variable steht eben die Representation. Ob und wie es von anderen IDEs verwendet wird weiß ich nicht.)</sub>
 <br/><br/><br/>
 
 #### 1.2.3
