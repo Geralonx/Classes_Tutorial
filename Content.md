@@ -1,6 +1,7 @@
 # Inhalt des Tutorials
 
 - Vorwort
+- Vorbereitende Erklärungen
 - Kapitel 1 Fortgeschrittenes (Klassen) Design
 - Kapitel 2 Spezielle Funktionsdekoratoren für Klassen
 - Kapitel 3 Klassendekoratoren
@@ -39,12 +40,123 @@ sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten
 'Tutorial' erklärt habe (Link im Kommentar).
 <br/><br/>
 
+### IDE
+
+Nur zur Information, da es in dem ersten Beitrag auch zur Sprache kam, ich arbeite vollständig mit VSCode und habe mir diese IDE inwzischen schon recht stark Modifiziert. Color Color-Themes, Boilerplates/Snippets, indentation und bracket Colors und ein paar Andere. Für einige ist es sicher zu bunt, mir gefällts halt.
+<br/><br/>
+
 ### Disclaimer
 
 Jeder macht Fehler. Ich beanspruche keineswegs Vollständig- oder Richtigkeit der hier gezeigten Inhalte. Für weitere Details und noch tiefergehende Informationen empfehle ich grundsätzlich die [Python-Dokumentation](https://docs.python.org/3/).
 
 Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Dinge von Python vermitteln. Auch ich habe währen des Schreibens viel nachlesen und recherchieren müssen. Ich biete hiermit lediglich eine zusammengefasste Form der Informationen an, welche ich auf eine Weise darstellen möchte, wie ich sie mir bei Tutorials von Anderen selbst gewünscht hätte.
 <br/><br/><br/>
+
+## Vorbereitende Erklärungen
+
+Ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese in den Beispielen regelmäßig verwende, wer das kennt, kann den Teil überspringen. Und direkt mit [Kapitel 1](<##kapitel-1:-fortgeschrittenes-(klassen)-design>) starten.
+
+Dieses Tutorial richtet sich zwar schon an Leute die bereits die Grundlagen von Python kennen und verstehen, aber da ich zwei Dinge in meinen Codebeispielen immer wieder verwende, möchte ich diese zu Anfang einmal kurz erklären. Aufgrund der Kommentare des ersten 'Tutorials' denke ich, dass dies ein paar Leuten weiter helfen kann.
+
+### f-Strings
+
+F-Strings steht für "formatted string literals". Sie kennzeichnen sich dadurch aus, dass vor dem Anführungszeichen des Strings ein f steht. (Klein- oder Großschreibweise spielt dabei keine Rolle, typischerweise verwendet man das kleine f). Innerhalb des Strings dürfen geschweifte Klammern stehen, welche einen Pythonausdruck enthalten. Im einfachsten Fall ist das eine Variable, komplexere Ausdrücke funktionieren aber auch.
+
+Die f-Strings wandeln den Inhalt der geschwiften Klammen während der Laufzeit in einen String um und sind im anschluss ein ganz normaler String. Die Idee dahinter ist, dass man im Code den String vollständig beschreibt und auch ohne die eingefügten Inhalte zu kennen weiß, wie dieser String am Ende aussieht.
+
+```py
+mein_name = 'Geralonx'
+mein_alter = 30
+gruss = f"Grueß dich, mein Name ist {mein_name}, ich bin {mein_alter} Jahre alt."
+print(gruss)
+```
+
+Ausgabe:
+
+<pre>
+> Grueß dich, mein Name ist Geralonx, ich bin 30 Jahre alt.
+</pre>
+
+<sub>(Auch wenn es f-Strings bereits Seit Python 3.6 (2016) gibt bin ich erst dieses Jahr vollständig auf die Verwendung von f-Strings umgestiegen. Vorher habe ich immer mit .format() gearbeitet, weil mir diese Darstellung sehr gut gefiel und ich die f-Strings noch nicht im Detail kannte.)</sub>
+<br/><br/><br/>
+
+### List-Comprehensions
+
+List-Comprehensions sind präzise Ausdrücke, um eine Liste mit Ergebnissen von einer Operation, welche auf die einzelnen Mitglieder einer Sequenz oder Iterator angewendet werden, zu erzeugen (Frei übersetzt aus der Python-Dokumentation). Bitte was? Im häufigsten Fall ersetzten List-Comprehensions for-Loops, welche eine Liste erzeugen. Die Syntax einer List-Comprehension sieht folgendermaßen aus:
+
+<pre>
+> liste = [expression for item in squence]
+</pre>
+
+Beispiel / Vergleich mit einer for-Loop:
+
+```py
+# For Loop um die Quadrate der Zahlen 0-9 zu erzeugen
+for_loop_list = []
+for i in range(10):
+    for_loop_list.append(i*i)
+
+# List-Comprehension um die Quadrahte der Zahlen 0-9 zu erzeugen.
+list_comp_list = [i*i for i in range(10)]
+
+# Ausgabe
+print("For-Loop-Result:\t", for_loop_list)
+print("List-Comp-Result:\t", list_comp_list)
+```
+
+Ausgabe:
+
+<pre>
+> For-Loop-Result:         [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+> List-Comp-Result:        [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+</pre>
+
+Die List-Comprehension vereinigt 3 Zeilen Code von einer Empty-List-Initialisierung und das Füllen mit einer for-Loop zu einer einzigen. Es ist auch möglich Bedingungen in die List-Comprehension einzubauen.
+
+```py
+# List Comprehension mit einer Bedingung, welche nur die geraden Zahlen erfasst.
+new_list = [i*i for i in range(10) if i%2 == 0]
+print(new_list)
+
+# Das Gleiche Ergebnis ließe sich beisßielsweise mit folgendem Code erreichen
+new_list = []
+for i in range(10):
+    if i%2==0:
+        new_list.append(i*i)
+```
+
+Ausgabe:
+
+<pre>
+> [0, 4, 16, 36, 64]
+</pre>
+
+Man kann mit List-Comprehension ganz schönen Schund treiben, aber auch hierbei geht es im wesentlich darum die Leserlichkeit zu verbessern. Also solltet ihr es nicht übertreiben. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen.
+
+<br/>
+
+Hier sind mal ein paar Methoden aus einer Klasse, welche ich zum WebScrapen der Steam-Angebote verwendet habe. Dort habe ich völlig übertrieben, um die List-Comps zu verstehen, aber das geht definitiv zu weit, wenn es um einfach zu verstehenden Code geht.
+
+```py
+    def filter_games_by_tags(self, tag):
+        filtered_list = [game for game in self.steam_discount_list if(game['tag_list'] is not None and set(tag).issubset(game['tag_list']))]
+        return filtered_list
+
+    def filter_games_by_price(self, max_price, min_price=0.00):
+        filtered_list = [game for game in self.steam_discount_list if(min_price < game['actual_price'] <= max_price)]
+        return filtered_list
+
+    def most_common_tags(self):
+        all_tags_flat = [tag for game in self.steam_discount_list if game['tag_list'] is not None for tag in game['tag_list']]
+        occur = [[tag, all_tags_flat.count(tag)] for tag in set(all_tags_flat)]
+        self.most_common_tags = sorted(occur, key = lambda x: x[1], reverse=True)
+
+```
+
+Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr diese Konstrukte ja mal auseinander nehmen, gerade die Methode 'most_common_tags' ist übel, wenn man noch nicht genau verstanden hat, wie diese aufgebaut sind.
+<br/>
+<sub>(Hint: Zerlegt die Comprehension von hinten oder von vorne und stoppt immer bei Keywords wie if oder for. Nehmt den Teil bis zu dem Keyword und schmeißt alles bis dahin in eine eigene Zeile. Wenn man von hinten anfängt, dann baut man das Konstrukt von innen nach außen auf, umgekehert wenn man vorne anfängt. Am Ende muss man nur noch die Expression, also den vordersten Teil, in das innere übersetzten. Eine Schritt für Schritt Anleitung ist hier: [GIT-GUB-FILE-REFERENCE]) </sub>
+<br/><br/>
 
 ## Kapitel 1: Fortgeschrittenes (Klassen) Design
 
@@ -108,7 +220,7 @@ MyClass.__init__(my_class_instance, arg1, arg2, ...)
 my_class_instance = MyClass(arg1, arg2, ...)
 ```
 
-Ab diesem Punkt sollte klar sein, dass man jede Klassen-Methode, welche ein self-Argument hat auch über die Bezeichnung der Klasse selbst aufgerufen werden kann, wenn man eine Instanz dieser Klasse an der ersten Position übergibt.
+Ab diesem Punkt sollte klar sein, dass man jede reguläre Klassen-Methode auch über die Bezeichnung der Klasse selbst aufrufen kann, wenn man eine Instanz dieser Klasse an der ersten Position (welches dem self Argument entspricht) übergibt.
 
 <br/><br/>
 Beispiel für die Verwendung von 'Dunder'-Methods durch 'Built-In'-Methods:
@@ -244,6 +356,4 @@ Das \_\_dict\_\_ einer Instanz enthält **ausschließlich** die Attribute, welch
 >
 </pre>
 
-```
-
-```
+### Method Overloading
