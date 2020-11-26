@@ -193,6 +193,9 @@ Die einzige Regel die auch ich grundsätzlich beachte ist aus folgendem Zitat ab
 
 Meine beste Sprache ist Python, ich habe C und C++ als erste Sprachen gelernt, aber damit habe ich schon ewig nicht gearbeitet. Weswegen ich hier nicht generell für alle OOP-Sprachen sprechen kann. Mein Verständnis für Public, Private, Protected kommt eben aus C++ und das liegt bei mir schon Jahre zurück. Also verzeiht, wenn ich diesbezüglich nicht alles so genau weiß und hier etwas Erkläre, was selbtsverständlich ist, wenn man sich in der anderen Sprache tief genug auskennt.
 
+**Public**<br/>
+Man kann eigentlich sagen, dass **ALLES** innerhalb einer Python Klasse public ist. Es gibt Konzepte und Conventionen, welche die Idee von Private und Proteced nachahmen, aber wenn man sich auskennt, dann kann man auch diese Dinge ohne Aufwand umgehen. (An dieser Stelle fehlt mir die Erfahrung in anderen OOP-Sprachen, um zu wissen, ob dies auch dort einfach zu umgehen ist.)
+
 **Private**<br/>
 Wer aus anderen objektorentieren Sprachen kommt wird das Konzept von Public, Proteced und Private kennen. Und direkt mal vorweg, soetwas gibt es in Python nicht. Wer jetzt schonmal die Basics von Klassen in Python kennt wird vielleicht den Finger heben und Fragen: "Was ist denn mit den \_\_vars und \_\_methods()?" (Zwei Unterstriche, falls dies im Text nicht deutlich raus kommt.)
 
@@ -216,7 +219,7 @@ Hier ein Beispiel:
 13  print(meine_pc_instanz.__ram)
 ```
 
-Die prints haben folgende Ausgabe:
+Die 3 prints haben folgende Ausgabe:
 
 <pre>
 > Ryzen 7
@@ -249,6 +252,14 @@ print(meine_pc_instanz._PC__ram)
 
 habe ich dennoch Zugang zu den eigentlich 'Privaten' Attributen innerhalb einer Klasse. Die sogesehen privaten Attribute finden dennoch Anwendung. Das Name Mangeling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form.
 
+Ich habe innerhalb der PC Klasse bewusst ein Klassenattribut 'class_attribut' hinzugeführt, um zu zeigen, dass dieses Klassenattribut auch nicht im Dictionary der Instanz auftaucht. Dennoch ist es über den folgenden Aufruf erreichbar.
+
+```py
+meine_pc_instanz.class_attribute
+```
+
+Es lässt sich sogar verändern ABER, dies geschieht auf der Ebene der Instanz. Wenn ich das class_attribut über obenstehenden Zugriff veränder und auf einen neuen Wert zuweise, dann ist das Klassenattribut innerhalb
+
 <sub>(Randnotiz 1: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist das immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken'.)</sub>
 
 <br/>
@@ -258,6 +269,8 @@ Protected, also das Attribute und Methoden nur von der Klasse und von vererbten 
 
 Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von Klassen mittels einem Unterstrich gekennzeichnet werden. Das ist aber lediglich ein Hinweis für Andere. Python selbst behandelt Attrubute und Methoden mit einem führenden Unterstrich nicht anders als ohne.
 <br/><br/>
+
+#### 1.1.3 Klassenattribute
 
 ### 1.2 'Dunder'-Methods
 
