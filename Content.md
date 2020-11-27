@@ -85,7 +85,7 @@ def farbset(*farben):
 
 ## Vorbereitende Erklärungen
 
-Ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese in den Beispielen regelmäßig verwende, wer das kennt, kann den Teil überspringen. Und direkt mit [Kapitel 1](<##kapitel-1:-fortgeschrittenes-(klassen)-design>) starten.
+Ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese in den Beispielen regelmäßig verwende, wer das kennt, kann den Teil überspringen. Und direkt mit [Kapitel 1](#kapitel-1:-fortgeschrittenes-(klassen)-design>) starten.
 
 Dieses Tutorial richtet sich zwar schon an Leute die bereits die Grundlagen von Python kennen und verstehen, aber da ich zwei Dinge in meinen Codebeispielen immer wieder verwende, möchte ich diese zu Anfang einmal kurz erklären. Aufgrund der Kommentare des ersten 'Tutorials' denke ich, dass dies ein paar Leuten weiter helfen kann.
 
