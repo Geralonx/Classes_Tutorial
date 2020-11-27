@@ -3,9 +3,10 @@
 - Vorwort
 - Vorbereitende Erklärungen
 - Kapitel 1 Fortgeschrittenes (Klassen) Design
-- Kapitel 2 Spezielle Funktionsdekoratoren für Klassen
-- Kapitel 3 Klassendekoratoren
-- Kapitel 4 Metaklassen
+- Kapitel 2 Klassenvererbungen
+- Kapitel 3 Spezielle Funktionsdekoratoren für Klassen
+- Kapitel 4 Klassendekoratoren
+- Kapitel 5 Metaklassen
   <br/><br/>
 
 ## Vorwort
@@ -33,7 +34,7 @@ Für die, die sagten pr0 sei nicht die Plattform für sowas, bitte Minus geben u
 
 ### Prerequisites / Vorraussetzungen
 
-Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen, wie Vererbungen/Inheritance funktionieren. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
+Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
 <br/><br/>
 
 ### IDE
@@ -46,7 +47,35 @@ Nur zur Information, da es in dem ersten Beitrag auch zur Sprache kam, ich arbei
 Jeder macht Fehler. Ich beanspruche keineswegs Vollständig- oder Richtigkeit der hier gezeigten Inhalte. Für weitere Details und noch tiefergehende Informationen empfehle ich grundsätzlich die [Python-Dokumentation](https://docs.python.org/3/).
 
 Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Dinge von Python vermitteln. Auch ich habe währen des Schreibens viel nachlesen und recherchieren müssen. Ich biete hiermit lediglich eine zusammengefasste Form der Informationen an, welche ich auf eine Weise darstellen möchte, wie ich sie mir bei Tutorials von Anderen selbst gewünscht hätte.
+<br/><br/>
+
+### Korrektur meiner Aussage im ersten Tutorial
+In meinem ersten Tutortial über Closers und Decorators habe ich gesagt, dass man \*args und \*\*kwargs nicht umbenennen sollte und immer als \*args und \*\*kwargs verwenden sollte, auch wenn Python nur auf die Sternchen achtet und die Bezeichner frei wählbar sind. Ich bin bei meinen Recherchen auch darauf gestoßen, dass es sogar von Core-Developern empfohlen wird die Bezeichner umzubennenen, wenn dies das Verständnis vereinfacht. Wenn die \*args für den Input für eine bestimmte Gruppe an Daten verwendet wird und das \* nur dafür genutzt wird, dass man eine belibige Anzahl von Argumenten benutzt, dann kann es ja hilfreich sein, den Bezeichner genau zu bennenen.
+
+Beispiel:
+```py
+def summe(*args):
+    summe = 0
+    for zahl in args:
+        summe += zahl
+        
+# Das sollte man ändern zu:
+def summe(*zahlen):
+    summe = 0
+    for zahl in zahlen:
+        summe += zahl
+        
+# Oder
+def farbset(*args):
+    pass
+ 
+# Das sollte man ändern zu:
+def farbset(*farben):
+    pass
+```
 <br/><br/><br/>
+
+
 
 ## Vorbereitende Erklärungen
 
@@ -128,7 +157,7 @@ Ausgabe:
 <pre>
 > [0, 4, 16, 36, 64]
 </pre>
-List-Comprehensions können die Leserlichkeit verbessern, wenn man sie versteht und lesen kann. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen. Man kann mit List-Comprehension aber auch ganz schönen Unfug treiben, den Scheiß unendlich tief verschachteln, die Reihenfolge ändern (wodurch das Auseinandernehmen und Umbauen wieder schwierig wird.) oder vieles mehr. Ich werde dazu auch ein File verlinken, wo ich mal solche Konstrukte zeige und umschreibe.
+List-Comprehensions können die Leserlichkeit verbessern, wenn man sie versteht und lesen kann. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen. Man kann mit List-Comprehension aber auch ganz schönen Unfug treiben und den Scheiß unendlich tief verschachteln oder vieles mehr. Ich werde dazu auch ein File verlinken, wo ich mal solche Konstrukte zeige und umschreibe.
 <br/>
 
 Hier sind mal ein paar Methoden aus einer Klasse, welche ich zum WebScrapen der Steam-Angebote verwendet habe. Dort habe ich völlig übertrieben, um die List-Comps zu verstehen, aber das geht definitiv zu weit, wenn es um einfach zu verstehenden Code geht.
@@ -154,6 +183,7 @@ Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr di
 <br/><br/>
 
 ## Kapitel 1: Fortgeschrittenes (Klassen) Design
+Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse', also das Wiederverwenden von bereits geschriebenen 
 
 ### 1.0 Style-Guides
 
@@ -439,3 +469,8 @@ Das \_\_dict\_\_ einer Instanz enthält **ausschließlich** die Attribute, welch
 </pre>
 
 ### Method Overloading
+
+
+## Kapitel 2: Klassenvererbungen
+Das Vererben von Klassen 
+###
