@@ -81,7 +81,7 @@ Ausgabe:
 List-Comprehensions sind präzise Ausdrücke, um eine Liste mit Ergebnissen von einer Operation, welche auf die einzelnen Mitglieder einer Sequenz oder Iterator angewendet werden, zu erzeugen (Frei übersetzt aus der Python-Dokumentation). Bitte was? Im häufigsten Fall ersetzten List-Comprehensions for-Loops, welche eine Liste erzeugen. Die Syntax einer List-Comprehension sieht folgendermaßen aus:
 
 <pre>
-> liste = [expression for item in squence]
+> liste = [expression for item in squence [, condition]]
 </pre>
 
 Beispiel / Vergleich mit einer for-Loop:
@@ -128,9 +128,7 @@ Ausgabe:
 <pre>
 > [0, 4, 16, 36, 64]
 </pre>
-
-Man kann mit List-Comprehension ganz schönen Schund treiben, aber auch hierbei geht es im wesentlich darum die Leserlichkeit zu verbessern. Also solltet ihr es nicht übertreiben. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen.
-
+List-Comprehensions können die Leserlichkeit verbessern, wenn man sie versteht und lesen kann. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen. Man kann mit List-Comprehension aber auch ganz schönen Unfug treiben, den Scheiß unendlich tief verschachteln, die Reihenfolge ändern (wodurch das Auseinandernehmen und Umbauen wieder schwierig wird.) oder vieles mehr. Ich werde dazu auch ein File verlinken, wo ich mal solche Konstrukte zeige und umschreibe.
 <br/>
 
 Hier sind mal ein paar Methoden aus einer Klasse, welche ich zum WebScrapen der Steam-Angebote verwendet habe. Dort habe ich völlig übertrieben, um die List-Comps zu verstehen, aber das geht definitiv zu weit, wenn es um einfach zu verstehenden Code geht.
