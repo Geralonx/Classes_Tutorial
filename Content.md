@@ -19,7 +19,7 @@ Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger fürs pr0, a
 
 Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als ich. Wer mit der Einstellung, "Warum sollte ich mir DEIN Tutorial durchlesen, wenn es andere/bessere gibt?", hierher kommt sollte einfach wieder gehen und sich eben die besseren Tutorials durchlesen und mich nicht mit sowas nerven. Für alle Anderen, die ernsthaft interessiert sind und mein erstes Tutorial sogar ganz gut fanden, stelle ich diese Tutorial Repo gerne zur Verfügung und bin im Anschluss auch für weitere Fragen/Disskussionen gerne da.
 
-Bitte den [Disclaimer](<####disclaimer) beachten.
+Bitte den [Disclaimer](####disclaimer) beachten.
 <br/><br/>
 
 ### Kritik
