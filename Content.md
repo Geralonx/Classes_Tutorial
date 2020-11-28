@@ -13,13 +13,26 @@
 
 ### Allgemein
 
-So Leude, mein letztes Python-Tutorial ist schon 5 Monate her und inzwischen habe ich einerseits Lust ein neues zu machen und andererseits auch wieder ein einige Dinge gelernt, welche ich euch überhaupt zeigen könnte. 
+So Leude, mein letztes Python-Tutorial ist schon 5 Monate her und inzwischen habe ich einerseits Lust ein neues zu machen und andererseits auch wieder einige Dinge gelernt, welche ich euch überhaupt zeigen könnte.
 
-Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger fürs pr0, als für mich selbst. Ich bin der Meinung, wenn man Anderen etwas richtig erklären kann, dann hat man es auch wirklich verstanden. Die Zeit, die ich hier rein investiere, ist in erster Line für mich selbst, um einerseits neue Dinge zu lernen und die Dinge anschließend zu festigen. Die Informationen, die ich für dieses Tutorial zusammentrage, stammen aus vielen Quellen und beispielsweise auch Videomaterial, welches mehrere Stunden beinhaltet. Ich fasse diese Informationen in einer Form zusammen, wie ich sie für sinnvoll und zusammenhängend halte. Für mich entsteht in diesem Prozess ein Dokument, welches alles zu dem Thema beinhaltet, um die gezeigten Inhalte zu verstehen und dies anschließend auf die nicht gezeigten Inhalte übertragen kann. 
+Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger fürs Andere, als für mich selbst. Ich bin der Meinung, wenn man Anderen etwas richtig erklären kann, dann hat man es auch wirklich verstanden. Die Zeit, die ich hier rein investiere, ist in erster Line für mich selbst, um einerseits neue Dinge zu lernen und die Dinge anschließend zu festigen. Die Informationen, die ich für dieses Tutorial zusammentrage, stammen aus vielen Quellen und beispielsweise auch Videomaterial, welches mehrere Stunden beinhaltet. Ich fasse diese Informationen in einer Form zusammen, wie ich sie für sinnvoll und zusammenhängend halte. Für mich entsteht in diesem Prozess ein Dokument, welches alles zu dem Thema beinhaltet, um die gezeigten Inhalte zu verstehen und dies anschließend auf die nicht gezeigten Inhalte übertragen kann.
 
-Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als ich. Wer mit der Einstellung, "Warum sollte ich mir DEIN Tutorial durchlesen, wenn es andere/bessere gibt?", hierher kommt sollte einfach wieder gehen und sich eben die besseren Tutorials durchlesen und mich nicht mit sowas nerven. Für alle Anderen, die ernsthaft interessiert sind und mein erstes Tutorial sogar ganz gut fanden, stelle ich diese Tutorial Repo gerne zur Verfügung und bin im Anschluss auch für weitere Fragen/Disskussionen gerne da.
+Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als ich. Wer mit der Einstellung, "Warum sollte ich mir **DEIN** Tutorial durchlesen, wenn es andere/bessere gibt?", hierher kommt sollte einfach wieder gehen und sich eben die besseren Tutorials durchlesen und mich nicht mit sowas nerven. Für alle Anderen, die ernsthaft interessiert sind und mein erstes Tutorial sogar ganz gut fanden, stelle ich diese Tutorial Repo gerne zur Verfügung und bin im Anschluss auch für weitere Fragen/Disskussionen gerne da.
 
 Bitte den [Disclaimer](#disclaimer) beachten.
+<br/><br/>
+
+### Für wen ist dieses Tutorial geeignet?
+
+Dieses Tutorial geht schnell über Grundlagen hinaus und befasst sich im Kern mit Klassen und deren speziellen Methoden ('Dunder'-Methods), welche bei der Verwendung von der 'Built-In' Logik und Syntax verwendet werden. Wenn du nur wissen willst, wie man allgemein Klassen in Python schreibt und verwendet, dann solltest du woanders nachschlagen.
+
+David Beazley sagte in seinem Tutorial über Metaprogrammierung folgendes über die Verwendung von Klassendekoratoren:
+
+> "It's basicly walking trough a class and it's like doing brain surgery on it. It's probably a really bad idea." \- David Beazley in [YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI)
+
+Wenn man einmal versteht, was bei den Prozessen der Erstellung, Initialisierung, Zugriff, Vererbung, etc. von Klassen stattfindet, dann kann man auch exakt an diesen Stellen seinen eigenen Eingriff vornehmen. Und da im Wesentlichen **ALLES** in Python ein Objekt ist, ist es möglich jedes Objekt so anzupassen, wie man es benötigt. Und das ganze auf einer Ebene, wo ihr am Ende bei der Verwendung gar nicht mehr drüber nachdenken müsst.
+
+Metaklassen sind eigentlich für 99% der Nutzer von Python unrelevant. Das benötigen hauptsächlich Framework/Libary Entwickler. Aber bis zu dem Kapitel soll dieses Tutorial allgemein die fortgeschrittene Vernwednung von Klassen beschreiben. Und das ist bestimmt für mehr als 1% der Leute interesannt.
 <br/><br/>
 
 ### Kritik
@@ -56,44 +69,38 @@ Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Din
 <br/><br/>
 
 ### Korrektur meiner Aussage im ersten Tutorial
+
 In meinem ersten Tutortial über Clousers und Decorators habe ich gesagt, dass man \*args und \*\*kwargs nicht umbenennen sollte und immer als \*args und \*\*kwargs verwenden sollte, auch wenn Python nur auf die Sternchen achtet und die Bezeichner frei wählbar sind. Ich bin bei meinen Recherchen auch darauf gestoßen, dass es sogar von Core-Developern empfohlen wird die Bezeichner umzubennenen, wenn dies das Verständnis vereinfacht. Wenn die \*args für den Input für eine bestimmte Gruppe an Daten verwendet wird und das \* nur dafür genutzt wird, dass man eine belibige Anzahl von Argumenten benutzt, dann kann es ja hilfreich sein, den Bezeichner genau zu bennenen.
 
 Beispiel:
+
 ```py
 def summe(*args):
     summe = 0
     for zahl in args:
         summe += zahl
-        
-# Das sollte man ändern zu:
+    return summe
+
+# Das sollte man in folgende Form ändern, da diese Funktion im wesentlich eine
+# belibige Anzahl von Zahlen erwartet und nicht eine belibige Anzahl von belibigen Argumenten:
 def summe(*zahlen):
     summe = 0
     for zahl in zahlen:
         summe += zahl
-        
-# Oder
-def farbset(*args):
-    pass
- 
-# Das sollte man ändern zu:
-def farbset(*farben):
-    pass
+    return summe
 ```
-<br/><br/><br/>
 
-
+<br/>
 
 ## Vorbereitende Erklärungen
 
-Ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese in den Beispielen regelmäßig verwende, wer das kennt, kann den Teil überspringen. Und direkt mit [Kapitel 1](#kapitel-1:-fortgeschrittenes-(klassen)-design) starten.
-
-Dieses Tutorial richtet sich zwar schon an Leute die bereits die Grundlagen von Python kennen und verstehen, aber da ich zwei Dinge in meinen Codebeispielen immer wieder verwende, möchte ich diese zu Anfang einmal kurz erklären. Aufgrund der Kommentare des ersten 'Tutorials' denke ich, dass dies ein paar Leuten weiter helfen kann.
+Dieses Tutorial richtet sich zwar schon an Leute die bereits die Grundlagen von Python kennen und verstehen, aber ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese Konzepte in den Codebeispielen regelmäßig verwende, wer das kennt, kann den Teil überspringen. Und direkt mit [Kapitel 1](<#kapitel-1:-fortgeschrittenes-(klassen)-design>) starten.
 
 ### f-Strings
 
 F-Strings steht für "formatted string literals". Sie kennzeichnen sich dadurch aus, dass vor dem Anführungszeichen des Strings ein f steht. (Klein- oder Großschreibweise spielt dabei keine Rolle, typischerweise verwendet man das kleine f). Innerhalb des Strings dürfen geschweifte Klammern stehen, welche einen Pythonausdruck enthalten. Im einfachsten Fall ist das eine Variable, komplexere Ausdrücke funktionieren aber auch.
 
-Die f-Strings wandeln den Inhalt der geschwiften Klammen während der Laufzeit in einen String um und sind im anschluss ein ganz normaler String. Die Idee dahinter ist, dass man im Code den String vollständig beschreibt und auch ohne die eingefügten Inhalte zu kennen weiß, wie dieser String am Ende aussieht.
+Die f-Strings wandeln den Ausdruck der geschwiften Klammen während der Laufzeit in einen String um und sind im anschluss ein ganz normaler String. Die Idee dahinter ist, dass man im Code den String vollständig beschreibt und auch ohne die eingefügten Inhalte zu kennen weiß, wie dieser String am Ende aussieht.
 
 ```py
 mein_name = 'Geralonx'
@@ -108,15 +115,15 @@ Ausgabe:
 > Grueß dich, mein Name ist Geralonx, ich bin 30 Jahre alt.
 </pre>
 
-<sub>(Auch wenn es f-Strings bereits Seit Python 3.6 (2016) gibt bin ich erst dieses Jahr vollständig auf die Verwendung von f-Strings umgestiegen. Vorher habe ich immer mit .format() gearbeitet, weil mir diese Darstellung sehr gut gefiel und ich die f-Strings noch nicht im Detail kannte.)</sub>
-<br/><br/><br/>
+<sub>(Auch wenn es f-Strings bereits Seit Python 3.6 (2016) gibt bin ich erst dieses Jahr vollständig auf die Verwendung von f-Strings umgestiegen. Vorher habe ich immer mit .format() gearbeitet, weil mir diese Darstellung sehr gut gefiel und ich die es deshlab nicht für nötig hielt mir die f-Strings anzugucken.)</sub>
+<br/><br/>
 
 ### List-Comprehensions
 
 List-Comprehensions sind präzise Ausdrücke, um eine Liste mit Ergebnissen von einer Operation, welche auf die einzelnen Mitglieder einer Sequenz oder Iterator angewendet werden, zu erzeugen (Frei übersetzt aus der Python-Dokumentation). Bitte was? Im häufigsten Fall ersetzten List-Comprehensions for-Loops, welche eine Liste erzeugen. Die Syntax einer List-Comprehension sieht folgendermaßen aus:
 
 <pre>
-> liste = [expression for item in squence [, condition]]
+> liste = [expression for item in iterator [, condition]]
 </pre>
 
 Beispiel / Vergleich mit einer for-Loop:
@@ -129,6 +136,10 @@ for i in range(10):
 
 # List-Comprehension um die Quadrahte der Zahlen 0-9 zu erzeugen.
 list_comp_list = [i*i for i in range(10)]
+# expression : i*i
+# item : i
+# sequence: range(10)
+
 
 # Ausgabe
 print("For-Loop-Result:\t", for_loop_list)
@@ -149,7 +160,7 @@ Die List-Comprehension vereinigt 3 Zeilen Code von einer Empty-List-Initialisier
 ```py
 # List Comprehension mit einer Bedingung, welche nur die geraden Zahlen erfasst.
 new_list = [i*i for i in range(10) if i%2 == 0]
-print(new_list)
+print(new_list) # Ausgabe
 
 # Das Gleiche Ergebnis ließe sich beispielsweise mit folgendem Code erreichen
 new_list = []
@@ -163,33 +174,39 @@ Ausgabe:
 <pre>
 > [0, 4, 16, 36, 64]
 </pre>
-List-Comprehensions können die Leserlichkeit verbessern, wenn man sie versteht und lesen kann. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen. Man kann mit List-Comprehension aber auch ganz schönen Unfug treiben und den Scheiß unendlich tief verschachteln oder vieles mehr. Ich werde dazu auch ein File verlinken, wo ich mal solche Konstrukte zeige und umschreibe.
-<br/>
+
+List-Comprehensions können die Leserlichkeit verbessern, wenn man sie versteht und lesen kann. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen.
+
+Man kann mit List-Comprehension aber auch ganz schönen Unfug treiben und den Scheiß unendlich tief verschachteln oder vieles mehr. Ich werde dazu auch ein File verlinken, wo ich mal solche Konstrukte zeige und umschreibe.
 
 Hier sind mal ein paar Methoden aus einer Klasse, welche ich zum WebScrapen der Steam-Angebote verwendet habe. Dort habe ich völlig übertrieben, um die List-Comps zu verstehen, aber das geht definitiv zu weit, wenn es um einfach zu verstehenden Code geht.
 
 ```py
-    def filter_games_by_tags(self, tag):
-        filtered_list = [game for game in self.steam_discount_list if(game['tag_list'] is not None and set(tag).issubset(game['tag_list']))]
-        return filtered_list
+def filter_games_by_tags(self, tag):
+    filtered_list = [game for game in self.steam_discount_list if(game['tag_list'] is not None and set(tag).issubset(game['tag_list']))]
+    return filtered_list
 
-    def filter_games_by_price(self, max_price, min_price=0.00):
-        filtered_list = [game for game in self.steam_discount_list if(min_price < game['actual_price'] <= max_price)]
-        return filtered_list
+def filter_games_by_price(self, max_price, min_price=0.00):
+    filtered_list = [game for game in self.steam_discount_list if(min_price < game['actual_price'] <= max_price)]
+    return filtered_list
 
-    def most_common_tags(self):
-        all_tags_flat = [tag for game in self.steam_discount_list if game['tag_list'] is not None for tag in game['tag_list']]
-        occur = [[tag, all_tags_flat.count(tag)] for tag in set(all_tags_flat)]
-        self.most_common_tags = sorted(occur, key = lambda x: x[1], reverse=True)
+def most_common_tags(self):
+    all_tags_flat = [tag for game in self.steam_discount_list if game['tag_list'] is not None for tag in game['tag_list']]
+    occur = [[tag, all_tags_flat.count(tag)] for tag in set(all_tags_flat)]
+    self.most_common_tags = sorted(occur, key = lambda x: x[1], reverse=True)
 ```
 
 Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr diese Konstrukte ja mal auseinander nehmen, gerade die Methode 'most_common_tags' ist übel, wenn man noch nicht genau verstanden hat, wie diese aufgebaut sind.
 <br/>
-<sub>(Hint: Zerlegt die Comprehension von hinten oder von vorne und stoppt immer bei Keywords wie if oder for. Nehmt den Teil bis zu dem Keyword und schmeißt alles bis dahin in eine eigene Zeile. Wenn man von hinten anfängt, dann baut man das Konstrukt von innen nach außen auf, umgekehert wenn man vorne anfängt. Am Ende muss man nur noch die Expression, also den vordersten Teil, in das innere übersetzten. Eine Schritt für Schritt Anleitung ist hier: [GIT-GUB-FILE-REFERENCE]) </sub>
+
+<sub>(Hint: Zerlegt die Comprehension von hinten oder von vorne und stoppt immer bei Keywords wie if oder for. Nehmt den Teil bis zu dem Keyword und schmeißt alles bis dahin in eine eigene Zeile. Wenn man von hinten anfängt, dann baut man das Konstrukt von innen nach außen auf, umgekehert wenn man vorne anfängt. Am Ende muss man nur noch die Expression, also den vordersten Teil, in das innere übersetzten. Eine Schritt für Schritt Anleitung ist hier: [GIT-HUB-FILE-REFERENCE]) </sub>
+
+<sub>(Randnotiz 1: Es gibt das gleiche auch für Dicts, also Dict-Comprehensions. Die Syntax ist 1:1 wie ber für die List. Das einzige was sich ändert ist, dass man die Comprehensions mit {} statt [] schreibt und sicherstellen muss, dass die Expression ein Key-Value-Pair ist.)</sub>
 <br/><br/>
 
 ## Kapitel 1: Fortgeschrittenes (Klassen) Design
-Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse', also das Wiederverwenden von bereits geschriebenen 
+
+Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse'. Die Inhalte gehen auch hauptsächlich in diese Richtung, um zu verstehen, an welchen Stellen ...........
 
 ### 1.0 Style-Guides
 
@@ -228,29 +245,27 @@ Die einzige Regel die auch ich grundsätzlich beachte ist aus folgendem Zitat ab
 Meine beste Sprache ist Python, ich habe C und C++ als erste Sprachen gelernt, aber damit habe ich schon ewig nicht gearbeitet. Weswegen ich hier nicht generell für alle OOP-Sprachen sprechen kann. Mein Verständnis für Public, Private, Protected kommt eben aus C++ und das liegt bei mir schon Jahre zurück. Also verzeiht, wenn ich diesbezüglich nicht alles so genau weiß und hier etwas Erkläre, was selbtsverständlich ist, wenn man sich in der anderen Sprache tief genug auskennt.
 
 **Public**<br/>
-Man kann eigentlich sagen, dass **ALLES** innerhalb einer Python Klasse public ist. Es gibt Konzepte und Conventionen, welche die Idee von Private und Proteced nachahmen, aber wenn man sich auskennt, dann kann man auch diese Dinge ohne Aufwand umgehen. (An dieser Stelle fehlt mir die Erfahrung in anderen OOP-Sprachen, um zu wissen, ob dies auch dort einfach zu umgehen ist.)
+Man kann eigentlich sagen, dass **ALLES** innerhalb einer Python Klasse public ist. Es gibt Konzepte und Conventionen, welche die Idee von Private und Proteced nachahmen sollen, aber wenn man sich auskennt, dann kann man auch diese Dinge ohne Aufwand umgehen. (An dieser Stelle fehlt mir die Erfahrung in anderen OOP-Sprachen, um zu wissen, ob dies auch dort einfach zu umgehen ist.)
 
 **Private**<br/>
 Wer aus anderen objektorentieren Sprachen kommt wird das Konzept von Public, Proteced und Private kennen. Und direkt mal vorweg, soetwas gibt es in Python nicht. Wer jetzt schonmal die Basics von Klassen in Python kennt wird vielleicht den Finger heben und Fragen: "Was ist denn mit den \_\_vars und \_\_methods()?" (Zwei Unterstriche, falls dies im Text nicht deutlich raus kommt.)
 
-Wenn der Python-Interpreter innerhalb einer Klasse ein Attrribut oder Methode mit zwei führenden Unterstrichen und maximal einem nachfolgenden Unterstrich erkennt führt dieser ein sogenanntes 'Name Mangeling' durch. Das heißt, er bennent die Attribute und die Methode, die dieser Form folgen, für die Außenwelt um.
+Wenn der Python-Interpreter innerhalb einer Klasse ein Attrribut oder Methode mit zwei führenden Unterstrichen und maximal einem nachfolgenden Unterstrich erkennt führt dieser ein sogenanntes 'Name Mangeling' durch. Das heißt, er bennent die Attribute und die Methoden, die dieser Form folgen, schlicht und ergreifend einfach um.
 
 Hier ein Beispiel:
 
 ```py
 01  class PC:
-02     class_attribute = 'Ich bin ein Klassenattribut'
-03
-04     def __init__(self, prozessor, grafikkarte, ram):
-05         self.prozessor = prozessor
-06         self.grafikkarte = grafikkarte
-07         self.__ram = ram
+02     def __init__(self, prozessor, grafikkarte, ram):
+03         self.prozessor = prozessor
+04         self.grafikkarte = grafikkarte
+05         self.__ram = ram
+06
+07  meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super', 'GSkill')
 08
-09  meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super', 'GSkill')
-10
-11  print(meine_pc_instanz.prozessor)
-12  print(meine_pc_instanz.grafikkarte)
-13  print(meine_pc_instanz.__ram)
+09  print(meine_pc_instanz.prozessor)
+10  print(meine_pc_instanz.grafikkarte)
+11  print(meine_pc_instanz.__ram)
 ```
 
 Die 3 prints haben folgende Ausgabe:
@@ -259,12 +274,12 @@ Die 3 prints haben folgende Ausgabe:
 > Ryzen 7
 > RTX2070Super
 > Traceback (most recent call last):
->   File "f:/Python-Projects/Projects/Classes_Tutorial/name_mangeling.py", line 13, in <module>
+>   File "f:/Python-Projects/Projects/Classes_Tutorial/name_mangeling.py", line 11, in <module>
 >     print(meine_pc_instanz.ram)
 > AttributeError: 'PC' object has no attribute '__ram'
 </pre>
 
-So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Das Attribut \_\_dict\_\_ einer Instanz enthält **alle** instanzspezifischen Attribute, also alles was zu self. zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
+So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Das Attribut \_\_dict\_\_ einer Instanz enthält **alle** instanzspezifischen Attribute, also alles was zu self zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
 
 ```py
 print(meine_pc_instanz.__dict__)
@@ -286,15 +301,8 @@ print(meine_pc_instanz._PC__ram)
 
 habe ich dennoch Zugang zu den eigentlich 'Privaten' Attributen innerhalb einer Klasse. Die sogesehen privaten Attribute finden dennoch Anwendung. Das Name Mangeling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form.
 
-Ich habe innerhalb der PC Klasse bewusst ein Klassenattribut 'class_attribut' hinzugeführt, um zu zeigen, dass dieses Klassenattribut auch nicht im Dictionary der Instanz auftaucht. Dennoch ist es über den folgenden Aufruf erreichbar.
-
-```py
-meine_pc_instanz.class_attribute
-```
-
-Es lässt sich sogar verändern ABER, dies geschieht auf der Ebene der Instanz. Wenn ich das class_attribut über obenstehenden Zugriff veränder und auf einen neuen Wert zuweise, dann ist das Klassenattribut innerhalb
-
-<sub>(Randnotiz 1: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist das immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken'.)</sub>
+<sub>(Randnotiz 1: Warum kann ich innerhalb von Klassen dann mit self.\_\_ram an das Attribut kommen? Ganz einfach, der Interpretert bennent innerhalb einer Klasse ALLE vorkommenden Attribute und Methoden mit 2 führenden Untersichten mittels Name Manageling um. Außerhalb von Klassen eben nicht.)
+</sub>
 
 <br/>
 
@@ -305,6 +313,72 @@ Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von 
 <br/><br/>
 
 #### 1.1.3 Klassenattribute
+
+Klassenattribute existieren **NUR** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies Zieht sich auch durch Vererbungen durch.
+
+```py
+class PC:
+    klassen_attribut = "Ich bin ein Klassenattribut"
+
+meine_pc_instanz = PC()
+
+print("Instanz Dict: ", meine_pc_instanz.__dict__)
+print("Klassen Dict: ", PC.__dict__)
+print("Zugriff über Instanz: ", meine_pc_instanz.klassen_attribut)
+```
+
+Ausgabe:
+
+<pre>
+> Instanz Dict: {}
+> Klassen Dict: { ..., 'klassen_attribut': 'Ich bin ein Klassenattribut', ...}
+> Zugriff über Instanz: Ich bin ein Klassenattribut
+</pre>
+
+Wenn man weiß, dass man das Klassenattribut über das Instanz-Objekt lesen kann, dann fragt man sich doch was passiert, wenn man versucht es zu schreiben, oder?
+
+```py
+meine_pc_instanz.klassen_attribut = "Neuer Wert"
+print(meine_pc_instanz.klassen_attribut)
+```
+
+<pre>
+> Neuer Wert
+</pre>
+
+Super, das funktioniert auch, aber was ist jetzt passiert? Um wirklich zu wissen, welche Daten zu welcher Instanz/Klasse gehören müssen wir ja nur das \_\_dict\_\_ ausgeben.
+
+```py
+print("Instanz Dict: ", meine_pc_instanz.__dict__)
+print("Klassen Dict: ", PC.__dict__)
+```
+
+<pre>
+> Instanz Dict:  {'klassen_attribut': 'Neuer Wert'}
+> Klassen Dict:  {..., 'klassen_attribut': 'Ich bin ein Klassenattribut', ...}
+</pre>
+
+Die leere Instanz hat nun ein eigenes Attribut mit dem Bezeichner 'klassen_attribut' und das echte Klassenattribut blieb unverändert. Der richtige Weg mit Klassenattributen umzugehen ist immer, dass man über die Instanz auf die Klasse zugreift und anschließend auf das Attribut. Das sieht dann folgendermaßen aus:
+
+```py
+class PC:
+    klassen_attribut = "Ich bin ein Klassenattribut"
+
+    def __init__(self):
+        self.attr1 = self.__class__.klassen_attribut # Zeile 1
+        self.attr2 = type(self).klassen_attribut     # Zeile 2
+        self.attr3 = PC.klassen_attribut             # Zeile 3
+```
+
+Zeile 1 und Zeile 2 funktionieren **EXAKT** gleich, da type(self) immer die eigene Klasse zurück gibt, welche aber auch bereits in self.\_\_class\_\_ enthalten ist. Ich persönlich bevorzuge die Schreibweise von Zeile 1. **Hardcoding, wie in Zeile 3, sollte immer vermieden werden**. Spätestens, wenn diese Klassen vererbt werden, bekommt ihr Problem. Einfache Zeile 3 vergessen.
+
+**Vererbung von Klassenattirbuten**<br/>
+
+Durch Vererbung von 'Klasse 1' auf 'Klasse 2' ist das Klassenattribut auch dort verfügbar, ABER es wird nicht im \_\_dict\_\_ Attribut der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attrubit, welches ihr weder im Instanz-Dict des erstellen Objekts, noch im Class-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja
+
+Es lässt sich sogar verändern ABER, dies geschieht auf der Ebene der Instanz. Wenn ich das class_attribut über obenstehenden Zugriff veränder und auf einen neuen Wert zuweise, dann ist das Klassenattribut innerhalb
+
+<sub>(Randnotiz 1: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist das immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken'.)</sub>
 
 ### 1.2 'Dunder'-Methods
 
@@ -476,7 +550,8 @@ Das \_\_dict\_\_ einer Instanz enthält **ausschließlich** die Attribute, welch
 
 ### Method Overloading
 
-
 ## Kapitel 2: Klassenvererbungen
-Das Vererben von Klassen 
+
+Das Vererben von Klassen
+
 ###
