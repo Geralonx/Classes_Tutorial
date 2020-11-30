@@ -3,7 +3,7 @@
 - Vorwort
 - Vorbereitende Erklärungen
 - Kapitel 1 Fortgeschrittenes (Klassen) Design
-- Kapitel 2 Spezielle Funktionsdekoratoren für Klassen
+- Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden
 - Kapitel 3 Klassenvererbungen
 - Kapitel 4 Klassendekoratoren
 - Kapitel 5 Metaklassen
@@ -130,7 +130,7 @@ Mit der alten Methode reißt es einem beim Lesen des Codes aus dem Fluss. Man mu
 <sub>(Randnotiz 2: Ja, die gezeigte .format() Methode ist in dieser Form die einfachste Version. Man konnte dort auch schon mit Keywords innerhalb der geschweiften Klammern arbeiten, um einen 'Lesefluss' zu erzeuge, aber es bleibt dabei, dass man am Ende die Zuweisung erst im .format() erkennt und nich direkt im String selber.)
 </sub>
 
-<br/><br/>
+<br/>
 
 ### List-Comprehensions
 
@@ -150,6 +150,7 @@ for i in range(10):
 
 # List-Comprehension um die Quadrahte der Zahlen 0-9 zu erzeugen.
 list_comp_list = [i*i for i in range(10)]
+
 # expression : i*i
 # item : i
 # sequence: range(10)
@@ -168,8 +169,6 @@ Ausgabe:
 </pre>
 
 Die List-Comprehension vereinigt 3 Zeilen Code von einer Empty-List-Initialisierung und das Füllen mit einer for-Loop zu einer einzigen. Es ist auch möglich Bedingungen in die List-Comprehension einzubauen.
-
-<br/>
 
 ```py
 # List Comprehension mit einer Bedingung, welche nur die geraden Zahlen erfasst.
@@ -393,7 +392,7 @@ Zeile 1 und Zeile 2 funktionieren **EXAKT** gleich, da type(self) immer die eige
 
 **Vererbung von Klassenattirbuten**<br/>
 
-Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, ABER es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict des erstellen Objekts, noch im Class-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnten, welche sich anschließend auch in den Instanzen der Subklasse wiederspiegeln.
+Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, ABER es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict des erstellen Objekts, noch im Class-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnten, welche sich anschließend auch in den Instanzen der Subklasse wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute aus Elternklassen verwendet.
 
 <sub>(Randnotiz 1: Ich habe bisher nicht sehr viel mit Klassenattributen gearbeitet, aber ich denke ich würde sie einfach immer 'privat' machen, einfach um nicht ausversehen aus vererbten Klassen auf etweas zugreifen zu können, was ich erstmal ewig suchen müsste. Ob man das so macht weiß ich nicht.)</sub>
 
@@ -479,7 +478,7 @@ Ich selbst hatte keine Idee, wie man eine allgemeine Zusammenfassung für die 'D
 
 Python-Dokumentation über (alle?) Special 'Dunder' Methods: https://docs.python.org/3/reference/datamodel.html#special-method-names
 
-<br/><br/>
+<br/>
 
 #### 1.2.2 \_\_repr\_\_() oder \_\_str\_\_() ?
 
@@ -525,7 +524,7 @@ Ausgabe, hervorgerufen durch print(MeinPc):
 
 <sub>(Randnotiz 2: Eigentlich wird die der Type mit den <> dargestellt (<class 'str'>). Aufgrund der verwendeten Markuplanguage (.md) funktioniert das da nicht.)</sub>
 
-<sub>(Randnotiz 3: Warum sollte ich die Klasse der Attribute ausgeben, ist das nicht eindeutig? Für die 'Built-In' Klassen wie str, int, list, ... scheint es überflüssig zu sein. Angenommen ihr verwendet eigene Klassen, die die Funktionalität der Grundklassen erweitern. <class '\_\_main\_\_.SizedStr'>, welche das Attribut auf eine maximale Länge limitiert, würde dem Benutzer eine Erklärung geben, was dort eigentlich hintersteckt.)
+<sub>(Randnotiz 3: Warum sollte ich die Klasse der Attribute ausgeben, ist das nicht eindeutig? Für die 'Built-In' Klassen wie str, int, list, ... scheint es überflüssig zu sein. Angenommen ihr verwendet eigene Klassen, die die Funktionalität der Grundklassen erweitern, indem ihr eine Klasse erstellt, welche von str erbt. <class '\_\_main\_\_.SizedStr'>, welche das Attribut auf eine maximale Länge limitiert, würde dem Benutzer eine Erklärung geben, was dort eigentlich hintersteckt, statt dass dieses Attribut ein normaler String wäre.)
 </sub>
 
 <br/>
@@ -568,17 +567,17 @@ Was zu folgender Ausgabe führen wird:
 
 #### 1.2.3 \_\_enter\_\_() und \_\_exit\_\_()
 
-Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt sich in eine Variable. Wenn man eine Datei öffnet, dann sollte man sie aich wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, DB, ...). Im Exit wird diese Verbindung eben geschlossen.
+Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt sie in eine Variable. Wenn man eine Datei öffnet, dann sollte man sie aich wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen.
 
 ```py
 with open('sample_file.txt') as f:  # Hier wird die Enter Methode ausgeführt
     var = f.read()
-                                    # Hier, unmittelbar nach dem Verlassen des with-Blocks, wird der Exit durchgeführt
+# Hier, unmittelbar nach dem Verlassen des with-Blocks, wird der Exit durchgeführt
 ```
 
 ### 1.2.4 \_\_doc\_\_ Attribut
 
-Dokumentiert eure Sachen. Muss man das noch sagen? In Python solltet ihr die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen (es gehen doppelte \" und einfache \', aber typischerweise werden einfache verwendet. Ich glaube das steht auch irgendwo im PEP8) am Kopf der Funktion oder Klasse geschrieben.
+Dokumentiert eure Sachen. Muss man das noch sagen? In Python solltet ihr die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen (es gehen doppelte \" und einfache \', aber typischerweise werden doppelte verwendet. [PEP 257 - Docstrings](https://www.python.org/dev/peps/pep-0257/)) am Kopf der Funktion oder Klasse geschrieben.
 
 Das \_\_doc\_\_ Attribut ist in jedem Objekt vorhanden, auch wenn keiner gesetzt wird. Falls keiner vom Author geschrieben wird, ist der Wert None.
 
@@ -586,19 +585,19 @@ Lest euch die Style-Guides zu dem Doc-Attribut durch. Dort gibt es schöne Anreg
 
 ```py
 class PC:
-    '''Dies ist die Dokumentation der Klasse: PC
+    """Dies ist die Dokumentation der Klasse: PC
 
     Multiline-Strings sind automatisch mit berücksichtig.
-    Es wird sogar mit formatiert. Klasse! Oder?'''
+    Es wird sogar mit formatiert. Klasse! Oder?"""
 
     def __init__(self, prozessor, grafikkarte):
-        '''Jetzt Dokumentieren wir die __init__
-        Was eine schöne Funktion.'''
+        """Jetzt Dokumentieren wir die __init__
+        Was eine schöne Funktion."""
         self.prozessor = prozessor
         self.grafikkarte = grafikkarte
 
 def outer_func(arg1):
-    '''Das funktioniert auch bei einfachen Funktionen!'''
+    """Das funktioniert auch bei einfachen Funktionen!"""
     print(arg1)
 
 
@@ -621,11 +620,67 @@ Ausgabe:
 > Das funktioniert auch bei einfachen Funktionen!
 </pre>
 
-## Kapitel 2: Spezielle Funktionsdekoratoren für Klassen-Inhalte
+## Kapitel 2: Spezielle Funktionsdekoratoren für Klassenmethoden
 
 Python bringt standardmäßig einige Dekoratoren mit sich, welche speziell im Klassendesign anwendung finden. Dazu gehören allgemein @classmethod, @staticmethod, @property, @attr.setter und @atter.deleter
 
-### 2.1 Method Overloading
+### 2.1 @Classmethod und @Staticmethod
+
+Jede Methode, welche innerhalb eines 'Class-Body' definiert wird, kann mit diesen Dekoratoren ausgestattet werden. Dadurch verändern sich automatisch die Übergabeparameter.
+
+#### 2.1.1 @Staticmethod
+
+Die Staticmethod unterscheidet sich in keiner Weise zu ganz normalen Funktionen abgesehen davon, dass sie im Class-Body definiert wird. Anders als die normalen Methoden einer Klasse, hat eine Staticmethod **kein** verpflichtendes self-Argument an erster Position. Es kann einfach leer bleiben oder mit belibigen Argumenten definiert werdern.
+
+```py
+class PC:
+    @staticmethod
+    def add_2_to_3():
+        return 2+3
+
+print(PC.add_2_to_3())
+```
+
+<pre>
+> 5
+</pre>
+
+Die Staticmethod muss nichts mit der Klasse zu tun haben. Es ist eine ganz normale Funktion, die lediglich im Namespace der Klasse liegt und demtentsprechend über diesen Namespace aufgerufen werden muss.
+
+#### 2.1.2 @Classmethod
+
+Im Gegensatz zu den Staticmethods verhält es sich mit den Classmethods anders. Meines Wissens nach wird die Classmethod hauptsächlich als Factory-Method verwendet. Eine Factory-Method ist eine Methode, welche die Instanz einer Klasse durch andere Parameter erzeugt, als die Standardparameter der \_\_init\_\_ Methode.
+Beispiel:
+
+```py
+01 class Circle:
+02     def __init__(self, radius):
+03         self.radius = radius
+04
+05     @classmethod
+06     def from_diameter(cls, diameter):
+07         calculated_radius = diameter/2
+08         return cls(radius=calculated_radius)
+09
+10 c1 = Circle(10)
+11 c2 = Circle.from_diameter(40)
+12
+13 print(c1.radius)
+14 print(c2.radius)
+```
+
+Ausgabe:
+
+<pre>
+> 10
+> 20
+</pre>
+
+Anders als bei normalen Methoden ist der erste übergebene Parameter einer Classmethod immer die Klasse selbst. An dieser Stelle könnte man theoretisch auch die Bezeichung _cls_ in Zeile 08 zu _Circle_ umbenennen. Aber da ist wieder das Thema Hardcoding. Würde man eine Klasse Spehre erstellen, welche von _Cricle_ erbt, dann würde bei der Verwendung von _cls_ in Zeile 08 der Spehre Konstruktor aufgerufen werden, welcher sich unter Umständen von dem Konstruktor der _Circle_ Klasse unterscheiden kann.
+
+<sub>(Randnotiz 1: Die Argumente _self_ und _cls_ sind auch nur Conventionen die alle Leute einhalten (sollten). Auch diese beiden Argumente sind vom Bezeichner her frei wählbar, ABER Methoden bekommen automatisch beim Aufruf die Instanz an der ersten Position übergeben. Ebenso wie Classmethods die Klasse an erster Position übergeben bekommen. Python IDEs, oder jene die Syntaxhighlighing für Python unterstüzen, haben _meistens_ unterschiedliche Farbkennzeichnungen für _cls_ und _self_ als für belibige Bezeichnernamen.)</sub>
+
+### 2.2 Method Overloading
 
 Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode sich unterschiedlich verhalten kann, abhängig von den übergebenen Parametern. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
 <br/><br/>
@@ -655,13 +710,9 @@ Ausgabe:
 > Result = 300
 </pre>
 
-In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion. Und das ohne, dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern.
+In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion. Und das ohne, dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern. Selbstverstädlich ist diese Art von Overloading auch bei Methoden einer Klasse zulässig.
 
-##### 2.1.2 @overload-Decorator
-
-TBD
-
-##### 2.1.3 @property, @fn.setter, @fn.deleter
+#### 2.1.2 @property, @fn.setter, @fn.deleter
 
 ## Kapitel 3: Klassenvererbung
 
