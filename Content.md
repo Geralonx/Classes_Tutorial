@@ -212,7 +212,7 @@ def most_common_tags(self):
 Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr diese Konstrukte ja mal auseinander nehmen, gerade die Methode 'most_common_tags' ist übel, wenn man noch nicht genau verstanden hat, wie diese aufgebaut sind.
 <br/>
 
-<sub>(Hint: Zerlegt die Comprehension von hinten oder von vorne und stoppt immer bei Keywords wie if oder for. Nehmt den Teil bis zu dem Keyword und schmeißt alles bis dahin in eine eigene Zeile. Wenn man von hinten anfängt, dann baut man das Konstrukt von innen nach außen auf, umgekehert wenn man vorne anfängt. Am Ende muss man nur noch die Expression, also den vordersten Teil, in das innere übersetzten. Eine Schritt für Schritt Anleitung ist hier: [GIT-HUB-FILE-REFERENCE]) </sub>
+<sub>(Hint: Zerlegt die Comprehension von hinten oder von vorne und stoppt immer bei Keywords wie if oder for. Nehmt den Teil bis zu dem Keyword und schmeißt alles bis dahin in eine eigene Zeile. Wenn man von hinten anfängt, dann baut man das Konstrukt von innen nach außen auf, umgekehert wenn man vorne anfängt. Am Ende muss man nur noch die Expression, also den vordersten Teil, in das innere übersetzten. Eine Schritt für Schritt Anleitung ist hier: [Loesung List-Comprehension](https://github.com/Geralonx/Classes_Tutorial/blob/master/Vorbereitende_Erklaerungen/_2_list_comp_loesung.py)) </sub>
 
 <sub>(Randnotiz 1: Es gibt das gleiche auch für Dicts, also Dict-Comprehensions. Die Syntax ist 1:1 wie ber für die List. Das einzige was sich ändert ist, dass man die Comprehensions mit {} statt [] schreibt und sicherstellen muss, dass die Expression ein Key-Value-Pair ist.)</sub>
 <br/><br/>
