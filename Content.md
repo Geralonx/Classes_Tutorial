@@ -269,15 +269,15 @@ Beispiel:
 
 ```py
 01  class PC:
-02     def __init__(self, prozessor, grafikkarte, ram):
-03         self.prozessor = prozessor
-04         self.grafikkarte = grafikkarte
+02     def __init__(self, cpu, gpu, ram):
+03         self.cpu = cpu
+04         self.gpu = gpu
 05         self.__ram = ram
 06
 07  meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super', 'GSkill')
 08
-09  print(meine_pc_instanz.prozessor)
-10  print(meine_pc_instanz.grafikkarte)
+09  print(meine_pc_instanz.cpu)
+10  print(meine_pc_instanz.gpu)
 11  print(meine_pc_instanz.__ram)
 ```
 
@@ -299,10 +299,12 @@ print(meine_pc_instanz.__dict__)
 ```
 
 <pre>
-> {'prozessor': 'Ryzen 7', 'grafikkarte': 'RTX2070Super', '_PC__ram': 'GSkill'}
+> {'cpu': 'Ryzen 7', 'gpu': 'RTX2070Super', '_PC__ram': 'GSkill'}
 </pre>
 
-Wir sehen, dass prozessor und grafikkarte wie zu erwarten enthalten sind, aber wir sehen auch, dass unser \_\_ram wieder da ist. Das Name Mangling hat dafür gesorgt, dass der Klassenname mit einem führenden Unterstrich an den Anfang des Attributs gesetzt wurde. Versuche ich folgendes,
+Wir sehen, dass prozessor und grafikkarte wie zu erwarten enthalten sind, aber wir sehen auch, dass unser \_\_ram wieder da ist. Das Name Mangling hat dafür gesorgt, dass der Klassenname mit einem führenden Unterstrich an den Anfang des Attributs gesetzt wurde.
+
+Versuche ich folgendes,
 
 ```py
 print(meine_pc_instanz._PC__ram)
@@ -620,6 +622,8 @@ Ausgabe:
 > Das funktioniert auch bei einfachen Funktionen!
 </pre>
 
+<br/><br/><br/>
+
 ## Kapitel 2: Spezielle Funktionsdekoratoren für Klassenmethoden
 
 Python bringt standardmäßig einige Dekoratoren mit sich, welche speziell im Klassendesign anwendung finden. Dazu gehören allgemein @classmethod, @staticmethod, @property, @attr.setter und @atter.deleter
@@ -636,7 +640,7 @@ Die Staticmethod unterscheidet sich in keiner Weise zu ganz normalen Funktionen 
 class PC:
     @staticmethod
     def add_2_to_3():
-        return 2+3
+        return 3+2
 
 print(PC.add_2_to_3())
 ```
@@ -645,7 +649,7 @@ print(PC.add_2_to_3())
 > 5
 </pre>
 
-Die Staticmethod muss nichts mit der Klasse zu tun haben. Es ist eine ganz normale Funktion, die lediglich im Namespace der Klasse liegt und demtentsprechend über diesen Namespace aufgerufen werden muss.
+Die Staticmethod muss nichts mit Inhalten der Klasse interagieren. Es ist eine ganz normale Funktion, die lediglich im Namespace der Klasse liegt und demtentsprechend über diesen Namespace aufgerufen werden muss.
 
 #### 2.1.2 @Classmethod
 
@@ -678,16 +682,20 @@ Ausgabe:
 
 Anders als bei normalen Methoden ist der erste übergebene Parameter einer Classmethod immer die Klasse selbst. An dieser Stelle könnte man theoretisch auch die Bezeichung _cls_ in Zeile 08 zu _Circle_ umbenennen. Aber da ist wieder das Thema Hardcoding. Würde man eine Klasse Spehre erstellen, welche von _Cricle_ erbt, dann würde bei der Verwendung von _cls_ in Zeile 08 der Spehre Konstruktor aufgerufen werden, welcher sich unter Umständen von dem Konstruktor der _Circle_ Klasse unterscheiden kann.
 
-<sub>(Randnotiz 1: Die Argumente _self_ und _cls_ sind auch nur Conventionen die alle Leute einhalten (sollten). Auch diese beiden Argumente sind vom Bezeichner her frei wählbar, ABER Methoden bekommen automatisch beim Aufruf die Instanz an der ersten Position übergeben. Ebenso wie Classmethods die Klasse an erster Position übergeben bekommen. Python IDEs, oder jene die Syntaxhighlighing für Python unterstüzen, haben _meistens_ unterschiedliche Farbkennzeichnungen für _cls_ und _self_ als für belibige Bezeichnernamen.)</sub>
+Klassenmethoden sind nicht auf den Aufruf über die Klasse selbst beschränkt. Ebenso wie die Klassenattribute können diese über die Instanz erreicht werden. Das Verhalten ändert sich dadurch aber nicht.
+
+<sub>(Randnotiz 1: Die Argumente _self_ und _cls_ sind auch nur Conventionen die alle Leute einhalten (sollten). Auch diese beiden Argumente sind vom Bezeichner her frei wählbar, ABER Methoden bekommen automatisch beim Aufruf die Instanz an der ersten Position übergeben, respektive die Klasse für Klassenmethoden. Python IDEs, oder jene die Syntaxhighlighing für Python unterstüzen, haben _meistens_ unterschiedliche Farbkennzeichnungen für _cls_ und _self_ als für belibige Argumente.)</sub>
+
+<sub>(Randnotiz 2: Eine weitere Idee für Klassenmethoden wäre einen Zugang zu Statistiken über den Gebrauch der Klasse zu schaffen. Informationen über alle Instanzen sammeln oder was weiß ich.)</sub>
 
 ### 2.2 Method Overloading
 
-Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode sich unterschiedlich verhalten kann, abhängig von den übergebenen Parametern. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
+Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode sich unterschiedlich verhalten kann, abhängig von der Verwendung der Methode. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
 <br/><br/>
 
 #### 2.1.1 Optionale Parameter
 
-Eine normale Funktion, welche durch optionale Parameter überladen wird. Der Parameter 'debug' ist optional, weil jener in der Funktions-Definition einen default Wert zugewiesen bekommt.
+Eine normale Funktion, welche durch optionale Parameter überladen wird, benötigt lediglich default-Werte für mindestens ein Argument. Der Parameter 'debug' ist optional, weil jener in der Funktions-Definition einen default-Wert zugewiesen bekommt.
 
 ```py
 def adder(x, y, debug=False):
@@ -711,38 +719,134 @@ Ausgabe:
 </pre>
 
 In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion. Und das ohne, dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern. Selbstverstädlich ist diese Art von Overloading auch bei Methoden einer Klasse zulässig.
+<br/><br/>
 
 #### 2.1.2 @property, @fn.setter, @fn.deleter
+
+Die genannten Dekoratoren sind besondere, welche man als Descriptor beschreibt. Auch diese werden zum Method-Overloading verwendet, da sie mehrere Methode mit dem gleichen Namen so ausstatten, dass diese, aufgrund der Verwendung, zu unterschiedlichen Zeiten aufgerufen werden. Da es sich um Dewkoratoren handel müssen sie nur vor der Methode angebracht werden, welche den Namen hat, über den sie mit dem '.'-Operator erreicht werden soll.
+
+<sub>(David Beazley spricht in seinem [Tutorial: YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI) von 'owning the dot'. Klingt eigentlich spannender als es ist, weil er mit Discriptoren den Zugriff auf eine Variable in 100 Wegen überprüft. Dazu später mehr.)</sub>
+
+Beispiel:
+
+```py
+class PC:
+    def __init__(self, cpu, gpu):
+        self.cpu = cpu
+        self.gpu = gpu
+
+    @property
+    def gpu(self):
+        # if user.acces > 1:
+        return self._gpu
+
+    @gpu.setter
+    def gpu(self, value):
+        # Type/Value-Cheking
+        self._gpu = value
+
+    @gpu.deleter
+    def gpu(self):
+        # log(f"Gelöscht am: {date} von {user}")
+        del self._gpu
+
+
+meine_pc_isntanz = PC(cpu='Ryzen 7', gpu='RTX2070')
+
+meine_pc_isntanz.gpu                # Lesezuegriff, @property wird aufgerufen
+meine_pc_isntanz.gpu = 'RTX3090'    # Schreibzugriff, @gpu.setter wird aufgerufen
+del meine_pc_isntanz.gpu            # Löschen des Attributs, @gpu.deleter wird aufgerufen
+```
+
+Wichtig ist, dass das eigentliche Attribut nicht den gleichen Namen wie die Methode haben darf, da man sonst in einer Endlosschleife landet.
+
+```py
+@property
+def gpu(self):
+    return self.gpu
+```
+
+Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @property-Methode aufgerufen wird. Das Gleiche gilt für die setter und deleter Methoden.
+
+Und wozu soll das gut sein? Naja, im Vergleich zu dem normalen Zugriff ist es jetzt möglich beim Schreiben eines Attributs ein Value/Type Checking durchzuführen. Man könnte das Löschen des Attributs loggen, Lesezugriffe beschränken etc. Und das alles würde ganz automatisch im Hintergrund passieren, ohne dass der Zugriff über 'instanz.attribut' sich ändern müsste.
+
+<sub>(Randnotiz 1: Auch bei der Zuweisung in der \_\_init\_\_ werden diese Methoden durchgeführt.)</sub>
+<br/><br/><br/>
 
 ## Kapitel 3: Klassenvererbung
 
 Das Vererben von Klassen kann man in zwei wesentliche Kategorien unterteilen. Der erste Grund, und meiner Meinung nach der häufigere, ist, um eine Klasse zu speifizieren. Der zweite Grund ist, um mehrere Klassen zu einer Gesamtklasse zu komponieren. Dies findet beispielsweise im Fall von "Descriptors" Anwendung.
 
+<sub>(Randnotiz 1: Im folgenden Kapitel bauen die Code-Teile aufeinander auf.)</sub>
+
 ### 3.1 Spezifizieren von Klassen
 
 ```py
 class Person:
-    def __init__(self, fname, lname, **kwargs):
+    def __init__(self, fname, lname):
         self.fname = fname
         self.lname = lname
 
-class Employee(Person):
+class Student(Person):  # Ansatz 1
+    def __init__(self, mat_nr, fname, lname):
+        self.mat_nr = mat_nr
+        super().__init__(fname, lname)
+
+class Employee(Person): # Ansatz 2
     def __init__(self, salary, **kwargs):
         self.salary = salary
-        super().__init__( **kwargs)
-
-class Student(Person):
-    def __init__(self, mat_nr, **kwargs):
-        self.mat_nr = mat_nr
         super().__init__(**kwargs)
 
+student = Student(fname='Max', lname='Mustermann', mat_nr='10142020')
+employee = Employee(fname='Maria', lname='Musterfrau', salary=40000)
+```
+
+Für die Instanziierung von Kindklassen kann man verschiedene Ansätze wählen. In dem oben gezeigten Beispiel sind im Student-Konstruktor alle Parameter, welche zum Erzeugen einer Instanz benötigt werde, fix definiert. Anders ist es beim Employee. Dort wird das neue Attribut in den Konstruktor eingetragen und der Rest wird einfach als \*\*kwargs eingefangen und als Gesamtpaket weitergeleitet.
+
+<br/>
+
+**Student**<br/>
+Vorteile:
+
+- Explizitere Definition der Klasse
+- Help oder inspect Methoden würden den vollständigen Konstruktor zurückgeben (Beispiel: \_\_init\_\_(mat_nr, fname, lname))
+- Keine frei wählbaren Keyword-Argumente erlaubt.
+
+Nachteile:
+
+- Wesentlich mehr Schreibarbeit beim weiterleiten der Argumente.
+- Wenn sich in der Elternklasse Argumente ändern, dann muss dies auch in der Kindklasse nachgetragen werden.
+  <br/><br/>
+
+**Employee**<br/>
+Vorteile:
+
+- Es können belibige Keywords als Argumente übergeben werden und nur die 'richtigen' werden herausgepickt.
+- Die Weiterleitung der Argumente ist kürzer.
+- Kein Modifizieren der Kindklasse nötig, falls sich etwas in der Elternklasse ändert.
+
+Nachteile:
+
+- Help und inspect Methoden liefern einen nicht spezifizierten Konstruktoaufruf zurück. (In diesem Fall eben \_\_init\_\_(salary, \*\*kwargs))
+- Kwargs, welche gar Nicht existieren, werden vom Konstruktor akzeptiert, auch wenn diese nicht verwendet werden.
+  <br/><br/>
+
+### 3.2 Komponieren von Klassen
+
+Beim Komponieren von Klassen wird eine neue Klasse erzeugt, welche von mehreren Elternklassen erbt.
+
+```py
 class StudentWorker(Student, Employee):
     pass
+```
 
-sw1 = StudentWorker(fname='Max', lname='Mustermann', mat_nr='5522', salary=450.00)
-print(StudentWorker.__mro__)
+### 3.3 \_\_mro\_\_ und super()
+
+print(StudentWorker.\_\_mro\_\_)
+
 ```
 
 Ausgabe:
 
 (<class '\_\_main\_\_.StudentWorker'>, <class '\_\_main\_\_.Student'>, <class '\_\_main\_\_.Employee'>, <class '\_\_main\_\_.Person'>, <class 'object'>)
+```
