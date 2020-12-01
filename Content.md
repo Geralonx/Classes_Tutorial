@@ -2,11 +2,11 @@
 
 - Vorwort
 - Vorbereitende Erklärungen
-  - [F-Strings](###-f-strings)
-  - [List-Comprehensions](###-list-comprehensions)
-- [Kapitel 1 Fortgeschrittenes (Klassen) Design](#kapitel-1-fortgeschrittenes-(klassen)-design)
-  - [1.0 Style-Guides](###-1.0-Style-Guides)
-  - [1.1 Klassen Recap](###-1.1-klassen-recap)
+  - [F-Strings](###f-strings)
+  - [List-Comprehensions](###list-comprehensions)
+- [Kapitel 1 Fortgeschrittenes (Klassen) Design](#kapitel-1-fortgeschrittenes-klassen-design)
+  - [1.0 Style-Guides](###10-Style-Guides)
+  - [1.1 Klassen Recap](###11-klassen-recap)
     - 1.1.1 Allgemein
     - 1.1.2 Public, Private und Protected
     - 1.1.3 Klassenattribute
