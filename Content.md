@@ -2,9 +2,31 @@
 
 - Vorwort
 - Vorbereitende Erklärungen
+  - F-Strings
+  - List-Comprehensions
 - Kapitel 1 Fortgeschrittenes (Klassen) Design
+  - 1.0 Style-Guids
+  - 1.1 Klassen Recap
+    - 1.1.1 Allgemein
+    - 1.1.2 Public, Private und Protected
+    - 1.1.3 Klassenattribute
+  - 1.2 'Dunder'-Methods
+    - 1.2.1 Allgemein
+    - 1.2.2 \_\_repr\_\_() oder \_\_str\_\_()?
+    - 1.2.3 \_\_enter\_\_() und \_\_exit\_\_()
+    - 1.2.4 \_\_doc\_\_ Attribut
 - Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden
+  - 2.1 @Classmethod und @Staticmethod
+    - 2.1.1 @Staticmethod
+    - 2.1.2 @Classmethod
+  - 2.2 Method Overloading
+    - 2.1.1 Optionale Parameter
+    - 2.1.2 @property, @fn.setter, @fn.deleter
+    - 2.1.3 typing @overload
 - Kapitel 3 Klassenvererbungen
+  - 3.1 Spezifizieren von Klassen
+  - 3.2 Komponieren von Klassen
+  - 3.3 \_\_mro\_\_ und super()
 - Kapitel 4 Klassendekoratoren
 - Kapitel 5 Metaklassen
   <br/><br/>
@@ -766,7 +788,14 @@ def gpu(self):
     return self.gpu
 ```
 
-Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @property-Methode aufgerufen wird. Das Gleiche gilt für die setter und deleter Methoden.
+Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @property-Methode aufgerufen wird. Das Gleiche gilt für die setter und deleter Methoden. (Endless Rekursion... Pythons Default Limit 1000)
+
+<pre>
+> Traceback (most recent call last):
+>   File "_pydevd_bundle/pydevd_cython.pyx", line 1557, in _pydevd_bundle.pydevd_cython.> ThreadTracer.__call__
+> RecursionError: maximum recursion depth exceeded
+> Fatal Python error: Cannot recover from stack overflow.
+</pre>
 
 Und wozu soll das gut sein? Naja, im Vergleich zu dem normalen Zugriff ist es jetzt möglich beim Schreiben eines Attributs ein Value/Type Checking durchzuführen. Man könnte das Löschen des Attributs loggen, Lesezugriffe beschränken etc. Und das alles würde ganz automatisch im Hintergrund passieren, ohne dass der Zugriff über 'instanz.attribut' sich ändern müsste.
 
@@ -780,6 +809,10 @@ Das Vererben von Klassen kann man in zwei wesentliche Kategorien unterteilen. De
 <sub>(Randnotiz 1: Im folgenden Kapitel bauen die Code-Teile aufeinander auf.)</sub>
 
 ### 3.1 Spezifizieren von Klassen
+
+Um in Python Klassen zu vererben muss bei deklaration der Kindklasse in Klammern die Elternklasse(n) angegeben werden. Im einfachsten Fall hat eine Kindklasse eine einzige Elternklasse, aber mehrere sind auch möglich.
+
+Im folgenden Beispiel ist die ELternklasse 'Person' und zwei getrennte Kindklassen, welche von 'Person' erben.
 
 ```py
 class Person:
