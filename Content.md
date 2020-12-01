@@ -1,20 +1,22 @@
 # Inhalt des Tutorials
 
-- Vorwort
-- Vorbereitende Erklärungen
+- [Vorwort](#vorwort)
+- [Vorbereitende Erklärungen](#vorbereitende-erklärungen)
   - [F-Strings](#f-strings)
   - [List-Comprehensions](#list-comprehensions)
 - [Kapitel 1 Fortgeschrittenes (Klassen) Design](#kapitel-1-fortgeschrittenes-klassen-design)
+
   - [1.0 Style-Guides](#10-Style-Guides)
   - [1.1 Klassen Recap](#11-klassen-recap)
-    - [1.1.1 Allgemein](#111-allgemein)
-    - 1.1.2 Public, Private und Protected
-    - 1.1.3 Klassenattribute
-  - 1.2 'Dunder'-Methods
-    - 1.2.1 Allgemein
-    - 1.2.2 \_\_repr\_\_() oder \_\_str\_\_()?
-    - 1.2.3 \_\_enter\_\_() und \_\_exit\_\_()
-    - 1.2.4 \_\_doc\_\_ Attribut
+    - [1.1.1 Allgemeines](#111-allgemeines)
+    - [1.1.2 Public, Private und Protected](#112-public,-private-und-protected)
+    - [1.1.3 Klassenattribute](#113-klassenattribute)
+  - [1.2 'Dunder'-Methods](#12-'dunder'-methods)
+    - [1.2.1 Allgemein](#121-allgemein)
+    - [1.2.2 \_\_repr\_\_() oder \_\_str\_\_()](#122-__repr__-oder-__str__)
+    - [1.2.3 \_\_enter\_\_ und \_\_exit\_\_](#123-__enter__-und-__exit__)
+    - [1.2.4 \_\_doc\_\_ Attribut](#124-__doc__-attribut)
+
 - Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden
   - 2.1 @Classmethod und @Staticmethod
     - 2.1.1 @Staticmethod
@@ -504,7 +506,7 @@ Python-Dokumentation über (alle?) Special 'Dunder' Methods: https://docs.python
 
 <br/>
 
-#### 1.2.2 \_\_repr\_\_() oder \_\_str\_\_() ?
+#### 1.2.2 \_\_repr\_\_ oder \_\_str\_\_
 
 Wenn man gute und ausgereifte Klassen designen will, dann sollte man auf diese beiden 'Dunder'-Methods nicht verzichten. Sie können in jeder Klasse ihren Platz finden, da sie lediglich Informationen enthalten, welche die Klasse und ihren Inhalt beschreiben sollen.
 
@@ -589,7 +591,7 @@ Was zu folgender Ausgabe führen wird:
 <sub>(Randnotiz 3: Der repr, also die Represenation eines Objekts, wird von VSCode beispielsweise beim Debuggen verwendet. Wenn man an einem Breakpoint steht, sieht man die Variablen an der Seite. Hinter der Variable steht eben die Representation. Ob und wie es von anderen IDEs verwendet wird weiß ich nicht.)</sub>
 <br/><br/><br/>
 
-#### 1.2.3 \_\_enter\_\_() und \_\_exit\_\_()
+#### 1.2.3 \_\_enter\_\_ und \_\_exit\_\_
 
 Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt sie in eine Variable. Wenn man eine Datei öffnet, dann sollte man sie aich wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen.
 
