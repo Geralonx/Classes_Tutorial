@@ -17,20 +17,20 @@
     - [1.2.3 \_\_enter\_\_ und \_\_exit\_\_](#123-__enter__-und-__exit__)
     - [1.2.4 \_\_doc\_\_ Attribut](#124-__doc__-attribut)
 
-- Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden
-  - 2.1 @Classmethod und @Staticmethod
-    - 2.1.1 @Staticmethod
-    - 2.1.2 @Classmethod
-  - 2.2 Method Overloading
-    - 2.1.1 Optionale Parameter
-    - 2.1.2 @property, @fn.setter, @fn.deleter
-    - 2.1.3 typing @overload
-- Kapitel 3 Klassenvererbungen
-  - 3.1 Spezifizieren von Klassen
-  - 3.2 Komponieren von Klassen
-  - 3.3 \_\_mro\_\_ und super()
-- Kapitel 4 Klassendekoratoren
-- Kapitel 5 Metaklassen
+- [Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden](#kapitel-2-spezielle-funktionsdekoratoren-für-klassenmethoden)
+  - [2.1 @Classmethod und @Staticmethod](#21-@classmethod-und-@staticmethod)
+    - [2.1.1 @Staticmethod](#211-@staticmethod)
+    - [2.1.2 @Classmethod](#212-@classmethod)
+  - [2.2 Method Overloading](#22-method-overloading)
+    - [2.1.1 Optionale Parameter](#211-optionale-parameter)
+    - [2.1.2 @property, @fn.setter, @fn.deleter](#212-@property,-@fn.setter,-@fn.deleter)
+    - [2.1.3 typing @overload](#213-typing-@overload)
+- [Kapitel 3 Klassenvererbungen](#kapitel-3-klassenvererbung)
+  - [3.1 Spezifizieren von Klassen](#31-spezifizieren-von-klassen)
+  - [3.2 Komponieren von Klassen](#32-komponieren-von-klassen)
+  - [3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>)
+- [Kapitel 4 Klassendekoratoren](#kapitel-4-klassendekoratoren)
+- [Kapitel 5 Metaklassen](#kepitel-5-metaklassen)
   <br/><br/>
 
 ## Vorwort
@@ -243,7 +243,7 @@ Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr di
 
 ## Kapitel 1: Fortgeschrittenes (Klassen) Design
 
-Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse'. Die Inhalte gehen auch hauptsächlich in diese Richtung, um zu verstehen, an welchen Stellen ...........
+Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse'. Die Inhalte gehen auch hauptsächlich in diese Richtung, um zu zeigen, an welchen Stellen man 'sorgfältiger' arbeiten sollte, um die Wiederverwendung mäöglichst sicher und einfach zu gesalten.
 
 ### 1.0 Style-Guides
 
@@ -305,7 +305,7 @@ Beispiel:
 11  print(meine_pc_instanz.__ram)
 ```
 
-Die 3 prints haben folgende Ausgabe:
+Die 3 Prints haben folgende Ausgabe:
 
 <pre>
 > Ryzen 7
@@ -326,9 +326,9 @@ print(meine_pc_instanz.__dict__)
 > {'cpu': 'Ryzen 7', 'gpu': 'RTX2070Super', '_PC__ram': 'GSkill'}
 </pre>
 
-Wir sehen, dass prozessor und grafikkarte wie zu erwarten enthalten sind, aber wir sehen auch, dass unser \_\_ram wieder da ist. Das Name Mangling hat dafür gesorgt, dass der Klassenname mit einem führenden Unterstrich an den Anfang des Attributs gesetzt wurde.
+Wir sehen, dass cpu und gpu wie zu erwarten enthalten sind, aber wir sehen auch, dass unser \_\_ram wieder da ist. Das Name Mangling hat dafür gesorgt, dass der Klassenname mit einem führenden Unterstrich an den Anfang des Attributs gesetzt wurde.
 
-Versuche ich folgendes,
+Versuche ich folgendes
 
 ```py
 print(meine_pc_instanz._PC__ram)
@@ -338,7 +338,7 @@ print(meine_pc_instanz._PC__ram)
 > GSkill
 </pre>
 
-habe ich dennoch Zugang zu den eigentlich 'privaten' Attributen innerhalb einer Klasse. Dennoch findet diese Form Anwendung. Das Name Mangling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form. Denn würde ich ein weiteres \_\_ram Attribut in einer vererbten Klasse erstellen, dann würde dies durch das Name Manageling den Namen der vererbten Klasse vorgestellt bekommen.
+habe ich dennoch Zugang zu den eigentlich 'privaten' Attributen innerhalb einer Klasse. Dennoch findet diese Form Anwendung. Das Name Mangling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form. Denn würde ich ein weiteres \_\_ram Attribut in einer vererbten Klasse erstellen, dann würde dies durch das Name Mangling den Namen der vererbten Klasse vorgestellt bekommen.
 
 <sub>(Randnotiz 1: Warum kann ich innerhalb von Klassen dann mit self.\_\_ram an das Attribut kommen? Ganz einfach, der Interpretert bennent innerhalb einer Klasse ALLE vorkommenden Attribute und Methoden mit 2 führenden Untersichten mittels Name Mangling um. Außerhalb von Klassen eben nicht.)
 </sub>
@@ -353,7 +353,7 @@ Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von 
 
 #### 1.1.3 Klassenattribute
 
-Klassenattributr sind Attribute, welche nicht im Instanz-Dict erstellt werden, sondern bereits vor der Instanziierung auf Klassenebene existieren.
+Klassenattribute sind Attribute, welche nicht im Instanz-Dict erstellt werden, sondern bereits vor der Instanziierung auf Klassenebene existieren.
 
 Klassenattribute existieren **NUR** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies Zieht sich auch durch Vererbungen durch.
 
@@ -376,7 +376,7 @@ Ausgabe:
 > Zugriff über Instanz: Ich bin ein Klassenattribut
 </pre>
 
-Wenn man weiß, dass man das Klassenattribut über das Instanz-Objekt lesen kann, dann fragt man sich doch was passiert, wenn man versucht es zu schreiben, oder?
+Wenn man weiß, dass man das Klassenattribut über das Instanz-Objekt lesen kann, dann stell ich mir die Frage, was passiert, wenn man es über die Instanz versucht zu schreiben.
 
 ```py
 meine_pc_instanz.klassen_attribut = "Neuer Wert"
@@ -418,7 +418,7 @@ Zeile 1 und Zeile 2 funktionieren **EXAKT** gleich, da type(self) immer die eige
 
 **Vererbung von Klassenattirbuten**<br/>
 
-Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, ABER es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict des erstellen Objekts, noch im Class-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnten, welche sich anschließend auch in den Instanzen der Subklasse wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute aus Elternklassen verwendet.
+Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, ABER es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict der erstellen Klasse, noch im Klassen-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnten, welche sich anschließend auch in den Instanzen der Kindklassen wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute aus Elternklassen verwendet.
 
 <sub>(Randnotiz 1: Ich habe bisher nicht sehr viel mit Klassenattributen gearbeitet, aber ich denke ich würde sie einfach immer 'privat' machen, einfach um nicht ausversehen aus vererbten Klassen auf etweas zugreifen zu können, was ich erstmal ewig suchen müsste. Ob man das so macht weiß ich nicht.)</sub>
 
@@ -451,11 +451,11 @@ MyClass.__init__(my_class_instance, arg1, arg2, ...)
 
 
 # Richtiger Weg
-# Beim Instanziieren einer Klasse über den richtigen Konstrukor wird die __new__ Method automatisch vor der Initialisierung durchgeführt.
+# Beim Instanziieren einer Klasse über den richtigen Konstrukor wird die __new__ (und __prepare__) Method automatisch vor der Initialisierung durchgeführt.
 my_class_instance = MyClass(arg1, arg2, ...)
 ```
 
-Die 'Dunder'-Methos können über ihre Bezeichnung aufgerufen werden und außerdem sollte ab diesem Punkt klar sein, dass man jede reguläre Klassen-Methode auch über die Bezeichnung der Klasse selbst aufrufen kann. Vorrausgesetzt dass man für das _self_-Argument eine Instanz übergibt.
+Dieses Beispiels sollte verdeutlichen, dass man zum einen jede 'Dunder'-Method über ihre Bezeichung aufrufen kann. Außerdem sollte auch klar sein, dass jede Methode einer Klasse direkt über die Klasse selbst aufgerufen werden kann, wenn man an der ersten Stelle die Instanz als das _self_-Argument übergibt.
 
 <br/><br/>
 Beispiel für die Verwendung von 'Dunder'-Methods durch 'Built-In'-Methods:
@@ -468,7 +468,7 @@ ausführen, berechnen und hacken was ihr wollt, solange die Vorrausetzung erfül
 
 Sobald man aber in dieses Thema des fortgeschrittenen Designs kommt ist man mindestens an einem Punkt, wo man den Code wiederverwenden will, wenn nicht sogar für Andere bereitstellen muss/möchte. Also sollte man sich fragen, was würde jemand anderes bei der Verwendung einer 'Dunder'-Method eigentlich erwarten? Bzw. warum sollte man diese Methode überhaupt auf die Instanz einer Klasse anwenden können?
 
-Will ich die Instanz meiner Klasse mittels for-Loop durchlaufen, dann benötige ich die 'Dunder'-Methods \_\_iter\_\_ und \_\_next\_\_. Will ich zwei Instanzen miteinander verrechnen können, dann benötige ich die 'Dunder'-Methods \_\_add\_\_, \_\_sub\_\_, ... usw.
+Will ich die Instanz meiner Klasse mittels for-Loop durchlaufen, dann benötige ich die 'Dunder'-Methods \_\_iter\_\_ und \_\_next\_\_. Will ich zwei Instanzen miteinander verrechnen oder vergleichen können, dann benötige ich die 'Dunder'-Methods \_\_add\_\_, \_\_sub\_\_, \_\_gt\_\_, ... usw.
 
 <sub>(Randnotiz: \_\_len\_\_(self) ist übrigens die Fallback-Methode für \_\_bool\_\_(self). Das heißt, wenn keine Dunder-bool-Method definiert ist wird die Dunder-len-Method verwendet. Alles was >0 ist wird von Python als True interpretiert.)</sub>
 <br/><br/>
@@ -489,7 +489,7 @@ def __gt__(self, other):
 ...
 ```
 
-<sub>(Randnotiz 1: Das _other_ Argument in den Vergleichs- und Rechenoperationen kann **alles** sein, was auf der rechten Seite des '+' steht. Behaltet es im Hinterkopf, an solchen stellen evnetuell ein instance/type Checking durchzuführen, damit ihr das abfangt, falls nötig. [GITHUB-FILE-REFERENCE]) </sub>
+<sub>(Randnotiz 1: Das _other_ Argument in den Vergleichs- und Rechenoperationen kann **alles** sein, was auf der rechten Seite des '+' steht. Behaltet es im Hinterkopf, an solchen stellen evnetuell ein instance/type Checking durchzuführen, damit ihr das abfangt, falls nötig. [_5_dunder_other.py]) </sub>
 
 <sub>(Hint: Die standard Libary functools bietet einen Classdecorator (@total_ordering), welcher einen Shortcut für die Vergleichsoperationen liefert. Das heißt, statt alle Dunder-Methoden für '>', '<', '==', '!=', '>=', '<=' selbst zu implementieren müsstet ihr nur '==' und eine der größer oder kleiner als Methode implementieren und hättet dennoch alle Verglichsoperationen zur verfügung.)</sub>
 
@@ -521,9 +521,9 @@ Kleines Beispiel:
 
 ```py
  class PC:
-     def __init__(self, prozessor, grafikkarte):
-        self.prozessor = prozessor
-        self.grafikkarte = grafikkarte
+     def __init__(self, cpu, gpu):
+        self.cpu = cpu
+        self.gpu = gpu
 
     def __str__(self):
         msg = ""
@@ -535,22 +535,22 @@ Kleines Beispiel:
 
         return msg
 
-MeinPc = PC('Ryzen 7', 'RTX2070Super')
-print(MeinPc)
+meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super')
+print(meine_pc_instanz)
 ```
 
-Ausgabe, hervorgerufen durch print(MeinPc):
+Ausgabe, hervorgerufen durch print(meine_pc_instanz):
 
 <pre>
 > Diese Instanz ist von der Klasse: PC
 > Sie hat folgende Attribute:
->        prozessor:      Ryzen 7         | (class 'str')
->        grafikkarte:    RTX2070Super    | (class 'str')
+>        cpu:      Ryzen 7         | (class 'str')
+>        gpu:      RTX2070Super    | (class 'str')
 </pre>
 
 <sub>(Randnotiz 2: Eigentlich wird die der Type mit den <> dargestellt (<class 'str'>). Aufgrund der verwendeten Markuplanguage (.md) funktioniert das da nicht.)</sub>
 
-<sub>(Randnotiz 3: Warum sollte ich die Klasse der Attribute ausgeben, ist das nicht eindeutig? Für die 'Built-In' Klassen wie str, int, list, ... scheint es überflüssig zu sein. Angenommen ihr verwendet eigene Klassen, die die Funktionalität der Grundklassen erweitern, indem ihr eine Klasse erstellt, welche von str erbt. <class '\_\_main\_\_.SizedStr'>, welche das Attribut auf eine maximale Länge limitiert, würde dem Benutzer eine Erklärung geben, was dort eigentlich hintersteckt, statt dass dieses Attribut ein normaler String wäre.)
+<sub>(Randnotiz 3: Warum sollte ich die Klasse der Attribute ausgeben, ist das nicht eindeutig? Für die 'Built-In' Klassen wie str, int, list, ... scheint es überflüssig zu sein. Angenommen ihr verwendet eigene Klassen, die die Funktionalität der Grundklassen erweitern. Eine eigene Klasse z.b. <class '\_\_main\_\_.SizedStr'>, welche das Attribut auf eine maximale Länge limitiert, würde dem Benutzer eine Erklärung geben, was dort eigentlich hintersteckt, statt dass dieses Attribut ein normaler String wäre, wie es im ersten Augenblick erscheint.)
 </sub>
 
 <br/>
@@ -564,9 +564,9 @@ PC Beispiel:
 
 ```py
 class PC:
-    def __init__(self, prozessor, grafikkarte):
-        self.prozessor = prozessor
-        self.grafikkarte = grafikkarte
+    def __init__(self, cpu, gpu):
+        self.cpu = cpu
+        self.gpu = gpu
 
     def __repr__(self):
         argument_string_list = [f"{key}='{value}'" for key, value in self.__dict__.items()]
@@ -581,29 +581,36 @@ print(repr(meine_pc_instanz))
 Was zu folgender Ausgabe führen wird:
 
 <pre>
-> PC(prozessor='Ryzen 7', grafikkarte='RTX2070Super')
+> PC(cpu='Ryzen 7', gpu='RTX2070Super')
 </pre>
 
 <sub>(Randnotiz 1: Die Single-Quotes, welche um die '{value}' gepackt sind, sind in diesem Fall hardcoded um alle Argumente. Das funktioniert in diesem Fall nur, weil es bei sich bei Allen um Strings handelt. Man müsste die Dunder-repr-Method noch expliziter gestalten, um verschiedene Datentypen richtig zu unterscheiden. Dieses Beispiel geht lediglich allgemein auf die Dunder-repr-Method ein.)</sub>
 
 <sub>(Randnotiz 2: Wer die join() Method nich kennt sollte sich die anschauen. Sie nimmt eine iteriebares Obejekt and und verknüpft alle Elemente zu einem String, sofern sich die str() Method auf die Elemente anwenden lässt. Wenn sich die Elemente nicht in einen String umwandeln lassen wird ein TypeError erhoben. Der erste Teil (In diesem Fall ', ') ist der Seperator. Der Seperator wird zwischen die einzelnen Teilelemente gepackt.)</sub>
 
-<sub>(Randnotiz 3: Der repr, also die Represenation eines Objekts, wird von VSCode beispielsweise beim Debuggen verwendet. Wenn man an einem Breakpoint steht, sieht man die Variablen an der Seite. Hinter der Variable steht eben die Representation. Ob und wie es von anderen IDEs verwendet wird weiß ich nicht.)</sub>
+<sub>(Randnotiz 3: Der repr, also die Represenation eines Objekts, wird von VSCode beispielsweise beim Debuggen verwendet. Wenn man an einem Breakpoint steht, sieht man die Variablen an der Seite. Hinter der Variable steht eben die Representation. Ob und wie es von anderen IDEs verwendet wird weiß ich nicht. Ohne \_\_repr\_\_-Method würde dort allgemein (\_\_main\_\_.\_\_class_name\_\_ at 0x....) stehen, also Classe XY aus dem Main-File an Memoryposition 0x....)</sub>
 <br/><br/><br/>
 
 #### 1.2.3 \_\_enter\_\_ und \_\_exit\_\_
 
-Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt sie in eine Variable. Wenn man eine Datei öffnet, dann sollte man sie aich wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen.
+Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt sie in eine Variable. Wenn man eine Datei öffnet, dann sollte man sie auch wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen. Schaut euch dazu einfach weitere Beispiele an, falls ihr das benötigt.
 
 ```py
 with open('sample_file.txt') as f:  # Hier wird die Enter Methode ausgeführt
-    var = f.read()
+    content = f.read()
 # Hier, unmittelbar nach dem Verlassen des with-Blocks, wird der Exit durchgeführt
+
+# OHNE CONTEXTMANAGER
+f = open('sample_file.txt')
+content = f.read()
+f.close()
 ```
+
+Würde man das Schließen der Datei vergessen, dann wäre die Datei im System blockiert, da noch eine andere Stelle dort zugreift.
 
 ### 1.2.4 \_\_doc\_\_ Attribut
 
-Dokumentiert eure Sachen. Muss man das noch sagen? In Python solltet ihr die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen (es gehen doppelte \" und einfache \', aber typischerweise werden doppelte verwendet. [PEP 257 - Docstrings](https://www.python.org/dev/peps/pep-0257/)) am Kopf der Funktion oder Klasse geschrieben.
+Dokumentiert eure Sachen. Muss man das noch sagen? In Python kann man die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen (es gehen doppelte \" und einfache \', aber typischerweise werden doppelte verwendet. [PEP 257 - Docstrings](https://www.python.org/dev/peps/pep-0257/)) am Kopf der Funktion oder Klasse geschrieben.
 
 Das \_\_doc\_\_ Attribut ist in jedem Objekt vorhanden, auch wenn keiner gesetzt wird. Falls keiner vom Author geschrieben wird, ist der Wert None.
 
@@ -646,15 +653,56 @@ Ausgabe:
 > Das funktioniert auch bei einfachen Funktionen!
 </pre>
 
+Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Welcher Datentyp sie haben, was passiert, welche restricstions gelten. Also alles weis irgendwie hilfreich ist, um den Teil eben zu verwenden.
+
+<br/><br/><br/>
+
+#### 1.2.4 \_\_call\_\_
+
+Mittels der call 'Duner'-Method kann man die Instanzen einer Klasse aufrufbar machen. Wer sich mit Funktionen und deren Implementation schon tiefer auskennt wird auch wissen, dass Funktionen in Python genau so impementiert sind.
+
+```py
+def func(x):
+    return x+1
+
+print(type(func))
+```
+
+Ausgabe:
+
+<pre>
+> >class 'function'<
+</pre>
+
+Dies lässt sich auch 1 zu 1 so implementieren:
+
+```py
+class func_class:
+    def __call__(self, x):
+        return x+1
+
+my_instance = func_class()
+
+print(my_instance(1))
+```
+
+<br/><br/><br/>
+
+#### 1.2.5 Weitere 'Dunder'-Methods
+
+Während den Recherchen habe ich diese Seite gefunden, welche nochmal einen detaillierteren Überblick über viele 'Dunder'-Methods präsentiert. Wer noch mehr wissen will, einfach reinschauen. https://levelup.gitconnected.com/python-dunder-methods-ea98ceabad15
+
+Allgemeine Zusammenfassung ist, wenn ihr mit eurer Klasse irgendeine Standardoperation (+, -, <, >, aufruf, len(), bool(), str(), dir(), ...) verwenden wollte, dann schaut einfach nach der speziellen 'Dunder'-Method dafür nach und ihr könnt das sauber dafür implementieren, statt euch irgendwelche Adapter workarounds zu basteln.
+
 <br/><br/><br/>
 
 ## Kapitel 2: Spezielle Funktionsdekoratoren für Klassenmethoden
 
-Python bringt standardmäßig einige Dekoratoren mit sich, welche speziell im Klassendesign anwendung finden. Dazu gehören allgemein @classmethod, @staticmethod, @property, @attr.setter und @atter.deleter
+Python bringt standardmäßig einige Dekoratoren mit sich, welche speziell im Klassendesign anwendung finden. Dazu gehören vorallem @classmethod, @staticmethod, @property, @attr.setter und @attr.deleter
 
 ### 2.1 @Classmethod und @Staticmethod
 
-Jede Methode, welche innerhalb eines 'Class-Body' definiert wird, kann mit diesen Dekoratoren ausgestattet werden. Dadurch verändern sich automatisch die Übergabeparameter.
+Jede Methode, welche innerhalb eines 'Class-Body' definiert wird, kann mit diesen Dekoratoren ausgestattet werden. Dadurch verändern sich automatisch die Übergabeparameter und die Verhaltensweise der Methode.
 
 #### 2.1.1 @Staticmethod
 
@@ -697,8 +745,6 @@ Beispiel:
 14 print(c2.radius)
 ```
 
-Ausgabe:
-
 <pre>
 > 10
 > 20
@@ -706,15 +752,15 @@ Ausgabe:
 
 Anders als bei normalen Methoden ist der erste übergebene Parameter einer Classmethod immer die Klasse selbst. An dieser Stelle könnte man theoretisch auch die Bezeichung _cls_ in Zeile 08 zu _Circle_ umbenennen. Aber da ist wieder das Thema Hardcoding. Würde man eine Klasse Spehre erstellen, welche von _Cricle_ erbt, dann würde bei der Verwendung von _cls_ in Zeile 08 der Spehre Konstruktor aufgerufen werden, welcher sich unter Umständen von dem Konstruktor der _Circle_ Klasse unterscheiden kann.
 
-Klassenmethoden sind nicht auf den Aufruf über die Klasse selbst beschränkt. Ebenso wie die Klassenattribute können diese über die Instanz erreicht werden. Das Verhalten ändert sich dadurch aber nicht.
+Klassenmethoden sind nicht auf den Aufruf über die Klasse selbst beschränkt. Ebenso wie die Klassenattribute können diese über die Instanz erreicht werden. Das Verhalten ändert sich dadurch aber nicht. Also der erste Attribut bleibt die Klasse selbst.
 
 <sub>(Randnotiz 1: Die Argumente _self_ und _cls_ sind auch nur Conventionen die alle Leute einhalten (sollten). Auch diese beiden Argumente sind vom Bezeichner her frei wählbar, ABER Methoden bekommen automatisch beim Aufruf die Instanz an der ersten Position übergeben, respektive die Klasse für Klassenmethoden. Python IDEs, oder jene die Syntaxhighlighing für Python unterstüzen, haben _meistens_ unterschiedliche Farbkennzeichnungen für _cls_ und _self_ als für belibige Argumente.)</sub>
 
-<sub>(Randnotiz 2: Eine weitere Idee für Klassenmethoden wäre einen Zugang zu Statistiken über den Gebrauch der Klasse zu schaffen. Informationen über alle Instanzen sammeln oder was weiß ich.)</sub>
+<sub>(Randnotiz 2: Eine weitere Idee für Klassenmethoden wäre einen Zugang zu Statistiken über den Gebrauch der Klasse zu schaffen. Informationen über alle Instanzen sammeln oder was weiß ich. Über Metaklassen kann man beispielsweise die Verwendung von Instanzen einer Klasse aufzeichnen, ohne dass der Benutzer davon was mitbekommt ode res selbst implementieren müsste.)</sub>
 
 ### 2.2 Method Overloading
 
-Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode sich unterschiedlich verhalten kann, abhängig von der Verwendung der Methode. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
+Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode oder Funktion sich unterschiedlich verhalten kann, abhängig von der Verwendung der Methode. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
 <br/><br/>
 
 #### 2.1.1 Optionale Parameter
@@ -747,7 +793,7 @@ In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendu
 
 #### 2.1.2 @property, @fn.setter, @fn.deleter
 
-Die genannten Dekoratoren sind besondere, welche man als Descriptor beschreibt. Auch diese werden zum Method-Overloading verwendet, da sie mehrere Methode mit dem gleichen Namen so ausstatten, dass diese, aufgrund der Verwendung, zu unterschiedlichen Zeiten aufgerufen werden. Da es sich um Dewkoratoren handel müssen sie nur vor der Methode angebracht werden, welche den Namen hat, über den sie mit dem '.'-Operator erreicht werden soll.
+Die genannten Dekoratoren sind besondere, welche man als Descriptor beschreibt. Auch diese werden zum Method-Overloading verwendet, da sie mehrere Methode mit dem gleicher Bezeichnung so ausstatten, dass diese, aufgrund der Art der Verwendung, sich unterschied verhalten. Da es sich um Dewkoratoren handel müssen sie nur vor der Methode angebracht werden, welche den Bezeichner hat, über den sie mit dem '.'-Operator erreicht werden soll.
 
 <sub>(David Beazley spricht in seinem [Tutorial: YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI) von 'owning the dot'. Klingt eigentlich spannender als es ist, weil er mit Discriptoren den Zugriff auf eine Variable in 100 Wegen überprüft. Dazu später mehr.)</sub>
 
@@ -761,7 +807,7 @@ class PC:
 
     @property
     def gpu(self):
-        # if user.acces > 1:
+        # if user.acceslevel > x:
         return self._gpu
 
     @gpu.setter
@@ -801,7 +847,15 @@ Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @
 
 Und wozu soll das gut sein? Naja, im Vergleich zu dem normalen Zugriff ist es jetzt möglich beim Schreiben eines Attributs ein Value/Type Checking durchzuführen. Man könnte das Löschen des Attributs loggen, Lesezugriffe beschränken etc. Und das alles würde ganz automatisch im Hintergrund passieren, ohne dass der Zugriff über 'instanz.attribut' sich ändern müsste.
 
-<sub>(Randnotiz 1: Auch bei der Zuweisung in der \_\_init\_\_ werden diese Methoden durchgeführt.)</sub>
+<sub>(Randnotiz 1: Auch bei der Zuweisung in der \_\_init\_\_ wird die @attr.setter Method durchgeführt.)</sub>
+<br/><br/><br/>
+
+#### 2.1.3 Weiteres Overloading
+
+Das Standard Package _typing_ enthält einene Dekorator names '@overload', aber damit habe ich micht nicht tiefer beschäftigt.
+
+Wenn man mal darüber nachdenkt, dann sind bereits die 'Built-In' Operatoren auch schon überladen. Mit '+' kann ich Floats, Ints, Strings, Lists, ... etc addieren und erhalte trotzdem ein Ergebnis zurück.
+
 <br/><br/><br/>
 
 ## Kapitel 3: Klassenvererbung
@@ -814,7 +868,9 @@ Das Vererben von Klassen kann man in zwei wesentliche Kategorien unterteilen. De
 
 Um in Python Klassen zu vererben muss bei deklaration der Kindklasse in Klammern die Elternklasse(n) angegeben werden. Im einfachsten Fall hat eine Kindklasse eine einzige Elternklasse, aber mehrere sind auch möglich.
 
-Im folgenden Beispiel ist die ELternklasse 'Person' und zwei getrennte Kindklassen, welche von 'Person' erben.
+Im folgenden Beispiel ist die Elternklasse 'Person' und zwei getrennte Kindklassen, welche von 'Person' erben.
+
+<sub>(Auf die super()-Methode gehe ich später noch ein. Aktuell reicht es zu wissen, dass damit auf die Methode der Elternklasse/vorhergehenden Klasse zugegriffen wird.</sub>
 
 ```py
 class Person:
@@ -866,22 +922,65 @@ Nachteile:
 - Kwargs, welche gar Nicht existieren, werden vom Konstruktor akzeptiert, auch wenn diese nicht verwendet werden.
   <br/><br/>
 
+Wofür man sich entscheidet ist sicherliche Anwendungsabhängig. Was habe ich mit der Klasse noch alles vor? Erwarte ich weitere Kindklassen? Dass man für die Help-Methode eine gesamte Darstellung des Konstruktors bevorzugt macht für den späteren Anwender mehr Sinn. Dieses Problem mit dem zweiten Ansatz und der Tatsache, dass die Darstellung \_\_init\_\_(salary, **kwargs) wenig hilfreich ist, ließe sich aber mit Metaklassen kontrollieren. Obwohl **kwargs verwendet wird, würden dann trotzdem alle benötigten Paramerter der Elternklasse(n) mit angezeigt werden.
+
 ### 3.2 Komponieren von Klassen
 
-Beim Komponieren von Klassen wird eine neue Klasse erzeugt, welche von mehreren Elternklassen erbt.
+Beim Komponieren von Klassen wird eine neue Klasse erzeugt, welche von mehreren Elternklassen erbt. In diesem Beispiel wird der Student mit dem Employee vereint. (Sogesehen eine Stundentische Hilfskraft?) Da die neue Klasse keine neuen Parameter benötigt, muss auch keine init geschrieben werden.
 
 ```py
 class StudentWorker(Student, Employee):
     pass
 ```
 
+Die neue Klasse enthält all das, was die beiden Elternklassen enthalten. Die Instanziierung sieht dann folgendermaßen aus.
+
+```py
+studentworker1 = StudentWorker(fname='Max', lname='Mustermann', mat_nr='10142020', salary=450.00)
+```
+
+<pre>
+> Traceback (most recent call last):
+>   File "f:/Python-Projects/Projects/Classes_Tutorial/Kapitel_3/vererbung_person.py", line 22, in <module>
+>     sw1 = StudentWorker(fname='Max', lname='Mustermann', mat_nr='10142020', salary=450.00)
+> TypeError: __init__() got an unexpected keyword argument 'salary'
+</pre>
+
+BONK. Problem. Durch den gewählten Ansatz 1 bei der Student Klasse stoßen wir auf ein weiteres Problem mit der Verwendung der einzelnen Keyword-Argumente. Bei der Instanziierung der StundentWorker Klasse wird der Konstruktor des Students zuerst verwendet. Der kennt aber das 'salary' Keyword nicht und schmeißt dementsprechend einen Error. Mit dem Ansatz 2, der bei dem Employee gewähtl wurde, wäre dies nicht passiert, da jene Argumente, welche nicht bekannt sind einfach als kwargs zusammengefasst und weitergeleitet werden. In der obersten Klasse könnte man dort auf \*\*kwargs verzichten, um unbekannte Keywords abzufangen und trotzdem einen Fehler zu schmeißen.
+
 ### 3.3 \_\_mro\_\_ und super()
 
-print(StudentWorker.\_\_mro\_\_)
+Sobald Klassenvererbung ein Thema ist sollte man sich im Klaren sein, wie die 'Built-In'-Methode super() funktioniert. Einfach gesagt, die super()-Methode greift auf das nächste Element in der \_\_mro\_\_ Liste zu. MRO steht für 'Method Resolution Order'.
 
+Python ist eine Interpreter-Sprache. Das heißt, ein Skript wird von oben nach unten durchgearbeitet und erst bei erreichen der Zeile evaluiert, was dort passiert. Auch Ausdrücke, welche innerhalb des Class-Bodys definiert sind werden stumpf ausgeführt.
+
+Bei der **Definition** (nicht bei der Instanziierung) einer Klasse wird die \_\_mro\_\_ evaluiert und festgelegt. Dieses Attribut ist Read-Only und existiert auf Klassenebene. Die Evlauation erfolgt über die [Wikipedia: C3-Linearization](https://en.wikipedia.org/wiki/C3_linearization). Ich werde hier nicht tiefer darauf eingehen, lediglich darauf verweisen, falls es jemanden ganz genau wissen will.
+
+https://stackoverflow.com/questions/40478154/does-pythons-mro-c3-linearization-work-depth-first-empirically-it-does-not
+
+Fakt ist aber, dass eine Linearisierung stattfindet. Und auch hier sei wieder gesagt, auch in diesen Prozess lässt sich mittels Metaklassen eingreifen. Wenn ihr aus irgendeinem Grund eine beispielsweise alphabetisch geordnete MRO benötigt, dann ginge das.
+
+<sub>(Randnotiz 1: Obwohl das \_\_mro\_\_ Attribut bei der Definition der Klassen evaluiert wird und das Attribut Read-Only ist lässt sich dieses Attribut später dennoch verändern. Denn es wird jedes mal neu evalusiert, wenn sich die \_\_bases\_\_ einer Klasse ändern. Und dieses Attribut ist schreibbar. Man kann theoretisch im Programmablauf einfach zu jederzeit die vererbten Klassen einer Klasse ändern. Ob man das tun sollte, wahrscheinlich eher nicht. Erklärt hat dies Mark Smith auf der PyCon 2019. [Youtube:"It's Pythons All The Way Down: Python Types & Metaclasses Made Simple" - Mark Smith (PyCon AU 2019)](https://www.youtube.com/watch?v=ZpV3tel0xtQ))</sub>
+
+Wenn man sich mit diesem Wissen nun die mro vom StudentWorker anguckt erhält man folgende Reihenfolge.
+
+```py
+print(StudentWorker.__mro__)
 ```
 
-Ausgabe:
-
-(<class '\_\_main\_\_.StudentWorker'>, <class '\_\_main\_\_.Student'>, <class '\_\_main\_\_.Employee'>, <class '\_\_main\_\_.Person'>, <class 'object'>)
 ```
+> (<class '__main__.StudentWorker'>, <class '__main__.Student'>, <class '__main__.Employee'>, <class '__main__.Person'>, <class 'object'>)
+```
+
+Obwohl die Klasse _Student_ und die Klasse _Employee_ beide von der Klasse _Person_ erben, steht die Klasse _Person_ hinter den beiden Anderen Klassen in der Reihenfolge.
+
+In der Definition der Klasse _Student_ steht
+
+```py
+class Student(Person):  # Ansatz 1
+    def __init__(self, mat_nr, fname, lname):
+        self.mat_nr = mat_nr
+        super().__init__(fname, lname)
+```
+
+die super()-Methode innerhalb der \_\_init\_\_ und greift im Fall der _StudentWorker_ Klasse **NICHT** auf die vererbte Klasse _Person_ zu, sondern geht laut der \_\_mro\_\_ weiter zur Klasse _Employee_. Würde man natürlich die Klasse Student instanziieren, dann würde die super()-Methode zur Klasse _Person_ weiterleiten. Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sollte. Auch hier wird nochmal deutlich, wieso man mit \*\*kwargs arbeiten sollte. Je nachdem, wie die Klassen vererbt werden, kann man gar nicht wissen, an welcher Stelle die Elternklasse der neuen Klasse stehen. Die übergebenen Parameter _fname_ und _lname_ machen im Aufruf des Employee-Konstruktor überhaupt keinen Sinn.
