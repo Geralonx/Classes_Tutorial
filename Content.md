@@ -16,6 +16,7 @@
     - [1.2.2 \_\_repr\_\_() oder \_\_str\_\_()](#122-__repr__-oder-__str__)
     - [1.2.3 \_\_enter\_\_ und \_\_exit\_\_](#123-__enter__-und-__exit__)
     - [1.2.4 \_\_doc\_\_ Attribut](#124-__doc__-attribut)
+    - [1.2.5 \_\_call\_\_ Method](#125-__call__-method)
 
 - [Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden](#kapitel-2-spezielle-funktionsdekoratoren-für-klassenmethoden)
   - [2.1 @Classmethod und @Staticmethod](#21-@classmethod-und-@staticmethod)
@@ -657,7 +658,7 @@ Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Wel
 
 <br/><br/><br/>
 
-#### 1.2.4 \_\_call\_\_
+#### 1.2.5 \_\_call\_\_ Method
 
 Mittels der call 'Duner'-Method kann man die Instanzen einer Klasse aufrufbar machen. Wer sich mit Funktionen und deren Implementation schon tiefer auskennt wird auch wissen, dass Funktionen in Python genau so impementiert sind.
 
@@ -667,8 +668,6 @@ def func(x):
 
 print(type(func))
 ```
-
-Ausgabe:
 
 <pre>
 > >class 'function'<
@@ -685,6 +684,10 @@ my_instance = func_class()
 
 print(my_instance(1))
 ```
+
+<pre>
+> 2
+</pre>
 
 <br/><br/><br/>
 
@@ -983,4 +986,76 @@ class Student(Person):  # Ansatz 1
         super().__init__(fname, lname)
 ```
 
-die super()-Methode innerhalb der \_\_init\_\_ und greift im Fall der _StudentWorker_ Klasse **NICHT** auf die vererbte Klasse _Person_ zu, sondern geht laut der \_\_mro\_\_ weiter zur Klasse _Employee_. Würde man natürlich die Klasse Student instanziieren, dann würde die super()-Methode zur Klasse _Person_ weiterleiten. Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sollte. Auch hier wird nochmal deutlich, wieso man mit \*\*kwargs arbeiten sollte. Je nachdem, wie die Klassen vererbt werden, kann man gar nicht wissen, an welcher Stelle die Elternklasse der neuen Klasse stehen. Die übergebenen Parameter _fname_ und _lname_ machen im Aufruf des Employee-Konstruktor überhaupt keinen Sinn.
+die super()-Methode innerhalb der \_\_init\_\_ und greift im Fall der _StudentWorker_ Klasse **NICHT** auf die vererbte Klasse _Person_ zu, sondern geht laut der \_\_mro\_\_ weiter zur Klasse _Employee_. Würde man natürlich die Klasse Student instanziieren, dann würde die super()-Methode zur Klasse _Person_ weiterleiten. Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sollte und außerdem wieso man mit \*\*kwargs arbeiten sollte. Je nachdem, wie die Klassen vererbt werden, kann man gar nicht wissen, an welcher Stelle die Elternklasse der neuen Klasse stehen. Die übergebenen Parameter _fname_ und _lname_ machen im Aufruf des Employee-Konstruktor überhaupt keinen Sinn und würeden dementsprechend einen Fehler generieren.
+
+## Kapitel 4 Klassendekoratoren
+
+Klassendekoratoren sind der erste Schritt zur Metaklasse. Viele Dinge, die man mit Metaklassen realisieren kann, könnte man auch mit Klassendekoratoren erreichen. Die Frage wozu man Metklassen dann überhaupt lässt sich mit den zwei wesentlichen Unterschieden beantworten.
+
+1. Klassendekoratoren werden **NACH** der Erzeugung der Klassendefinition angewandt. Metaklassen werden **VOR** der Erzeugung der Klassendefinition durchgeführt.
+2. Metaklassen werden durch Vererbung weitergeleitet. Ein Klassendekorator wirkt nur auf die Klasse, die damit dekoriert wird.
+
+### 4.1 Allgemein
+
+Klassendekoratoren unterscheiden sich von Funktionsdekopratoren nur in der Weise, dass sie, statt der Funktion, eine Klasse als Inputargument haben und eine Klasse zurückgeben (sollten). Da die Klassendekoratoren nach der Erzeugung der Klasse aufgerufen werden hat die Klasse bereits ein vollständig gefülltes Dict, welches alle Inhalte des Class-Bodys enthält.
+
+#### 4.1.1 Klassendekorator als Funktion
+
+```py
+from datetime import datetime
+
+def debugger(func):
+    def wrapper(*args, **kwargs):
+        print(f"\nFunktionsaufruf am {datetime.now()}: Übergabeparameter: {args}, {kwargs}.")
+        return func(*args, **kwargs)
+    return wrapper
+
+def debug_all_cls_methods(cls):
+    # Alle Elemente des Klassendicts durchsuchen
+    for key, element in cls.__dict__.items():
+        # Filtern nach den Aufrufbaren elementen
+        if callable(element):
+            # Rausfiltern der 'Dunder'-Methods
+            if not key.startswith('__') :
+                # Anbringen des 'debug'-Dekorator und zurück ins Klassendictionary schreiben
+                setattr(cls, key, debugger(element))
+    # Rückgabe der modifizierten Klassen
+    return cls
+
+@debug_all_cls_methods
+class PC:
+    def __init__(self, cpu, gpu):
+        self.cpu = cpu
+        self.gpu = gpu
+
+    def but_can_it_run_crysis(self, answer):
+        if answer:
+            print("Yes, it can!")
+        else:
+            print("No it can't.")
+
+    def power(self, voltage, ampere):
+        print(f'I consume {voltage*ampere} W right now.')
+
+meine_pc_instanz = PC('Ryzen 7', 'RTXSuper2070')
+
+meine_pc_instanz.but_can_it_run_crysis(False)
+meine_pc_instanz.power(ampere=2, voltage=230)
+```
+
+<pre>
+> Funktionsaufruf am 2020-12-07 18:25:44.998121: Übergabeparameter: (<__main__.PC object at 0x0000019368148880>, False), {}.
+> No it can't.
+>
+> Funktionsaufruf am 2020-12-07 19:11:47.155469: Übergabeparameter: (<__main__.PC object at 0x0000019368148880>,), {'ampere': 2, 'voltage': 230}.
+> I consume 460 W right now.
+</pre>
+
+Das \_\_main\_\_.PC object ist in diesem Fall das _self_-Argument, welches automatisch bei dem Aufruf übergeben wird. Wir sehen aber, dass **ALLE** Methoden der Klasse mittels des Debug-Dekorator erweitert wurden. Würde man nur auf Funktionsdekoratoren zurückgreifen, dann müsste man jede Methode einzeln mit einem Ausstatten.
+
+<sub>(Kleine Denkaufgabe: Warum kann ich im Klassdekorator die 'Dunder'-Methods nur anhand der vorhergehenden Unterstriche identifizieren und muss nicht noch nach den nachfolgenden Unterstrichen suchen, um sicherzustellen, dass es sich um kein privates Attribut/Methode handelt?)</sub>
+<br/><br/>
+
+#### 4.1.2 Klassendekorator als Klasse
+
+Wer in [1.2.5 \_\_call\_\_ Method](#125-__call__-method) wird wissen, dass man eine Funktion auch als Klasse darstellen kann. Und es ist nicht ungewöhnlich, dass ein Klassendekorator mittels eigener Klasse dargestellt wird. Warum?
