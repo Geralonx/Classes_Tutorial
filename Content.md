@@ -251,9 +251,8 @@ Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung oder aus Lang
 <sub>(Hint: Zerlegt die Comprehension von hinten oder von vorne und stoppt immer bei Keywords wie if oder for. Nehmt den Teil bis zu dem Keyword und schmeißt alles bis dahin in eine eigene Zeile. Wenn man von hinten anfängt, dann baut man das Konstrukt von innen nach außen auf, umgekehert wenn man vorne anfängt. Am Ende muss man nur noch die Expression, also den vordersten Teil, in das innere übersetzten. Eine Schritt für Schritt Anleitung ist hier: [Loesung List-Comprehension](https://github.com/Geralonx/Classes_Tutorial/blob/master/Vorbereitende_Erklaerungen/_2_list_comp_loesung.py)) </sub>
 
 <sub>(Randnotiz 1: Es gibt das gleiche auch für Dicts, also Dict-Comprehensions. Die Syntax ist 1:1 wie ber für die List. Das einzige was sich ändert ist, dass man die Comprehensions mit {} statt [] schreibt und sicherstellen muss, dass die Expression ein Key-Value-Pair ist.)</sub>
-<br/><br/>
 
----
+<br/><br/>
 
 ## Kapitel 1: Fortgeschrittenes Klassen Design
 
@@ -277,7 +276,6 @@ und
 Im Vortrag weist er mit diesen Aussagen darauf hin, dass man die Qualität von Code nicht nach dem Grad der Übereinstimmung von PEP8 bestimmen sollte, sondern ein bisschen weiter denken muss, um den nächsten Lesern das Leben zu vereinfachen. PEP8 hat nicht zu Allem eine Antwort, deswegen sollte man sich selbst Geanken machen, wie man seinen Stil im Coden so umsetzt, dass dieser am Ende von (im besten Fall) jedem verstanden werden kann.
 
 [The Zen of Python](https://www.python.org/dev/peps/pep-0020/) gefällt mir am besten, wenn ich über die Wege für clean code nachdenke.
-<br/><br/>
 
 ---
 
@@ -292,8 +290,6 @@ Die einzige Regel die auch ich grundsätzlich beachte ist aus folgendem Zitat ab
 > "The signature of 'this should't be a class' is, that it has two methods one of which is
 > init. Any time you see that, you should probably think 'hey, maybe I just need one method'."
 > \- Jack Diederich in [YoutTube: Stop Writing Classes](https://youtu.be/o9pEzgHorH0)
-
-<br/>
 
 ---
 
@@ -369,7 +365,6 @@ habe ich dennoch Zugang zu den eigentlich 'privaten' Attributen innerhalb einer 
 Protected, also das Attribute und Methoden nur von der Klasse und von vererbten Klassen 'gesehen/verwendet' werden können gibt es gar nicht. (Warum auch, nicht einmal ein echtes Private gibt es.)
 
 Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von Klassen mittels einem führenden Unterstrich gekennzeichnet werden. Das ist aber lediglich ein Hinweis für Andere. Der Python-Interpreter selbst behandelt Attribute und Methoden mit einem führenden Unterstrich nicht anders als ohne.
-<br/><br/>
 
 ---
 
@@ -463,7 +458,6 @@ print(pc2_instanz.klassen_attribut)
 <sub>(Randnotiz 1: Ich habe bisher nicht sehr viel mit Klassenattributen gearbeitet, lediglich habe ich sie als 'Konstanten' verwendet. Ich denke aber ich würde sie einfach immer 'privat' machen, einfach um nicht ausversehen aus vererbten Klassen auf etwas zugreifen zu können, was ich erstmal ewig suchen müsste. Ob man das so macht weiß ich nicht.)</sub>
 
 <sub>(Randnotiz 2: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist der Zugriff immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. (Beispielsweise könnte man ja alle Elternklassen auslesen und anschließend das Dict jener und mit dem Namen der Klasse nach Allem suchen was dem Muster f"\_{parent_class}\_\_" folgt.) Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken', denen beispielsweise nur die Kindklassen zur Verfügung stehen.)</sub>
-<br/><br/>
 
 ---
 
