@@ -4,11 +4,11 @@
 - [Vorbereitende Erklärungen](#vorbereitende-erklärungen)
   - [F-Strings](#f-strings)
   - [List-Comprehensions](#list-comprehensions)
-- [Kapitel 1 Fortgeschrittenes (Klassen) Design](#kapitel-1-fortgeschrittenes-klassen-design)
+- [Kapitel 1 Fortgeschrittenes Klassen Design](#kapitel-1-fortgeschrittenes-klassen-design)
 
   - [1.0 Style-Guides](#10-Style-Guides)
   - [1.1 Klassen Recap](#11-klassen-recap)
-    - [1.1.1 Allgemeines](#111-allgemeines)
+    - [1.1.1 Allgemein](#111-allgemein)
     - [1.1.2 Public, Private und Protected](#112-public,-private-und-protected)
     - [1.1.3 Klassenattribute](#113-klassenattribute)
   - [1.2 'Dunder'-Methods](#12-'dunder'-methods)
@@ -17,6 +17,8 @@
     - [1.2.3 \_\_enter\_\_ und \_\_exit\_\_](#123-__enter__-und-__exit__)
     - [1.2.4 \_\_doc\_\_ Attribut](#124-__doc__-attribut)
     - [1.2.5 \_\_call\_\_ Method](#125-__call__-method)
+    - [1.2.6 Weitere 'Dunder'-Methods](#126-weitere-'dunder'-methods)
+    - [1.2.7 Attribut Zugriff](#127-attribut-zugriff)
 
 - [Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden](#kapitel-2-spezielle-funktionsdekoratoren-für-klassenmethoden)
   - [2.1 @Classmethod und @Staticmethod](#21-@classmethod-und-@staticmethod)
@@ -25,13 +27,15 @@
   - [2.2 Method Overloading](#22-method-overloading)
     - [2.1.1 Optionale Parameter](#211-optionale-parameter)
     - [2.1.2 @property, @fn.setter, @fn.deleter](#212-@property,-@fn.setter,-@fn.deleter)
-    - [2.1.3 typing @overload](#213-typing-@overload)
+    - [2.1.3 Weiteres Overloading](#213-weiteres-overloading)
 - [Kapitel 3 Klassenvererbungen](#kapitel-3-klassenvererbung)
   - [3.1 Spezifizieren von Klassen](#31-spezifizieren-von-klassen)
   - [3.2 Komponieren von Klassen](#32-komponieren-von-klassen)
   - [3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>)
-- [Kapitel 4 Klassendekoratoren](#kapitel-4-klassendekoratoren)
-- [Kapitel 5 Metaklassen](#kepitel-5-metaklassen)
+- [Kapitel 4 Discriptor Protokol](#kapitel-4-discriptor-protokol)
+  - [4.1 Allgemein](#41-allgemein)
+- [Kapitel 5 Klassendekoratoren](#kapitel-5-klassendekoratoren)
+- [Kapitel 6 Metaklassen](#kepitel-6-metaklassen)
   <br/><br/>
 
 ## Vorwort
@@ -49,7 +53,7 @@ Bitte den [Disclaimer](#disclaimer) beachten.
 
 ### Für wen ist dieses Tutorial geeignet?
 
-Dieses Tutorial geht schnell über Grundlagen hinaus und befasst sich im Kern mit Klassen und deren speziellen Methoden ('Dunder'-Methods), welche bei der Verwendung von der 'Built-In' Logik und Syntax verwendet werden. Wenn du nur wissen willst, wie man allgemein Klassen in Python schreibt und verwendet, dann solltest du woanders nachschlagen.
+Dieses Tutorial geht schnell über Python-Grundlagen hinaus und befasst sich im Kern mit Klassen und deren speziellen Methoden ('Dunder'-Methods), welche bei der Verwendung von der 'Built-In' Methoden und Syntax verwendet werden. Wenn du nur wissen willst, wie man allgemein Klassen in Python schreibt und verwendet, dann solltest du woanders nachschlagen.
 
 David Beazley hat vor vielen jahren ein Tutorial über Metaprogrammierung gegeben, an welchem ich mich auch Teilweise bediene (wird aber alles auch referenziert), in dem er in 3 Stunden vorführt, wie man mit diesem Programmierstil über die Grenzen der normalen Vernwendung von Python hinaus geht.
 
@@ -59,7 +63,7 @@ David Beazley hat vor vielen jahren ein Tutorial über Metaprogrammierung gegebe
 
 <br/>
 
-Wenn man einmal versteht, was bei den Prozessen der Erstellung, Initialisierung, Zugriff, Vererbung, etc. von Klassen stattfindet, dann kann man auch exakt an diesen Stellen seinen eigenen Eingriff vornehmen. Und da im Wesentlichen **ALLES** in Python ein Objekt ist, ist es möglich jedes Objekt so anzupassen, wie man es benötigt. Und das ganze auf einer Ebene, wo ihr am Ende bei der Verwendung gar nicht mehr drüber nachdenken müsst.
+Wenn man einmal versteht, was bei den Prozessen der Erstellung, Initialisierung, Zugriff, Vererbung, etc. von Klassen stattfindet, dann kann man auch exakt an diesen Stellen seinen eigenen Eingriff vornehmen. Da im Wesentlichen **alles** in Python ein Objekt ist, ist es möglich jedes Objekt so anzupassen, wie man es benötigt. Und das ganze auf einer Ebene, wo der Benutzer der Klassen gar nicht mehr mitbekommtn, was im Hintergrund alles passiert.
 
 Metaklassen sind eigentlich für 99% der Nutzer von Python unrelevant. Das benötigen hauptsächlich Framework/Libary Entwickler. Aber bis zu dem Kapitel soll dieses Tutorial allgemein die fortgeschrittene Vernwednung von Klassen beschreiben. Und das ist bestimmt für mehr als 1% der Leute interesannt.
 <br/><br/>
@@ -82,24 +86,26 @@ Für die, die sagten pr0 sei nicht die Plattform für sowas, bitte Minus geben u
 
 ### Prerequisites / Vorraussetzungen
 
-Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
+Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
 <br/><br/>
 
 ### IDE
 
-Nur zur Information, da es in dem ersten Beitrag auch zur Sprache kam, ich arbeite vollständig mit VSCode und habe mir diese IDE inwzischen schon recht stark Modifiziert. Color Color-Themes, Boilerplates/Snippets, indentation und bracket Colors und ein paar Andere. Für einige ist es sicher zu bunt, mir gefällts halt.
+Da es in dem ersten Beitrag auch zur Sprache kam erwähne ich es hier nochmal explizit, ich arbeite vollständig mit VSCode und habe mir diese IDE inwzischen schon recht stark Modifiziert. Color-Themes, Boilerplates/Snippets, indentation und bracket Colors, Autoformatting und ein paar Andere. Für einige ist es sicher zu bunt, mir gefällts halt.
 <br/><br/>
 
 ### Disclaimer
 
 Jeder macht Fehler. Ich beanspruche keineswegs Vollständig- oder Richtigkeit der hier gezeigten Inhalte. Für weitere Details und noch tiefergehende Informationen empfehle ich grundsätzlich die [Python-Dokumentation](https://docs.python.org/3/).
 
-Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Dinge von Python vermitteln. Auch ich habe währen des Schreibens viel nachlesen und recherchieren müssen. Ich biete hiermit lediglich eine zusammengefasste Form der Informationen an, welche ich auf eine Weise darstellen möchte, wie ich sie mir bei Tutorials von Anderen selbst gewünscht hätte.
+Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Dinge von Python vermitteln. Auch ich habe währen des Schreibens viel nachlesen und recherchieren müssen. Ich biete hiermit lediglich eine zusammengefasste Form der Informationen an, welche ich auf eine Weise darstellen möchte, wie ich sie für logisch und verständlich halte.
+
+Diese Zusammenfassung/Tutorial soll eigenständig sein. Ich habe Informationen auch für gleiche Themen aus verschiedenen Quellen zusammengetragen, wodurch dieses gesamte Tutorial sehr groß geworden ist. Vielleicht bin ich auch einfach zu doof, um Kurzfassungen zu verstehen, aber dieses Tutorial ist in einer Form wo ich denke, dass dies alles enthält, ohne dass man in 10 verschiedene Quellen gucken muss, um eine einzige Sache zu verstehen.
 <br/><br/>
 
-### Korrektur meiner Aussage im ersten Tutorial
+### Korrektur meiner Aussage im ersten Tutorial zu 'Clouseres / Decorators'
 
-In meinem ersten Tutortial über Clousers und Decorators habe ich gesagt, dass man \*args und \*\*kwargs nicht umbenennen sollte und immer als \*args und \*\*kwargs verwenden sollte, auch wenn Python nur auf die Sternchen achtet und die Bezeichner frei wählbar sind. Ich bin bei meinen Recherchen auch darauf gestoßen, dass es sogar von Core-Developern empfohlen wird die Bezeichner umzubennenen, wenn dies das Verständnis vereinfacht. Wenn die \*args für den Input für eine bestimmte Gruppe an Daten verwendet wird und das \* nur dafür genutzt wird, dass man eine belibige Anzahl von Argumenten benutzt, dann kann es ja hilfreich sein, den Bezeichner genau zu bennenen.
+In meinem ersten Tutortial über Clousers und Decorators habe ich gesagt, dass man \*args und \*\*kwargs nicht umbenennen sollte und immer als \*args und \*\*kwargs verwenden sollte, auch wenn Python nur auf die Sternchen achtet und die Bezeichner frei wählbar sind. Ich bin bei meinen Recherchen auch darauf gestoßen, dass es sogar von Core-Developern empfohlen wird die Bezeichner umzubennenen, wenn dies das Verständnis vereinfacht. Wenn die \*args für den Input für eine bestimmte Gruppe an Daten verwendet wird und das \* nur dafür genutzt wird, dass man eine beliebige Anzahl von Argumenten übergeben kann, dann kann es ja hilfreich sein, den Bezeichner genau zu bennenen.
 
 Beispiel:
 
@@ -123,13 +129,13 @@ def summe(*zahlen):
 
 ## Vorbereitende Erklärungen
 
-Dieses Tutorial richtet sich zwar schon an Leute die bereits die Grundlagen von Python kennen und verstehen, aber ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese Konzepte in den Codebeispielen regelmäßig verwende, wer das kennt, kann den Teil überspringen. Und direkt mit [Kapitel 1](<#kapitel-1:-fortgeschrittenes-(klassen)-design>) starten.
+Dieses Tutorial richtet sich zwar schon an Leute die bereits die Grundlagen von Python kennen und verstehen, aber ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese Konzepte in den Codebeispielen regelmäßig verwende, wer das kennt, kann diesen Teil überspringen. Und direkt mit [Kapitel 1](<#kapitel-1:-fortgeschrittenes-(klassen)-design>) starten.
 
 ### f-Strings
 
 F-Strings steht für "formatted string literals". Sie kennzeichnen sich dadurch aus, dass vor dem Anführungszeichen des Strings ein f steht. (Klein- oder Großschreibweise spielt dabei keine Rolle, typischerweise verwendet man das kleine f). Innerhalb des Strings dürfen geschweifte Klammern stehen, welche einen Pythonausdruck enthalten. Im einfachsten Fall ist das eine Variable, komplexere Ausdrücke funktionieren aber auch.
 
-Die f-Strings wandeln den Ausdruck der geschwiften Klammen in einen String um und sind im anschluss ein ganz normaler String. Die Idee dahinter ist, dass man im Code den String vollständig beschreibt und auch ohne die eingefügten Inhalte zu kennen weiß, wie dieser String am Ende aussieht.
+Die f-Strings wandeln den Ausdruck der geschwiften Klammen in einen String um und werden im Anschluss ein ganz normaler String behandelt. Die Idee dahinter ist, dass man im Code den String vollständig beschreibt und auch ohne die eingefügten Inhalte zu kennen weiß, wie dieser String am Ende aussieht.
 
 ```py
 mein_name = 'Geralonx'
@@ -142,15 +148,13 @@ print(gruss)
 gruss_alt = "Grueß dich, mein Name is {}, ich bin {} Jahre alt.".format(mein_name, mein _alter)
 ```
 
-Ausgabe:
-
 <pre>
 > Grueß dich, mein Name ist Geralonx, ich bin 30 Jahre alt.
 </pre>
 
 Mit der alten Methode reißt es einem beim Lesen des Codes aus dem Fluss. Man muss in die Format-Methode am Ende reingucken und sich dann selbst noch die übergeben Attribute in den String denken. F-Strings sollen es halt einfacher machen.
 
-<sub>(Randnotiz 1: Auch wenn es f-Strings bereits Seit Python 3.6 (2016) gibt bin ich erst dieses Jahr vollständig auf die Verwendung von f-Strings umgestiegen. Vorher habe ich immer mit .format() gearbeitet, weil mir diese Darstellung sehr gut gefiel und ich die es deshlab nicht für nötig hielt mir die f-Strings anzugucken.)</sub>
+<sub>(Randnotiz 1: Auch wenn es f-Strings bereits Seit Python 3.6 (2016) gibt bin ich erst dieses Jahr vollständig auf die Verwendung von f-Strings umgestiegen. Vorher habe ich immer mit .format() gearbeitet, weil mir diese Darstellung sehr gut gefiel und ich die es deshlab nicht für nötig hielt mir die f-Strings anzugucken.</sub>
 
 <sub>(Randnotiz 2: Ja, die gezeigte .format() Methode ist in dieser Form die einfachste Version. Man konnte dort auch schon mit Keywords innerhalb der geschweiften Klammern arbeiten, um einen 'Lesefluss' zu erzeuge, aber es bleibt dabei, dass man am Ende die Zuweisung erst im .format() erkennt und nich direkt im String selber.)
 </sub>
@@ -159,7 +163,7 @@ Mit der alten Methode reißt es einem beim Lesen des Codes aus dem Fluss. Man mu
 
 ### List-Comprehensions
 
-List-Comprehensions sind präzise Ausdrücke, um eine Liste mit Ergebnissen von einer Operation, welche auf die einzelnen Mitglieder einer Sequenz oder Iterator angewendet werden, zu erzeugen (Frei übersetzt aus der Python-Dokumentation). Bitte was? Im häufigsten Fall ersetzten List-Comprehensions for-Loops, welche eine Liste erzeugen. Die Syntax einer List-Comprehension sieht folgendermaßen aus:
+List-Comprehensions sind präzise Ausdrücke, um eine Liste mit Ergebnissen von einer Operation, welche auf die einzelnen Mitglieder einer Sequenz oder Iterator angewendet werden, zu erzeugen (Frei übersetzt aus der Python-Dokumentation). Bitte was? Im häufigsten Fall ersetzten List-Comprehensions for-Loops, welche eine Liste oder ein Dict erzeugen. Die Syntax einer List-Comprehension sieht folgendermaßen aus:
 
 <pre>
 > liste = [expression for item in sequence [, condition]]
@@ -168,7 +172,7 @@ List-Comprehensions sind präzise Ausdrücke, um eine Liste mit Ergebnissen von 
 Beispiel / Vergleich mit einer for-Loop:
 
 ```py
-# For Loop um die Quadrate der Zahlen 0-9 zu erzeugen
+# For-Loop um die Quadrate der Zahlen 0-9 zu erzeugen
 for_loop_list = []
 for i in range(10):
     for_loop_list.append(i*i)
@@ -186,8 +190,6 @@ print("For-Loop-Result:\t", for_loop_list)
 print("List-Comp-Result:\t", list_comp_list)
 ```
 
-Ausgabe:
-
 <pre>
 > For-Loop-Result:         [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 > List-Comp-Result:        [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
@@ -196,18 +198,16 @@ Ausgabe:
 Die List-Comprehension vereinigt 3 Zeilen Code von einer Empty-List-Initialisierung und das Füllen mit einer for-Loop zu einer einzigen. Es ist auch möglich Bedingungen in die List-Comprehension einzubauen.
 
 ```py
-# List Comprehension mit einer Bedingung, welche nur die geraden Zahlen erfasst.
+# List Comprehension mit einer Bedingung, welche nur die geraden Zahlen quadriert.
 new_list = [i*i for i in range(10) if i%2 == 0]
-print(new_list) # Ausgabe
+print(new_list)
 
 # Das Gleiche Ergebnis ließe sich beispielsweise mit folgendem Code erreichen
 new_list = []
 for i in range(10):
-    if i%2==0:
+    if i%2 == 0:
         new_list.append(i*i)
 ```
-
-Ausgabe:
 
 <pre>
 > [0, 4, 16, 36, 64]
@@ -234,7 +234,7 @@ def most_common_tags(self):
     self.most_common_tags = sorted(occur, key = lambda x: x[1], reverse=True)
 ```
 
-Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr diese Konstrukte ja mal auseinander nehmen, gerade die Methode 'most_common_tags' ist übel, wenn man noch nicht genau verstanden hat, wie diese aufgebaut sind.
+Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung oder aus Langeweile könnt ihr diese Konstrukte ja mal auseinander nehmen, gerade die Methode 'most_common_tags' ist übel, wenn man noch nicht genau verstanden hat, wie diese aufgebaut sind.
 <br/>
 
 <sub>(Hint: Zerlegt die Comprehension von hinten oder von vorne und stoppt immer bei Keywords wie if oder for. Nehmt den Teil bis zu dem Keyword und schmeißt alles bis dahin in eine eigene Zeile. Wenn man von hinten anfängt, dann baut man das Konstrukt von innen nach außen auf, umgekehert wenn man vorne anfängt. Am Ende muss man nur noch die Expression, also den vordersten Teil, in das innere übersetzten. Eine Schritt für Schritt Anleitung ist hier: [Loesung List-Comprehension](https://github.com/Geralonx/Classes_Tutorial/blob/master/Vorbereitende_Erklaerungen/_2_list_comp_loesung.py)) </sub>
@@ -242,9 +242,9 @@ Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung könnt ihr di
 <sub>(Randnotiz 1: Es gibt das gleiche auch für Dicts, also Dict-Comprehensions. Die Syntax ist 1:1 wie ber für die List. Das einzige was sich ändert ist, dass man die Comprehensions mit {} statt [] schreibt und sicherstellen muss, dass die Expression ein Key-Value-Pair ist.)</sub>
 <br/><br/>
 
-## Kapitel 1: Fortgeschrittenes (Klassen) Design
+## Kapitel 1: Fortgeschrittenes Klassen Design
 
-Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse'. Die Inhalte gehen auch hauptsächlich in diese Richtung, um zu zeigen, an welchen Stellen man 'sorgfältiger' arbeiten sollte, um die Wiederverwendung mäöglichst sicher und einfach zu gesalten.
+Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse'. Die Inhalte gehen auch hauptsächlich in diese Richtung, um zu zeigen, an welchen Stellen man 'sorgfältiger' arbeiten sollte, um die Wiederverwendung möglichst sicher und einfach zu gesalten.
 
 ### 1.0 Style-Guides
 
@@ -266,7 +266,7 @@ Im Vortrag weist er mit diesen Aussagen darauf hin, dass man die Qualität von C
 
 ### 1.1 Klassen Recap
 
-#### 1.1.1 Allgemeines
+#### 1.1.1 Allgemein
 
 Wie, wann und wo man Klassen verwenden sollte oder nicht möchte ich gar nicht disskutieren. Ich sebst verwende Klassen auch manchmal dort, wo der ein oder andere sicherlich sagen würde, dass sie dort überflüssig seien. Der Hauptgrund warum ich Klasse überhaupt verwende ist 'Encapsulation'. Das heißt so viel wie, dass die Daten und die Methoden, welche jene Daten modifizieren, einfach zusammengepackt werden, damit ein eineindeutiger Zusammenhang besteht.
 
@@ -691,11 +691,15 @@ print(my_instance(1))
 
 <br/><br/><br/>
 
-#### 1.2.5 Weitere 'Dunder'-Methods
+#### 1.2.6 Weitere 'Dunder'-Methods
 
 Während den Recherchen habe ich diese Seite gefunden, welche nochmal einen detaillierteren Überblick über viele 'Dunder'-Methods präsentiert. Wer noch mehr wissen will, einfach reinschauen. https://levelup.gitconnected.com/python-dunder-methods-ea98ceabad15
 
 Allgemeine Zusammenfassung ist, wenn ihr mit eurer Klasse irgendeine Standardoperation (+, -, <, >, aufruf, len(), bool(), str(), dir(), ...) verwenden wollte, dann schaut einfach nach der speziellen 'Dunder'-Method dafür nach und ihr könnt das sauber dafür implementieren, statt euch irgendwelche Adapter workarounds zu basteln.
+
+#### 1.2.7 Attribut Zugriff
+
+Der Attributzugriff in einer Python-Klasse lässt sich über verschiedene Wege erreichen.
 
 <br/><br/><br/>
 
@@ -850,7 +854,24 @@ Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @
 
 Und wozu soll das gut sein? Naja, im Vergleich zu dem normalen Zugriff ist es jetzt möglich beim Schreiben eines Attributs ein Value/Type Checking durchzuführen. Man könnte das Löschen des Attributs loggen, Lesezugriffe beschränken etc. Und das alles würde ganz automatisch im Hintergrund passieren, ohne dass der Zugriff über 'instanz.attribut' sich ändern müsste.
 
-<sub>(Randnotiz 1: Auch bei der Zuweisung in der \_\_init\_\_ wird die @attr.setter Method durchgeführt.)</sub>
+Eine weitere Möglichkei, um die Discriptoren der standard Libary zu verwenden ist, dass man sich die Methoden für get, set und delete selbst definiert und dann mit folgender Zeile an das Attribut übergibt.
+
+```py
+class PC:
+    attr = property(get_func, set_func, delete_func, doc_string)
+```
+
+Die übergebenen Funktionen können belibig definiert sein und können auch machen was sie wollen. Die 'Built-In'-Property Methode verknüpfte diese nur an ein Attribut. Das heißt:
+
+- wenn pc_instance.attr verwendet wird, dann wird die get_func ausgeführt.
+- wenn pc_instance.attr = verwendet wird, dann wird die set_func ausgeführt.
+- wenn del pc_instance.attr verwendet wird, dann wird die delete_func ausgeführt.
+
+Was diese Funktionen machen ist euch überlassen. Mit diesem Ansatz kann man die Zugangsmethoden einmalig definieren und sie einfach als property an ein Attribut setzten.
+
+Da Discriptoren meiner Meinung nach eine coole Sache sind und für ein fortgeschrittenes Klassendesign sehr hilfreich sein können, gibt es zu diesen noch ein eigenes Kapitel, wie man eigene Discriptoren erstellt.
+
+<sub>(Randnotiz 1: Auch bei der Zuweisung in der \_\_init\_\_ wird die @attr.setter Method durchgeführt, da der Attributzugriff über self.attr innerhalb einer Klasse keinen Unterschied zu dem Zugriff instance.attr außerhalb einer Klasse darstellt.)</sub>
 <br/><br/><br/>
 
 #### 2.1.3 Weiteres Overloading
@@ -988,18 +1009,41 @@ class Student(Person):  # Ansatz 1
 
 die super()-Methode innerhalb der \_\_init\_\_ und greift im Fall der _StudentWorker_ Klasse **NICHT** auf die vererbte Klasse _Person_ zu, sondern geht laut der \_\_mro\_\_ weiter zur Klasse _Employee_. Würde man natürlich die Klasse Student instanziieren, dann würde die super()-Methode zur Klasse _Person_ weiterleiten. Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sollte und außerdem wieso man mit \*\*kwargs arbeiten sollte. Je nachdem, wie die Klassen vererbt werden, kann man gar nicht wissen, an welcher Stelle die Elternklasse der neuen Klasse stehen. Die übergebenen Parameter _fname_ und _lname_ machen im Aufruf des Employee-Konstruktor überhaupt keinen Sinn und würeden dementsprechend einen Fehler generieren.
 
-## Kapitel 4 Klassendekoratoren
+## Kapitel 4 Discriptor Protokol
+
+Discriptoren sind Klassen, welche in den Prozess des Attributszugriff eingreifen und zusätzliche Aufgaben durchführen können. Der Vorteil von eigenen Discritopren, gegenüber den Discriptoren der standard Libary ([2.1.2](#212-@property,-@fn.setter,-@fn.deleter)), ist, dass das Protokol für alle Attribute in einer eigene Klasse definiert wird. Dadurch lassen sich Discriptoren einfach warten und erweitern, indem sie in eine neue Klasse vererbt werden und weitere Funktionalität hinzugefügt wird.
+
+[Python Docs: Discriptor HowTo Guide](https://docs.python.org/3/howto/descriptor.html)
+
+[Python Docs: Implementing Discriptors](https://docs.python.org/3/reference/datamodel.html?highlight=__get__#implementing-descriptors)
+
+[Stackoverflow: When and why use an discriptor over property()](https://stackoverflow.com/questions/5842593/when-and-why-might-i-assign-an-instance-of-a-descriptor-class-to-a-class-attribu)
+
+### 4.1 Allgemein
+
+Bei Discriptoren unterscheidet man zwischen 'Data-Discriptor' und 'Non-Data-Discrptor'. 'Non-Data-Discriptors' sind dadurch definiert, dass sie **nur** die \_\_get\_\_-Method enthalten. Für 'Data-Discriptros' müssen die \_\_set\_\_ und optional die \_\_delete\_\_ Methods definieren werden. Man unterscheidet aus dem Grund zwischen diesen Typen, da ein 'Non-Data-Discriptor' beispielsweise auch den Zugriff auf eine Methode steuer kann und deswegen nur die \_\_get\_\_-Method benötigt.
+
+Die Discriptor-Klasse wird durch folgende 'Dunder'-Methods beschrieben.
+
+- \_\_get\_\_
+- \_\_set\_\_
+- \_\_delete\_\_
+- \_\_set_name\_\_
+
+Selbstverstädnlich darf eine Discriptorklasse auch andere Methoden haben
+
+## Kapitel 5 Klassendekoratoren
 
 Klassendekoratoren sind der erste Schritt zur Metaklasse. Viele Dinge, die man mit Metaklassen realisieren kann, könnte man auch mit Klassendekoratoren erreichen. Die Frage wozu man Metklassen dann überhaupt lässt sich mit den zwei wesentlichen Unterschieden beantworten.
 
 1. Klassendekoratoren werden **NACH** der Erzeugung der Klassendefinition angewandt. Metaklassen werden **VOR** der Erzeugung der Klassendefinition durchgeführt.
 2. Metaklassen werden durch Vererbung weitergeleitet. Ein Klassendekorator wirkt nur auf die Klasse, die damit dekoriert wird.
 
-### 4.1 Allgemein
+### 5.1 Allgemein
 
-Klassendekoratoren unterscheiden sich von Funktionsdekopratoren nur in der Weise, dass sie, statt der Funktion, eine Klasse als Inputargument haben und eine Klasse zurückgeben (sollten). Da die Klassendekoratoren nach der Erzeugung der Klasse aufgerufen werden hat die Klasse bereits ein vollständig gefülltes Dict, welches alle Inhalte des Class-Bodys enthält.
+Klassendekoratoren unterscheiden sich von Funktionsdekoratoren nur in der Weise, dass sie, statt der Funktion, eine Klasse als Inputargument haben und eine Klasse zurückgeben. Da die Klassendekoratoren nach der Erzeugung der Klasse aufgerufen werden hat die Klasse bereits ein vollständig gefülltes Dict, welches alle Inhalte des Class-Bodys enthält.
 
-#### 4.1.1 Klassendekorator als Funktion
+#### 5.1.1 Klassendekorator XXXXXXX
 
 ```py
 from datetime import datetime
@@ -1013,9 +1057,9 @@ def debugger(func):
 def debug_all_cls_methods(cls):
     # Alle Elemente des Klassendicts durchsuchen
     for key, element in cls.__dict__.items():
-        # Filtern nach den Aufrufbaren elementen
+        # Filtern nach den Aufrufbaren elementen (Klassenattribute werden herausgefiltert)
         if callable(element):
-            # Rausfiltern der 'Dunder'-Methods
+            # Rausfiltern der 'Dunder'-Methods (Wenn man möchte)
             if not key.startswith('__') :
                 # Anbringen des 'debug'-Dekorator und zurück ins Klassendictionary schreiben
                 setattr(cls, key, debugger(element))
@@ -1044,18 +1088,18 @@ meine_pc_instanz.power(ampere=2, voltage=230)
 ```
 
 <pre>
-> Funktionsaufruf am 2020-12-07 18:25:44.998121: Übergabeparameter: (<__main__.PC object at 0x0000019368148880>, False), {}.
+> Funktionsaufruf am 2020-12-07 19:11:46.998121: Übergabeparameter: (<__main__.PC object at 0x0000019368148880>, False), {}.
 > No it can't.
 >
 > Funktionsaufruf am 2020-12-07 19:11:47.155469: Übergabeparameter: (<__main__.PC object at 0x0000019368148880>,), {'ampere': 2, 'voltage': 230}.
 > I consume 460 W right now.
 </pre>
 
-Das \_\_main\_\_.PC object ist in diesem Fall das _self_-Argument, welches automatisch bei dem Aufruf übergeben wird. Wir sehen aber, dass **ALLE** Methoden der Klasse mittels des Debug-Dekorator erweitert wurden. Würde man nur auf Funktionsdekoratoren zurückgreifen, dann müsste man jede Methode einzeln mit einem Ausstatten.
+Das \_\_main\_\_.PC Object (Welches die Instanz der Klasse ist) ist in diesem Fall das _self_-Argument, welches automatisch bei dem Aufruf übergeben wird. Wir sehen aber, dass **ALLE** Methoden der Klasse mittels des Debug-Dekorator erweitert wurden. Würde man nur auf Funktionsdekoratoren zurückgreifen, dann müsste man jede Methode einzeln mit einem Ausstatten.
 
 <sub>(Kleine Denkaufgabe: Warum kann ich im Klassdekorator die 'Dunder'-Methods nur anhand der vorhergehenden Unterstriche identifizieren und muss nicht noch nach den nachfolgenden Unterstrichen suchen, um sicherzustellen, dass es sich um kein privates Attribut/Methode handelt?)</sub>
 <br/><br/>
 
-#### 4.1.2 Klassendekorator als Klasse
+Wer in [1.2.5 \_\_call\_\_ Method](#125-__call__-method) aufgepasst hat wird wissen, dass man eine Funktion auch als Klasse darstellen kann. Man kann damit also eine Klasse mit einer aufrufbaren Klasse dekorieren.
 
-Wer in [1.2.5 \_\_call\_\_ Method](#125-__call__-method) wird wissen, dass man eine Funktion auch als Klasse darstellen kann. Und es ist nicht ungewöhnlich, dass ein Klassendekorator mittels eigener Klasse dargestellt wird. Warum?
+## Kapitel 6 Metaklassen
