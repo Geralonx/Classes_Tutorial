@@ -132,8 +132,6 @@ def summe(*zahlen):
     return summe
 ```
 
----
-
 <br/><br/>
 
 ## Vorbereitende Erklärungen
