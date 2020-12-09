@@ -51,6 +51,8 @@ Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als 
 Bitte den [Disclaimer](#disclaimer) beachten.
 <br/><br/>
 
+---
+
 ### Für wen ist dieses Tutorial geeignet?
 
 Dieses Tutorial geht schnell über Python-Grundlagen hinaus und befasst sich im Kern mit Klassen und deren speziellen Methoden ('Dunder'-Methods), welche bei der Verwendung von der 'Built-In' Methoden und Syntax verwendet werden. Wenn du nur wissen willst, wie man allgemein Klassen in Python schreibt und verwendet, dann solltest du woanders nachschlagen.
@@ -68,6 +70,8 @@ Wenn man einmal versteht, was bei den Prozessen der Erstellung, Initialisierung,
 Metaklassen sind eigentlich für 99% der Nutzer von Python unrelevant. Das benötigen hauptsächlich Framework/Libary Entwickler. Aber bis zu dem Kapitel soll dieses Tutorial allgemein die fortgeschrittene Vernwednung von Klassen beschreiben. Und das ist bestimmt für mehr als 1% der Leute interesannt.
 <br/><br/>
 
+---
+
 ### Kritik
 
 Zuerst sei gesagt, ich habe die Kritikpunkte unter dem letzten Tutorial alle
@@ -79,20 +83,28 @@ ausnutzen würde, würde ein Beitrag nicht reichen. Außerdem möchte ich die
 einzelnen Beiträge kürzer halten.
 <br/><br/>
 
+---
+
 ### Hater
 
 Für die, die sagten pr0 sei nicht die Plattform für sowas, bitte Minus geben und weiterziehn.
 <br/><br/>
+
+---
 
 ### Prerequisites / Vorraussetzungen
 
 Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
 <br/><br/>
 
+---
+
 ### IDE
 
 Da es in dem ersten Beitrag auch zur Sprache kam erwähne ich es hier nochmal explizit, ich arbeite vollständig mit VSCode und habe mir diese IDE inwzischen schon recht stark Modifiziert. Color-Themes, Boilerplates/Snippets, indentation und bracket Colors, Autoformatting und ein paar Andere. Für einige ist es sicher zu bunt, mir gefällts halt.
 <br/><br/>
+
+---
 
 ### Disclaimer
 
@@ -102,6 +114,8 @@ Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Din
 
 Diese Zusammenfassung/Tutorial soll eigenständig sein. Ich habe Informationen auch für gleiche Themen aus verschiedenen Quellen zusammengetragen, wodurch dieses gesamte Tutorial sehr groß geworden ist. Vielleicht bin ich auch einfach zu doof, um Kurzfassungen zu verstehen, aber dieses Tutorial ist in einer Form wo ich denke, dass dies alles enthält, ohne dass man in 10 verschiedene Quellen gucken muss, um eine einzige Sache zu verstehen.
 <br/><br/>
+
+---
 
 ### Korrektur meiner Aussage im ersten Tutorial zu 'Clouseres / Decorators'
 
@@ -127,9 +141,13 @@ def summe(*zahlen):
 
 <br/>
 
+---
+
 ## Vorbereitende Erklärungen
 
 Dieses Tutorial richtet sich zwar schon an Leute die bereits die Grundlagen von Python kennen und verstehen, aber ich werde kurz f-Strings und List-Comprehensions erklären, weil ich diese Konzepte in den Codebeispielen regelmäßig verwende, wer das kennt, kann diesen Teil überspringen. Und direkt mit [Kapitel 1](<#kapitel-1:-fortgeschrittenes-(klassen)-design>) starten.
+
+---
 
 ### f-Strings
 
@@ -160,6 +178,8 @@ Mit der alten Methode reißt es einem beim Lesen des Codes aus dem Fluss. Man mu
 </sub>
 
 <br/>
+
+---
 
 ### List-Comprehensions
 
@@ -327,7 +347,7 @@ print(meine_pc_instanz.__dict__)
 > {'cpu': 'Ryzen 7', 'gpu': 'RTX2070Super', '_PC__ram': 'GSkill'}
 </pre>
 
-Wir sehen, dass cpu und gpu wie zu erwarten enthalten sind, aber wir sehen auch, dass unser \_\_ram wieder da ist. Das Name Mangling hat dafür gesorgt, dass der Klassenname mit einem führenden Unterstrich an den Anfang des Attributs gesetzt wurde.
+Wir sehen, dass _cpu_ und _gpu_ wie zu erwarten enthalten sind, aber wir sehen auch, dass unser _\_\_ram_ wieder da ist. Das Name Mangling hat dafür gesorgt, dass der Klassenname mit einem führenden Unterstrich an den Anfang des Attributs gesetzt wurde.
 
 Versuche ich folgendes
 
@@ -356,7 +376,7 @@ Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von 
 
 Klassenattribute sind Attribute, welche nicht im Instanz-Dict erstellt werden, sondern bereits vor der Instanziierung auf Klassenebene existieren.
 
-Klassenattribute existieren **NUR** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies Zieht sich auch durch Vererbungen durch.
+Klassenattribute existieren **nur** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies Zieht sich auch durch Vererbungen durch.
 
 ```py
 class PC:
@@ -368,8 +388,6 @@ print("Instanz Dict: ", meine_pc_instanz.__dict__)
 print("Klassen Dict: ", PC.__dict__)
 print("Zugriff über Instanz: ", meine_pc_instanz.klassen_attribut)
 ```
-
-Ausgabe:
 
 <pre>
 > Instanz Dict: {}
@@ -412,24 +430,46 @@ class PC:
         self.attr3 = PC.klassen_attribut             # Zeile 3
 ```
 
-Zeile 1 und Zeile 2 funktionieren **EXAKT** gleich, da type(self) immer die eigene Klasse zurück gibt, welche aber auch bereits in self.\_\_class\_\_ enthalten ist (Ihr könnt ja beide Statements mal ausgeben, dann werdet ihr es ja sehen). Ich persönlich bevorzuge die Schreibweise von Zeile 1.
+Zeile 1 und Zeile 2 funktionieren **exakt** gleich, da type(self) immer die eigene Klasse zurück gibt, welche aber auch bereits in self.\_\_class\_\_ enthalten ist (Ihr könnt ja beide Statements mal ausgeben, dann werdet ihr es ja sehen). Ich persönlich bevorzuge die Schreibweise von Zeile 1.
 
 **Hardcoding, wie in Zeile 3, sollte immer vermieden werden**. Spätestens, wenn diese Klassen vererbt werden, bekommt ihr Probleme. Einfache Zeile 3 vergessen. Im Kapitel zu Vererbungen zeige ich da nochmal ein ähnliches Beispiel.
 <br/><br/>
 
 **Vererbung von Klassenattirbuten**<br/>
 
-Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, ABER es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict der erstellen Klasse, noch im Klassen-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnten, welche sich anschließend auch in den Instanzen der Kindklassen wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute aus Elternklassen verwendet.
+Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, **aber** es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict der erstellen Klasse, noch im Klassen-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnten, welche sich anschließend auch in den Instanzen der Kindklassen wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute aus Elternklassen verwendet.
 
-<sub>(Randnotiz 1: Ich habe bisher nicht sehr viel mit Klassenattributen gearbeitet, aber ich denke ich würde sie einfach immer 'privat' machen, einfach um nicht ausversehen aus vererbten Klassen auf etweas zugreifen zu können, was ich erstmal ewig suchen müsste. Ob man das so macht weiß ich nicht.)</sub>
+```py
+class PC:
+    klassen_attribut = "Ich bin ein Klassenattribut"
 
-<sub>(Randnotiz 2: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist der Zugriff immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken', denen beispielsweise nur die Kindklassen zur Verfügung stehen.)</sub>
+class PC2(PC):
+    pass
+
+pc2_instanz = PC2()
+
+print(pc2_instanz.__dict__)
+print(PC2.__dict__)
+print(pc2_instanz.klassen_attribut)
+```
+
+<pre>
+> {}
+> {'__module__': '__main__', '__doc__': None}
+> Ich bin ein Klassenattribut
+</pre>
+
+<sub>(Randnotiz 1: Ich habe bisher nicht sehr viel mit Klassenattributen gearbeitet, lediglich habe ich sie als 'Konstanten' verwendet. Ich denke aber ich würde sie einfach immer 'privat' machen, einfach um nicht ausversehen aus vererbten Klassen auf etwas zugreifen zu können, was ich erstmal ewig suchen müsste. Ob man das so macht weiß ich nicht.)</sub>
+
+<sub>(Randnotiz 2: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist der Zugriff immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. (Beispielsweise könnte man ja alle Elternklassen auslesen und anschließend das Dict jener und mit dem Namen der Klasse nach Allem suchen was dem Muster f"\_{parent_class}\_\_" folgt.) Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken', denen beispielsweise nur die Kindklassen zur Verfügung stehen.)</sub>
 <br/><br/>
 
 ### 1.2 'Dunder'-Methods
 
 Um das Klassendesign im fortgeschrittenen Stil zu verstehen und anwenden zu können muss man die Idee hinter den 'Dunder'-Methods kennen (Dunder steht für 'Double Underscores'). Diese speziellen Methoden erfüllen einzigartige Aufgaben, welche durch die allgemeine Syntax und die 'Built-In' Methoden von Python aufgerufen/abgefragt werden. Ich werde selbstverständlich nicht alle im Detail vorstellen und zeigen, sondern anhand von einzelnen Beispielen die Funktion von 'Dunder'-Methods erklären und auf ein paar besondere hinweisen. Um sie sinnvoll anzuwenden zu können müsst ihr sowieso die Dokumentation lesen, da es für manche 'Dunder'-Methods gewisse Regeln gibt, wie beispielsweise, dass die Rückgabe ein nur bestimmten Datentyp sein darf oder in einem definierten Bereich liegen muss.
 <br/>
+
+---
 
 #### 1.2.1 Allgemein
 
@@ -441,7 +481,7 @@ def __init__(self, arg1, arg2, ...)
 
 verwendet haben. 'Dunder'-Methods sind Methoden, welche im allgemeinen Fall **nicht** direkt über ihre Bezeichnung aufgerufen, sondern über die Syntax oder andere 'Built-In' Methods von Python. Sie **können** zwar über die Bezeichnung der 'Dunder'-Methods direkt aufgerufen werden, aber es widerspricht ihrem Sinn. (Ausgenommen innerhalb der Klassendefinition selbst, dazu später mehr.)
 <br/>
-<sub>Ich kenne ehrlich gesagt keinen Fall indem man außerhalb der Klassendefinition die 'Dunder'-Methods über ihre Bezeichnung verwenden sollte.</sub>
+<sub>(Ich kenne ehrlich gesagt keinen Fall indem man außerhalb der Klassendefinition die 'Dunder'-Methods über ihre Bezeichnung verwenden sollte.)</sub>
 
 ```py
 # 'Falscher' Weg (Funktioniert, aber man macht es nicht)
@@ -452,13 +492,14 @@ MyClass.__init__(my_class_instance, arg1, arg2, ...)
 
 
 # Richtiger Weg
-# Beim Instanziieren einer Klasse über den richtigen Konstrukor wird die __new__ (und __prepare__) Method automatisch vor der Initialisierung durchgeführt.
+# Beim Instanziieren einer Klasse über den richtigen Konstrukor werden die
+# __new__ (und __prepare__) Methoden automatisch vor der Initialisierung durchgeführt.
 my_class_instance = MyClass(arg1, arg2, ...)
 ```
 
 Dieses Beispiels sollte verdeutlichen, dass man zum einen jede 'Dunder'-Method über ihre Bezeichung aufrufen kann. Außerdem sollte auch klar sein, dass jede Methode einer Klasse direkt über die Klasse selbst aufgerufen werden kann, wenn man an der ersten Stelle die Instanz als das _self_-Argument übergibt.
 
-<br/><br/>
+<br/>
 Beispiel für die Verwendung von 'Dunder'-Methods durch 'Built-In'-Methods:
 
 Die 'Dunder'-Method \_\_len\_\_(self) wird über die 'Built-In' Method
@@ -506,6 +547,8 @@ Ich selbst hatte keine Idee, wie man eine allgemeine Zusammenfassung für die 'D
 Python-Dokumentation über (alle?) Special 'Dunder' Methods: https://docs.python.org/3/reference/datamodel.html#special-method-names
 
 <br/>
+
+---
 
 #### 1.2.2 \_\_repr\_\_ oder \_\_str\_\_
 
@@ -592,6 +635,8 @@ Was zu folgender Ausgabe führen wird:
 <sub>(Randnotiz 3: Der repr, also die Represenation eines Objekts, wird von VSCode beispielsweise beim Debuggen verwendet. Wenn man an einem Breakpoint steht, sieht man die Variablen an der Seite. Hinter der Variable steht eben die Representation. Ob und wie es von anderen IDEs verwendet wird weiß ich nicht. Ohne \_\_repr\_\_-Method würde dort allgemein (\_\_main\_\_.\_\_class_name\_\_ at 0x....) stehen, also Classe XY aus dem Main-File an Memoryposition 0x....)</sub>
 <br/><br/><br/>
 
+---
+
 #### 1.2.3 \_\_enter\_\_ und \_\_exit\_\_
 
 Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt sie in eine Variable. Wenn man eine Datei öffnet, dann sollte man sie auch wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen. Schaut euch dazu einfach weitere Beispiele an, falls ihr das benötigt.
@@ -608,6 +653,8 @@ f.close()
 ```
 
 Würde man das Schließen der Datei vergessen, dann wäre die Datei im System blockiert, da noch eine andere Stelle dort zugreift.
+
+---
 
 ### 1.2.4 \_\_doc\_\_ Attribut
 
@@ -657,6 +704,8 @@ Ausgabe:
 Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Welcher Datentyp sie haben, was passiert, welche restricstions gelten. Also alles weis irgendwie hilfreich ist, um den Teil eben zu verwenden.
 
 <br/><br/><br/>
+
+---
 
 #### 1.2.5 \_\_call\_\_ Method
 
