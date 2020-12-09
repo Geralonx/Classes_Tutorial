@@ -262,9 +262,13 @@ Funktioniert es? Ja. Ist es einfach zu verstehen? Nein. Zur Übung oder aus Lang
 <sub>(Randnotiz 1: Es gibt das gleiche auch für Dicts, also Dict-Comprehensions. Die Syntax ist 1:1 wie ber für die List. Das einzige was sich ändert ist, dass man die Comprehensions mit {} statt [] schreibt und sicherstellen muss, dass die Expression ein Key-Value-Pair ist.)</sub>
 <br/><br/>
 
+---
+
 ## Kapitel 1: Fortgeschrittenes Klassen Design
 
 Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse'. Die Inhalte gehen auch hauptsächlich in diese Richtung, um zu zeigen, an welchen Stellen man 'sorgfältiger' arbeiten sollte, um die Wiederverwendung möglichst sicher und einfach zu gesalten.
+
+---
 
 ### 1.0 Style-Guides
 
@@ -284,6 +288,8 @@ Im Vortrag weist er mit diesen Aussagen darauf hin, dass man die Qualität von C
 [The Zen of Python](https://www.python.org/dev/peps/pep-0020/) gefällt mir am besten, wenn ich über die Wege für clean code nachdenke.
 <br/><br/>
 
+---
+
 ### 1.1 Klassen Recap
 
 #### 1.1.1 Allgemein
@@ -297,6 +303,8 @@ Die einzige Regel die auch ich grundsätzlich beachte ist aus folgendem Zitat ab
 > \- Jack Diederich in [YoutTube: Stop Writing Classes](https://youtu.be/o9pEzgHorH0)
 
 <br/>
+
+---
 
 #### 1.1.2 Public, Private und Protected
 
@@ -371,6 +379,8 @@ Protected, also das Attribute und Methoden nur von der Klasse und von vererbten 
 
 Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von Klassen mittels einem führenden Unterstrich gekennzeichnet werden. Das ist aber lediglich ein Hinweis für Andere. Der Python-Interpreter selbst behandelt Attribute und Methoden mit einem führenden Unterstrich nicht anders als ohne.
 <br/><br/>
+
+---
 
 #### 1.1.3 Klassenattribute
 
@@ -463,6 +473,8 @@ print(pc2_instanz.klassen_attribut)
 
 <sub>(Randnotiz 2: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist der Zugriff immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. (Beispielsweise könnte man ja alle Elternklassen auslesen und anschließend das Dict jener und mit dem Namen der Klasse nach Allem suchen was dem Muster f"\_{parent_class}\_\_" folgt.) Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken', denen beispielsweise nur die Kindklassen zur Verfügung stehen.)</sub>
 <br/><br/>
+
+---
 
 ### 1.2 'Dunder'-Methods
 
@@ -703,8 +715,6 @@ Ausgabe:
 
 Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Welcher Datentyp sie haben, was passiert, welche restricstions gelten. Also alles weis irgendwie hilfreich ist, um den Teil eben zu verwenden.
 
-<br/><br/><br/>
-
 ---
 
 #### 1.2.5 \_\_call\_\_ Method
@@ -738,7 +748,7 @@ print(my_instance(1))
 > 2
 </pre>
 
-<br/><br/><br/>
+---
 
 #### 1.2.6 Weitere 'Dunder'-Methods
 
@@ -746,11 +756,15 @@ Während den Recherchen habe ich diese Seite gefunden, welche nochmal einen deta
 
 Allgemeine Zusammenfassung ist, wenn ihr mit eurer Klasse irgendeine Standardoperation (+, -, <, >, aufruf, len(), bool(), str(), dir(), ...) verwenden wollte, dann schaut einfach nach der speziellen 'Dunder'-Method dafür nach und ihr könnt das sauber dafür implementieren, statt euch irgendwelche Adapter workarounds zu basteln.
 
+---
+
 #### 1.2.7 Attribut Zugriff
 
 Der Attributzugriff in einer Python-Klasse lässt sich über verschiedene Wege erreichen.
 
 <br/><br/><br/>
+
+---
 
 ## Kapitel 2: Spezielle Funktionsdekoratoren für Klassenmethoden
 
