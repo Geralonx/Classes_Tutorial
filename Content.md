@@ -49,7 +49,6 @@ Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger fürs Andere
 Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als ich. Wer mit der Einstellung, "Warum sollte ich mir **DEIN** Tutorial durchlesen, wenn es andere/bessere gibt?", hierher kommt sollte einfach wieder gehen und sich eben die besseren Tutorials durchlesen und mich nicht mit sowas nerven. Für alle Anderen, die ernsthaft interessiert sind und mein erstes Tutorial sogar ganz gut fanden, stelle ich diese Tutorial Repo gerne zur Verfügung und bin im Anschluss auch für weitere Fragen/Disskussionen gerne da.
 
 Bitte den [Disclaimer](#disclaimer) beachten.
-<br/><br/>
 
 ---
 
@@ -68,7 +67,6 @@ David Beazley hat vor vielen jahren ein Tutorial über Metaprogrammierung gegebe
 Wenn man einmal versteht, was bei den Prozessen der Erstellung, Initialisierung, Zugriff, Vererbung, etc. von Klassen stattfindet, dann kann man auch exakt an diesen Stellen seinen eigenen Eingriff vornehmen. Da im Wesentlichen **alles** in Python ein Objekt ist, ist es möglich jedes Objekt so anzupassen, wie man es benötigt. Und das ganze auf einer Ebene, wo der Benutzer der Klassen gar nicht mehr mitbekommtn, was im Hintergrund alles passiert.
 
 Metaklassen sind eigentlich für 99% der Nutzer von Python unrelevant. Das benötigen hauptsächlich Framework/Libary Entwickler. Aber bis zu dem Kapitel soll dieses Tutorial allgemein die fortgeschrittene Vernwednung von Klassen beschreiben. Und das ist bestimmt für mehr als 1% der Leute interesannt.
-<br/><br/>
 
 ---
 
@@ -81,28 +79,24 @@ Insagesamt wird dieses Tutorial auf mehrere Beiträge gesplitted, einfach weil
 das Thema zu groß ist, ja, sogar wenn ich die maximale Größe eines Bildes hier
 ausnutzen würde, würde ein Beitrag nicht reichen. Außerdem möchte ich die
 einzelnen Beiträge kürzer halten.
-<br/><br/>
 
 ---
 
 ### Hater
 
 Für die, die sagten pr0 sei nicht die Plattform für sowas, bitte Minus geben und weiterziehn.
-<br/><br/>
 
 ---
 
 ### Prerequisites / Vorraussetzungen
 
 Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
-<br/><br/>
 
 ---
 
 ### IDE
 
 Da es in dem ersten Beitrag auch zur Sprache kam erwähne ich es hier nochmal explizit, ich arbeite vollständig mit VSCode und habe mir diese IDE inwzischen schon recht stark Modifiziert. Color-Themes, Boilerplates/Snippets, indentation und bracket Colors, Autoformatting und ein paar Andere. Für einige ist es sicher zu bunt, mir gefällts halt.
-<br/><br/>
 
 ---
 
@@ -113,7 +107,6 @@ Jeder macht Fehler. Ich beanspruche keineswegs Vollständig- oder Richtigkeit de
 Ich möchte mit diesem 'Tutorial' einen tieferen Einblick in die elementaren Dinge von Python vermitteln. Auch ich habe währen des Schreibens viel nachlesen und recherchieren müssen. Ich biete hiermit lediglich eine zusammengefasste Form der Informationen an, welche ich auf eine Weise darstellen möchte, wie ich sie für logisch und verständlich halte.
 
 Diese Zusammenfassung/Tutorial soll eigenständig sein. Ich habe Informationen auch für gleiche Themen aus verschiedenen Quellen zusammengetragen, wodurch dieses gesamte Tutorial sehr groß geworden ist. Vielleicht bin ich auch einfach zu doof, um Kurzfassungen zu verstehen, aber dieses Tutorial ist in einer Form wo ich denke, dass dies alles enthält, ohne dass man in 10 verschiedene Quellen gucken muss, um eine einzige Sache zu verstehen.
-<br/><br/>
 
 ---
 
@@ -138,8 +131,6 @@ def summe(*zahlen):
         summe += zahl
     return summe
 ```
-
-<br/>
 
 ---
 
@@ -699,8 +690,6 @@ print(PC.__init__.__doc__, "\n")
 print(outer_func.__doc__, "\n")
 ```
 
-Ausgabe:
-
 <pre>
 > Dies ist die Dokumentation der Klasse: PC
 >
@@ -762,17 +751,19 @@ Allgemeine Zusammenfassung ist, wenn ihr mit eurer Klasse irgendeine Standardope
 
 Der Attributzugriff in einer Python-Klasse lässt sich über verschiedene Wege erreichen.
 
-<br/><br/><br/>
-
 ---
 
 ## Kapitel 2: Spezielle Funktionsdekoratoren für Klassenmethoden
 
 Python bringt standardmäßig einige Dekoratoren mit sich, welche speziell im Klassendesign anwendung finden. Dazu gehören vorallem @classmethod, @staticmethod, @property, @attr.setter und @attr.deleter
 
+---
+
 ### 2.1 @Classmethod und @Staticmethod
 
 Jede Methode, welche innerhalb eines 'Class-Body' definiert wird, kann mit diesen Dekoratoren ausgestattet werden. Dadurch verändern sich automatisch die Übergabeparameter und die Verhaltensweise der Methode.
+
+---
 
 #### 2.1.1 @Staticmethod
 
@@ -792,6 +783,8 @@ print(PC.add_2_to_3())
 </pre>
 
 Die Staticmethod muss nichts mit Inhalten der Klasse interagieren. Es ist eine ganz normale Funktion, die lediglich im Namespace der Klasse liegt und demtentsprechend über diesen Namespace aufgerufen werden muss.
+
+---
 
 #### 2.1.2 @Classmethod
 
@@ -828,10 +821,13 @@ Klassenmethoden sind nicht auf den Aufruf über die Klasse selbst beschränkt. E
 
 <sub>(Randnotiz 2: Eine weitere Idee für Klassenmethoden wäre einen Zugang zu Statistiken über den Gebrauch der Klasse zu schaffen. Informationen über alle Instanzen sammeln oder was weiß ich. Über Metaklassen kann man beispielsweise die Verwendung von Instanzen einer Klasse aufzeichnen, ohne dass der Benutzer davon was mitbekommt ode res selbst implementieren müsste.)</sub>
 
+---
+
 ### 2.2 Method Overloading
 
 Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode oder Funktion sich unterschiedlich verhalten kann, abhängig von der Verwendung der Methode. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
-<br/><br/>
+
+---
 
 #### 2.1.1 Optionale Parameter
 
