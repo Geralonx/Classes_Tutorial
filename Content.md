@@ -1,4 +1,6 @@
-# Inhalt des Tutorials
+# Fortgeschrittenes Klassendesign
+
+## Inhalt des Tutorials
 
 - [Vorwort](#vorwort)
 - [Vorbereitende Erklärungen](#vorbereitende-erklärungen)
@@ -35,7 +37,7 @@
 - [Kapitel 4 Discriptor Protokol](#kapitel-4-discriptor-protokol)
   - [4.1 Allgemein](#41-allgemein)
 - [Kapitel 5 Klassendekoratoren](#kapitel-5-klassendekoratoren)
-- [Kapitel 6 Metaklassen](#kepitel-6-metaklassen)
+- [Kapitel 6 Metaklassen](#kapitel-6-metaklassen)
   <br/><br/>
 
 ## Vorwort
@@ -44,9 +46,15 @@
 
 So Leude, mein letztes Python-Tutorial ist schon 5 Monate her und inzwischen habe ich einerseits Lust ein neues zu machen und andererseits auch wieder einige Dinge gelernt, welche ich euch überhaupt zeigen könnte.
 
-Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger fürs Andere, als für mich selbst. Ich bin der Meinung, wenn man Anderen etwas richtig erklären kann, dann hat man es auch wirklich verstanden. Die Zeit, die ich hier rein investiere, ist in erster Line für mich selbst, um einerseits neue Dinge zu lernen und die Dinge anschließend zu festigen. Die Informationen, die ich für dieses Tutorial zusammentrage, stammen aus vielen Quellen und beispielsweise auch Videomaterial, welches mehrere Stunden beinhaltet. Ich fasse diese Informationen in einer Form zusammen, wie ich sie für sinnvoll und zusammenhängend halte. Für mich entsteht in diesem Prozess ein Dokument, welches alles zu dem Thema beinhaltet, um die gezeigten Inhalte zu verstehen und dies anschließend auf die nicht gezeigten Inhalte übertragen kann.
+Der Textteil des Tutorials ist vollständig in deutsch gehalten. Es kann vorkommen, dass gewissen Codebeispiele englische Bezeichnungen enthalten. Dort fehlt es noch etwas an Konsistenz. Dies sollte aber kein Problem bezüglich dem Verständnis sein.
+
+Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger fürs Andere, als für mich selbst. Ich bin der Meinung, wenn man Anderen etwas richtig erklären kann, dann hat man es auch wirklich verstanden. Die Zeit, die ich hier rein investiere, ist in erster Line für mich selbst, um einerseits neue Dinge zu lernen und die Dinge anschließend zu festigen. Die Informationen, die ich für dieses Tutorial zusammentrage, stammen aus vielen Quellen und beispielsweise auch Videomaterial, welches mehrere Stunden beinhaltet. Ich fasse diese Informationen in einer Form zusammen, wie ich sie für sinnvoll und zusammenhängend halte. Für mich entsteht in diesem Prozess ein Dokument, welches die Wesentlichen Dinge zu dem Thema beinhaltet, um die gezeigten Inhalte zu verstehen und dies anschließend auf die nicht gezeigten Inhalte übertragen kann.
 
 Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als ich. Wer mit der Einstellung, "Warum sollte ich mir **DEIN** Tutorial durchlesen, wenn es andere/bessere gibt?", hierher kommt sollte einfach wieder gehen und sich eben die besseren Tutorials durchlesen und mich nicht mit sowas nerven. Für alle Anderen, die ernsthaft interessiert sind und mein erstes Tutorial sogar ganz gut fanden, stelle ich diese Tutorial Repo gerne zur Verfügung und bin im Anschluss auch für weitere Fragen/Disskussionen gerne da.
+
+In der Repo sind viele einzelne .py-Files, welche die gezeigten Inhalte als Programmschnipsel zur Verfügung stellen. .py-Files welche dem Format '\_E\*\_name.py' Folgend sind zusätzliche Dinge, die nicht im Text angesprochen werden.
+
+DIESE BEISPIELE DIENEN LEDIGLICH ZUR ERKLÄRUNG DER ABLÄUFE UND PROZESSE IN PYTHON. ICH SPRECHE KEINE ALLGEMEINE EMPFEHLUNG AUS, DIE GEZEIGTEN BEISPIELE IN GENAU DIESER FORM ANZUWENDEN.
 
 Bitte den [Disclaimer](#disclaimer) beachten.
 
@@ -72,13 +80,9 @@ Metaklassen sind eigentlich für 99% der Nutzer von Python unrelevant. Das benö
 
 ### Kritik
 
-Zuerst sei gesagt, ich habe die Kritikpunkte unter dem letzten Tutorial alle
-gelesen und ich möchte mich auch daran halten. Ersteinmal habe ich in diesem Post auf die Farben verzichtet. Als zweites habe ich das ganze Tutorial auf GitHub gepackt, mit Code, mit Kommentaren und weiteren Texten, welche detaillierter auf die Inhalte eingehen.
+Zuerst sei gesagt, ich habe die Kritikpunkte unter dem letzten Tutorial alle gelesen und ich möchte mich auch daran halten. Ersteinmal habe ich in diesem Post auf die Farben verzichtet. Als zweites habe ich das ganze Tutorial auf GitHub gepackt, mit Code, mit Kommentaren und weiteren Texten, welche detaillierter auf die Inhalte eingehen.
 
-Insagesamt wird dieses Tutorial auf mehrere Beiträge gesplitted, einfach weil
-das Thema zu groß ist, ja, sogar wenn ich die maximale Größe eines Bildes hier
-ausnutzen würde, würde ein Beitrag nicht reichen. Außerdem möchte ich die
-einzelnen Beiträge kürzer halten.
+Insagesamt wird dieses Tutorial auf mehrere Beiträge gesplitted, einfach weil das Thema zu groß ist, ja, sogar wenn ich die maximale Größe eines Bildes hier ausnutzen würde, würde ein Beitrag nicht reichen. Außerdem möchte ich die einzelnen Beiträge kürzer halten.
 
 ---
 
@@ -162,6 +166,8 @@ gruss_alt = "Grueß dich, mein Name is {}, ich bin {} Jahre alt.".format(mein_na
 </pre>
 
 Mit der alten Methode reißt es einem beim Lesen des Codes aus dem Fluss. Man muss in die Format-Methode am Ende reingucken und sich dann selbst noch die übergeben Attribute in den String denken. F-Strings sollen es halt einfacher machen.
+
+Mittels dem f-String f"{value}" wird auf die str-Darstellung des Value-Objekts zurückgegriffen. Wenn man allerdings f"{value!r}" wird auf die repr-Darstellung zurückgegriffen. Was das ist und warum das in einzelnen Fällen wichtig ist wird später noch genauer erklärt.
 
 <sub>(Randnotiz 1: Auch wenn es f-Strings bereits Seit Python 3.6 (2016) gibt bin ich erst dieses Jahr vollständig auf die Verwendung von f-Strings umgestiegen. Vorher habe ich immer mit .format() gearbeitet, weil mir diese Darstellung sehr gut gefiel und ich die es deshlab nicht für nötig hielt mir die f-Strings anzugucken.</sub>
 
@@ -291,7 +297,7 @@ Die einzige Regel die auch ich grundsätzlich beachte ist aus folgendem Zitat ab
 > init. Any time you see that, you should probably think 'hey, maybe I just need one method'."
 > \- Jack Diederich in [YoutTube: Stop Writing Classes](https://youtu.be/o9pEzgHorH0)
 
----
+<br/>
 
 #### 1.1.2 Public, Private und Protected
 
@@ -321,8 +327,6 @@ Beispiel:
 11  print(meine_pc_instanz.__ram)
 ```
 
-Die 3 Prints haben folgende Ausgabe:
-
 <pre>
 > Ryzen 7
 > RTX2070Super
@@ -332,7 +336,7 @@ Die 3 Prints haben folgende Ausgabe:
 > AttributeError: 'PC' object has no attribute '__ram'
 </pre>
 
-So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Wenn man wissen will, was in einem Obejkt enthalten ist, dann muss man sich das \_\_dict\_\_ Attribut einer Instanz anschauen. Es enthält **alle** instanzspezifischen Attribute, also alles was zu self zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
+So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Wenn man wissen will, was in einem Obejkt enthalten ist, dann muss man sich das \_\_dict\_\_ Attribut anschauen. Es enthält **alle** Attribute und Methoden die zu jenem Objekt zugewiesen wurden. Bei einer Instanz heißt das also, alles was zu _self_ zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
 
 ```py
 print(meine_pc_instanz.__dict__)
@@ -354,7 +358,7 @@ print(meine_pc_instanz._PC__ram)
 > GSkill
 </pre>
 
-habe ich dennoch Zugang zu den eigentlich 'privaten' Attributen innerhalb einer Klasse. Dennoch findet diese Form Anwendung. Das Name Mangling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form. Denn würde ich ein weiteres \_\_ram Attribut in einer vererbten Klasse erstellen, dann würde dies durch das Name Mangling den Namen der vererbten Klasse vorgestellt bekommen.
+habe ich dennoch Zugang zu den eigentlich 'privaten' Attributen innerhalb einer Klasse. Dennoch findet diese Form Anwendung. Das Name Mangling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form. Denn würde ich ein weiteres \_\_ram Attribut in einer vererbten Klasse erstellen, dann würde dies durch das Name Mangling den Namen der vererbten Klasse vorgestellt bekommen. Damit würden sich die beiden Attribute von der Bezeichnung unterscheiden.
 
 <sub>(Randnotiz 1: Warum kann ich innerhalb von Klassen dann mit self.\_\_ram an das Attribut kommen? Ganz einfach, der Interpretert bennent innerhalb einer Klasse ALLE vorkommenden Attribute und Methoden mit 2 führenden Untersichten mittels Name Mangling um. Außerhalb von Klassen eben nicht.)
 </sub>
@@ -366,13 +370,13 @@ Protected, also das Attribute und Methoden nur von der Klasse und von vererbten 
 
 Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von Klassen mittels einem führenden Unterstrich gekennzeichnet werden. Das ist aber lediglich ein Hinweis für Andere. Der Python-Interpreter selbst behandelt Attribute und Methoden mit einem führenden Unterstrich nicht anders als ohne.
 
----
+<br/>
 
 #### 1.1.3 Klassenattribute
 
-Klassenattribute sind Attribute, welche nicht im Instanz-Dict erstellt werden, sondern bereits vor der Instanziierung auf Klassenebene existieren.
+Klassenattribute sind Attribute, welche nicht im Instanz-Dict gespeichert werden, sondern bereits vor der Instanziierung auf Klassenebene existieren.
 
-Klassenattribute existieren **nur** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies Zieht sich auch durch Vererbungen durch.
+Klassenattribute existieren **nur** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies zieht sich auch durch Vererbungen durch.
 
 ```py
 class PC:
@@ -455,7 +459,7 @@ print(pc2_instanz.klassen_attribut)
 > Ich bin ein Klassenattribut
 </pre>
 
-<sub>(Randnotiz 1: Ich habe bisher nicht sehr viel mit Klassenattributen gearbeitet, lediglich habe ich sie als 'Konstanten' verwendet. Ich denke aber ich würde sie einfach immer 'privat' machen, einfach um nicht ausversehen aus vererbten Klassen auf etwas zugreifen zu können, was ich erstmal ewig suchen müsste. Ob man das so macht weiß ich nicht.)</sub>
+<sub>(Randnotiz 1: Ich habe bisher nicht sehr viel mit Klassenattributen gearbeitet, lediglich habe ich sie als 'Konstanten' verwendet, welche ich einmal im Kopf der Klasse definiert und anschließend nur gelesen habe. Ich denke aber ich würde sie einfach immer 'privat' machen, einfach um nicht ausversehen aus vererbten Klassen auf etwas zugreifen zu können, was ich erstmal ewig suchen müsste. Ob man das so macht weiß ich nicht.)</sub>
 
 <sub>(Randnotiz 2: Natürlich, wenn ihr jetzt verstanden habt wie es geht, dann ist der Zugriff immernoch möglich, aber es verhindert im ersten Schritt Kollisionen, wenn man über sowas gar nicht nachdenkt. (Beispielsweise könnte man ja alle Elternklassen auslesen und anschließend das Dict jener und mit dem Namen der Klasse nach Allem suchen was dem Muster f"\_{parent_class}\_\_" folgt.) Des Weiteren könnt ihr damit immernoch Attribute vor Anfängern oder unwissenden 'verstecken', denen beispielsweise nur die Kindklassen zur Verfügung stehen.)</sub>
 
@@ -464,9 +468,8 @@ print(pc2_instanz.klassen_attribut)
 ### 1.2 'Dunder'-Methods
 
 Um das Klassendesign im fortgeschrittenen Stil zu verstehen und anwenden zu können muss man die Idee hinter den 'Dunder'-Methods kennen (Dunder steht für 'Double Underscores'). Diese speziellen Methoden erfüllen einzigartige Aufgaben, welche durch die allgemeine Syntax und die 'Built-In' Methoden von Python aufgerufen/abgefragt werden. Ich werde selbstverständlich nicht alle im Detail vorstellen und zeigen, sondern anhand von einzelnen Beispielen die Funktion von 'Dunder'-Methods erklären und auf ein paar besondere hinweisen. Um sie sinnvoll anzuwenden zu können müsst ihr sowieso die Dokumentation lesen, da es für manche 'Dunder'-Methods gewisse Regeln gibt, wie beispielsweise, dass die Rückgabe ein nur bestimmten Datentyp sein darf oder in einem definierten Bereich liegen muss.
-<br/>
 
----
+<br/>
 
 #### 1.2.1 Allgemein
 
@@ -541,24 +544,27 @@ Ich selbst hatte keine Idee, wie man eine allgemeine Zusammenfassung für die 'D
 
 <br/>
 
-Python-Dokumentation über (alle?) Special 'Dunder' Methods: https://docs.python.org/3/reference/datamodel.html#special-method-names
+Python-Dokumentation über (alle?) Special 'Dunder' Methods:
+
+https://docs.python.org/3/genindex-_.html
+
+https://docs.python.org/3/reference/datamodel.html#special-method-names
 
 <br/>
-
----
 
 #### 1.2.2 \_\_repr\_\_ oder \_\_str\_\_
 
 Wenn man gute und ausgereifte Klassen designen will, dann sollte man auf diese beiden 'Dunder'-Methods nicht verzichten. Sie können in jeder Klasse ihren Platz finden, da sie lediglich Informationen enthalten, welche die Klasse und ihren Inhalt beschreiben sollen.
 
-<sub>(Randnotiz 1: Die \_\_repr\_\_ Method ist die Fallback-Methode für den Fall dass str() auf ein Objekt angewendet wird und keine \_\_str\_\_ Method definiert ist. Umgekehert ist dies nicht der Fall. Wendet man repr() auf ein Obejkt an wird **nicht** die \_\_str\_\_ Method als Alternative verwendet, falls es keine \_\_repr\_\_ Method gibt.)</sub>
+<sub>(Randnotiz 1: Die \_\_repr\_\_ Method ist die Fallback-Methode für den Fall dass str() auf ein Objekt angewendet wird und keine \_\_str\_\_ Method definiert ist. Umgekehert ist dies nicht der Fall. Wendet man repr() auf ein Objekt an wird **nicht** die \_\_str\_\_ Method als Alternative verwendet, falls es keine \_\_repr\_\_ Method gibt.)</sub>
 
 <br/>
-__str__(self)
+
+**\_\_str\_\_(self)**
 
 Die Dunder-str-Method ist dazu gedacht, eine Darstellung des Objekts zurückzugeben, welche für den Benutzer einfach zu lesen und zu verstehen ist. Sie **muss** einen String zurückgeben. Was ihr am Ende für einen String durch die Dunder-str-Methode zurück gibt ist euch überlassen. Der Sinn sollte am folgenden Beispiel klar werden.
 
-Kleines Beispiel:
+**PC Beispiel:**
 
 ```py
  class PC:
@@ -572,7 +578,7 @@ Kleines Beispiel:
         msg += "\nSie hat folgende Attribute:"
 
         for key, value in self.__dict__.items():
-            msg += f"\n\t{key}: \t{value} \t| ({type(value)})"
+            msg += f"\n\t{key}: \t{value!r} \t| ({type(value)})"
 
         return msg
 
@@ -580,14 +586,14 @@ meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super')
 print(meine_pc_instanz)
 ```
 
-Ausgabe, hervorgerufen durch print(meine_pc_instanz):
-
 <pre>
 > Diese Instanz ist von der Klasse: PC
 > Sie hat folgende Attribute:
->        cpu:      Ryzen 7         | (class 'str')
->        gpu:      RTX2070Super    | (class 'str')
+>        cpu:      'Ryzen 7'         | (class 'str')
+>        gpu:      'RTX2070Super'    | (class 'str')
 </pre>
+
+Man könnte noch Elternklassen anzeigen oder über Metaklassen viele weitere Informationen bereitstellen, wenn man sowas braucht. Die Frage ist halt, wofür möchte man str(instanz) am Ende verwenden. Eine schnelle, leserliche Information über die Inhalte? Zustände der Instanz? Eine detailliertere Beschreibung eines Prozesses? Ich denke das muss jeder selbst nach Anwendungsfall entscheiden.
 
 <sub>(Randnotiz 2: Eigentlich wird die der Type mit den <> dargestellt (<class 'str'>). Aufgrund der verwendeten Markuplanguage (.md) funktioniert das da nicht.)</sub>
 
@@ -595,13 +601,35 @@ Ausgabe, hervorgerufen durch print(meine_pc_instanz):
 </sub>
 
 <br/>
-__repr__(self)
+
+**\_\_repr\_\_(self)**
 
 Repr ist die Kurzform für 'Representation'. Die Dunder-repr-Method wird durch die 'Built-In' Methoden repr() aufgerufen. Der Rückgabewert der Dunder-repr-Method muss ebenfalls ein String sein. Und laut Python Dokumentation soll dieser String der Pythonausdruck sein, um jene Instanz zu erzeugen. Wenn das nicht möglich ist soll eine 'sinnvolle Beschreibung' zurückgegeben werden.
 
 Was heißt das nun, 'der Pythonausdruck, um jene Instanz zu erzeugen'?
 
-PC Beispiel:
+<br/>
+
+**Allgemeines Beispiel eines repr eines 'Built-In' Datentyps:**
+
+```py
+my_string = 'Hallo'
+
+print(my_string) # __str__()
+
+print(repr(my_string)) # __repr__()
+```
+
+<pre>
+> Hallo
+> 'Hallo'
+</pre>
+
+Der repr() zeigt also eine Darstellung, mit der ein neues Objekt jener Instanz erzeugt werden kann.
+
+<br/>
+
+**PC Beispiel:**
 
 ```py
 class PC:
@@ -610,7 +638,7 @@ class PC:
         self.gpu = gpu
 
     def __repr__(self):
-        argument_string_list = [f"{key}='{value}'" for key, value in self.__dict__.items()]
+        argument_string_list = [f'{key}={value!r}' for key, value in self.__dict__.items()]
         init_string = ', '.join(argument_string_list)
         return f'{self.__class__.__name__}({init_string})'
 
@@ -619,24 +647,21 @@ meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super')
 print(repr(meine_pc_instanz))
 ```
 
-Was zu folgender Ausgabe führen wird:
-
 <pre>
 > PC(cpu='Ryzen 7', gpu='RTX2070Super')
 </pre>
 
-<sub>(Randnotiz 1: Die Single-Quotes, welche um die '{value}' gepackt sind, sind in diesem Fall hardcoded um alle Argumente. Das funktioniert in diesem Fall nur, weil es bei sich bei Allen um Strings handelt. Man müsste die Dunder-repr-Method noch expliziter gestalten, um verschiedene Datentypen richtig zu unterscheiden. Dieses Beispiel geht lediglich allgemein auf die Dunder-repr-Method ein.)</sub>
+<sub>(Randnotiz 1: Wer die join() Method nich kennt sollte sich die anschauen. Sie nimmt eine iteriebares Obejekt and und verknüpft alle Elemente zu einem String, sofern sich die str() Method auf die Elemente anwenden lässt. Wenn sich die Elemente nicht in einen String umwandeln lassen wird ein TypeError erhoben. Der erste Teil (In diesem Fall ', ') ist der Seperator. Der Seperator wird zwischen die einzelnen Teilelemente gepackt.)</sub>
 
-<sub>(Randnotiz 2: Wer die join() Method nich kennt sollte sich die anschauen. Sie nimmt eine iteriebares Obejekt and und verknüpft alle Elemente zu einem String, sofern sich die str() Method auf die Elemente anwenden lässt. Wenn sich die Elemente nicht in einen String umwandeln lassen wird ein TypeError erhoben. Der erste Teil (In diesem Fall ', ') ist der Seperator. Der Seperator wird zwischen die einzelnen Teilelemente gepackt.)</sub>
+<sub>(Randnotiz 2: Der repr, also die Represenation eines Objekts, wird von VSCode beispielsweise beim Debuggen verwendet. Wenn man an einem Breakpoint steht, sieht man die Variablen an der Seite. Hinter der Variable steht eben die Representation. Ob und wie es von anderen IDEs verwendet wird weiß ich nicht. Ohne \_\_repr\_\_-Method würde dort allgemein (\_\_main\_\_.\_\_class_name\_\_ objekt at 0x....) stehen, also Objekt der Klasse XY aus dem Main-File an Memoryposition 0x....)</sub>
 
-<sub>(Randnotiz 3: Der repr, also die Represenation eines Objekts, wird von VSCode beispielsweise beim Debuggen verwendet. Wenn man an einem Breakpoint steht, sieht man die Variablen an der Seite. Hinter der Variable steht eben die Representation. Ob und wie es von anderen IDEs verwendet wird weiß ich nicht. Ohne \_\_repr\_\_-Method würde dort allgemein (\_\_main\_\_.\_\_class_name\_\_ at 0x....) stehen, also Classe XY aus dem Main-File an Memoryposition 0x....)</sub>
-<br/><br/><br/>
-
----
+<br/>
 
 #### 1.2.3 \_\_enter\_\_ und \_\_exit\_\_
 
-Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt sie in eine Variable. Wenn man eine Datei öffnet, dann sollte man sie auch wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen. Schaut euch dazu einfach weitere Beispiele an, falls ihr das benötigt.
+Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentlichen kommt dies zur Anwendung, wenn man vor der durchzuführenden Aufgabe etwas vorbereiten muss und nach erledigen der Aufgabe etwas nachbearbeiten (oder Aufräumen muss). Einige von euch werden es sicherlich schonmal von der 'Built-In' Methode _open()_ Gebrauch gemacht haben. Sie öffnet eine Datei und lädt den Zugang zu dieser in eine Variable.
+
+Wenn man eine Datei öffnet, dann sollte man sie auch wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen. Schaut euch dazu einfach weitere Beispiele an, falls ihr das benötigt.
 
 ```py
 with open('sample_file.txt') as f:  # Hier wird die Enter Methode ausgeführt
@@ -651,11 +676,11 @@ f.close()
 
 Würde man das Schließen der Datei vergessen, dann wäre die Datei im System blockiert, da noch eine andere Stelle dort zugreift.
 
----
+<br/>
 
 ### 1.2.4 \_\_doc\_\_ Attribut
 
-Dokumentiert eure Sachen. Muss man das noch sagen? In Python kann man die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen (es gehen doppelte \" und einfache \', aber typischerweise werden doppelte verwendet. [PEP 257 - Docstrings](https://www.python.org/dev/peps/pep-0257/)) am Kopf der Funktion oder Klasse geschrieben.
+Dokumentiert eure Sachen. Muss man das noch sagen? In Python kann man die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen am Kopf der Funktion oder Klasse geschrieben (es gehen doppelte \" und einfache \', aber typischerweise werden doppelte verwendet. [PEP 257 - Docstrings](https://www.python.org/dev/peps/pep-0257/)).
 
 Das \_\_doc\_\_ Attribut ist in jedem Objekt vorhanden, auch wenn keiner gesetzt wird. Falls keiner vom Author geschrieben wird, ist der Wert None.
 
@@ -698,11 +723,13 @@ print(outer_func.__doc__, "\n")
 
 Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Welcher Datentyp sie haben, was passiert, welche restricstions gelten. Also alles weis irgendwie hilfreich ist, um den Teil eben zu verwenden.
 
----
+Es gibt des Weiteren ein standard Libary names _doctest_. Dieses Modul kann die Funktion von einem Objekt mittels dem Docstring überprüfen, sofern der Docstring dazu designed wurde. Ob man das machen sollte oder nicht, keine Ahnung. Es gibt die Möglichkeit, aber auch dort sollte man es nicht übertreiben und versuchen _unittests_ zu ersetzten.
+
+<br/>
 
 #### 1.2.5 \_\_call\_\_ Method
 
-Mittels der call 'Duner'-Method kann man die Instanzen einer Klasse aufrufbar machen. Wer sich mit Funktionen und deren Implementation schon tiefer auskennt wird auch wissen, dass Funktionen in Python genau so impementiert sind.
+Mittels der Dunder-call-Method kann man die Instanzen einer Klasse aufrufbar machen. Wer sich mit Funktionen und deren Implementation schon tiefer auskennt wird auch wissen, dass Funktionen in Python genau so impementiert sind.
 
 ```py
 def func(x):
@@ -715,7 +742,7 @@ print(type(func))
 > >class 'function'<
 </pre>
 
-Dies lässt sich auch 1 zu 1 so implementieren:
+Dies ließe sich auch 1 zu 1 so implementieren:
 
 ```py
 class func_class:
@@ -731,7 +758,9 @@ print(my_instance(1))
 > 2
 </pre>
 
----
+Die \_\_call\_\_-Method wird noch interesannt und wichtig, wenn man Metaklassen verwendet. Nicht für alle, aber für manche benötigt man dies.
+
+<br/>
 
 #### 1.2.6 Weitere 'Dunder'-Methods
 
@@ -739,11 +768,23 @@ Während den Recherchen habe ich diese Seite gefunden, welche nochmal einen deta
 
 Allgemeine Zusammenfassung ist, wenn ihr mit eurer Klasse irgendeine Standardoperation (+, -, <, >, aufruf, len(), bool(), str(), dir(), ...) verwenden wollte, dann schaut einfach nach der speziellen 'Dunder'-Method dafür nach und ihr könnt das sauber dafür implementieren, statt euch irgendwelche Adapter workarounds zu basteln.
 
----
+<br/>
 
 #### 1.2.7 Attribut Zugriff
 
-Der Attributzugriff in einer Python-Klasse lässt sich über verschiedene Wege erreichen.
+Man muss zwischen dem Attributzugriff in Python in 3 Kategorien unterscheiden. Die meiste Verwirrung entsteht eigentlich dadurch, dass es zwei Methoden gibt, welche den 'normalen' Zugriff übernehmen.
+
+**Normaler Zugriff**<br/>
+\_\_getattribute\_\_<br/>
+\_\_getattr\_\_
+
+**List/Dict Zugriff**<br/>
+\_\_getitem\_\_
+
+**Discriptor Zugriff**<br/>
+\_\_get\_\_
+
+[Stackoverflow: Attribute-Lookup-Tree](https://stackoverflow.com/a/55345947)
 
 ---
 
@@ -757,7 +798,7 @@ Python bringt standardmäßig einige Dekoratoren mit sich, welche speziell im Kl
 
 Jede Methode, welche innerhalb eines 'Class-Body' definiert wird, kann mit diesen Dekoratoren ausgestattet werden. Dadurch verändern sich automatisch die Übergabeparameter und die Verhaltensweise der Methode.
 
----
+<br/>
 
 #### 2.1.1 @Staticmethod
 
@@ -778,7 +819,7 @@ print(PC.add_2_to_3())
 
 Die Staticmethod muss nichts mit Inhalten der Klasse interagieren. Es ist eine ganz normale Funktion, die lediglich im Namespace der Klasse liegt und demtentsprechend über diesen Namespace aufgerufen werden muss.
 
----
+<br/>
 
 #### 2.1.2 @Classmethod
 
@@ -821,7 +862,7 @@ Klassenmethoden sind nicht auf den Aufruf über die Klasse selbst beschränkt. E
 
 Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode oder Funktion sich unterschiedlich verhalten kann, abhängig von der Verwendung der Methode. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
 
----
+<br/>
 
 #### 2.1.1 Optionale Parameter
 
@@ -849,7 +890,8 @@ Ausgabe:
 </pre>
 
 In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion. Und das ohne, dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern. Selbstverstädlich ist diese Art von Overloading auch bei Methoden einer Klasse zulässig.
-<br/><br/>
+
+<br/>
 
 #### 2.1.2 @property, @fn.setter, @fn.deleter
 
@@ -925,7 +967,8 @@ Was diese Funktionen machen ist euch überlassen. Mit diesem Ansatz kann man die
 Da Discriptoren meiner Meinung nach eine coole Sache sind und für ein fortgeschrittenes Klassendesign sehr hilfreich sein können, gibt es zu diesen noch ein eigenes Kapitel, wie man eigene Discriptoren erstellt.
 
 <sub>(Randnotiz 1: Auch bei der Zuweisung in der \_\_init\_\_ wird die @attr.setter Method durchgeführt, da der Attributzugriff über self.attr innerhalb einer Klasse keinen Unterschied zu dem Zugriff instance.attr außerhalb einer Klasse darstellt.)</sub>
-<br/><br/><br/>
+
+<br/>
 
 #### 2.1.3 Weiteres Overloading
 
@@ -933,13 +976,15 @@ Das Standard Package _typing_ enthält einene Dekorator names '@overload', aber 
 
 Wenn man mal darüber nachdenkt, dann sind bereits die 'Built-In' Operatoren auch schon überladen. Mit '+' kann ich Floats, Ints, Strings, Lists, ... etc addieren und erhalte trotzdem ein Ergebnis zurück.
 
-<br/><br/><br/>
+---
 
 ## Kapitel 3: Klassenvererbung
 
 Das Vererben von Klassen kann man in zwei wesentliche Kategorien unterteilen. Der erste Grund, und meiner Meinung nach der häufigere, ist, um eine Klasse zu speifizieren. Der zweite Grund ist, um mehrere Klassen zu einer Gesamtklasse zu komponieren. Dies findet beispielsweise im Fall von "Descriptors" Anwendung.
 
 <sub>(Randnotiz 1: Im folgenden Kapitel bauen die Code-Teile aufeinander auf.)</sub>
+
+---
 
 ### 3.1 Spezifizieren von Klassen
 
@@ -1001,6 +1046,8 @@ Nachteile:
 
 Wofür man sich entscheidet ist sicherliche Anwendungsabhängig. Was habe ich mit der Klasse noch alles vor? Erwarte ich weitere Kindklassen? Dass man für die Help-Methode eine gesamte Darstellung des Konstruktors bevorzugt macht für den späteren Anwender mehr Sinn. Dieses Problem mit dem zweiten Ansatz und der Tatsache, dass die Darstellung \_\_init\_\_(salary, **kwargs) wenig hilfreich ist, ließe sich aber mit Metaklassen kontrollieren. Obwohl **kwargs verwendet wird, würden dann trotzdem alle benötigten Paramerter der Elternklasse(n) mit angezeigt werden.
 
+---
+
 ### 3.2 Komponieren von Klassen
 
 Beim Komponieren von Klassen wird eine neue Klasse erzeugt, welche von mehreren Elternklassen erbt. In diesem Beispiel wird der Student mit dem Employee vereint. (Sogesehen eine Stundentische Hilfskraft?) Da die neue Klasse keine neuen Parameter benötigt, muss auch keine init geschrieben werden.
@@ -1024,6 +1071,8 @@ studentworker1 = StudentWorker(fname='Max', lname='Mustermann', mat_nr='10142020
 </pre>
 
 BONK. Problem. Durch den gewählten Ansatz 1 bei der Student Klasse stoßen wir auf ein weiteres Problem mit der Verwendung der einzelnen Keyword-Argumente. Bei der Instanziierung der StundentWorker Klasse wird der Konstruktor des Students zuerst verwendet. Der kennt aber das 'salary' Keyword nicht und schmeißt dementsprechend einen Error. Mit dem Ansatz 2, der bei dem Employee gewähtl wurde, wäre dies nicht passiert, da jene Argumente, welche nicht bekannt sind einfach als kwargs zusammengefasst und weitergeleitet werden. In der obersten Klasse könnte man dort auf \*\*kwargs verzichten, um unbekannte Keywords abzufangen und trotzdem einen Fehler zu schmeißen.
+
+---
 
 ### 3.3 \_\_mro\_\_ und super()
 
@@ -1062,6 +1111,8 @@ class Student(Person):  # Ansatz 1
 
 die super()-Methode innerhalb der \_\_init\_\_ und greift im Fall der _StudentWorker_ Klasse **NICHT** auf die vererbte Klasse _Person_ zu, sondern geht laut der \_\_mro\_\_ weiter zur Klasse _Employee_. Würde man natürlich die Klasse Student instanziieren, dann würde die super()-Methode zur Klasse _Person_ weiterleiten. Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sollte und außerdem wieso man mit \*\*kwargs arbeiten sollte. Je nachdem, wie die Klassen vererbt werden, kann man gar nicht wissen, an welcher Stelle die Elternklasse der neuen Klasse stehen. Die übergebenen Parameter _fname_ und _lname_ machen im Aufruf des Employee-Konstruktor überhaupt keinen Sinn und würeden dementsprechend einen Fehler generieren.
 
+---
+
 ## Kapitel 4 Discriptor Protokol
 
 Discriptoren sind Klassen, welche in den Prozess des Attributszugriff eingreifen und zusätzliche Aufgaben durchführen können. Der Vorteil von eigenen Discritopren, gegenüber den Discriptoren der standard Libary ([2.1.2](#212-@property,-@fn.setter,-@fn.deleter)), ist, dass das Protokol für alle Attribute in einer eigene Klasse definiert wird. Dadurch lassen sich Discriptoren einfach warten und erweitern, indem sie in eine neue Klasse vererbt werden und weitere Funktionalität hinzugefügt wird.
@@ -1072,9 +1123,11 @@ Discriptoren sind Klassen, welche in den Prozess des Attributszugriff eingreifen
 
 [Stackoverflow: When and why use an discriptor over property()](https://stackoverflow.com/questions/5842593/when-and-why-might-i-assign-an-instance-of-a-descriptor-class-to-a-class-attribu)
 
+---
+
 ### 4.1 Allgemein
 
-Bei Discriptoren unterscheidet man zwischen 'Data-Discriptor' und 'Non-Data-Discrptor'. 'Non-Data-Discriptors' sind dadurch definiert, dass sie **nur** die \_\_get\_\_-Method enthalten. Für 'Data-Discriptros' müssen die \_\_set\_\_ und optional die \_\_delete\_\_ Methods definieren werden. Man unterscheidet aus dem Grund zwischen diesen Typen, da ein 'Non-Data-Discriptor' beispielsweise auch den Zugriff auf eine Methode steuer kann und deswegen nur die \_\_get\_\_-Method benötigt.
+Bei Discriptoren unterscheidet man zwischen 'Data-Discriptor' und 'Non-Data-Discrptor'. 'Non-Data-Discriptors' sind dadurch definiert, dass sie **nur** die \_\_get\_\_-Method enthalten. Für 'Data-Discriptros' muss die \_\_set\_\_ und/oder die \_\_delete\_\_ Method definieren werden. Man unterscheidet aus dem Grund zwischen diesen Typen, da ein 'Non-Data-Discriptor' beispielsweise auch den Zugriff auf eine Methode steuer kann und deswegen nur die \_\_get\_\_-Method benötigt.
 
 Die Discriptor-Klasse wird durch folgende 'Dunder'-Methods beschrieben.
 
@@ -1085,6 +1138,8 @@ Die Discriptor-Klasse wird durch folgende 'Dunder'-Methods beschrieben.
 
 Selbstverstädnlich darf eine Discriptorklasse auch andere Methoden haben
 
+---
+
 ## Kapitel 5 Klassendekoratoren
 
 Klassendekoratoren sind der erste Schritt zur Metaklasse. Viele Dinge, die man mit Metaklassen realisieren kann, könnte man auch mit Klassendekoratoren erreichen. Die Frage wozu man Metklassen dann überhaupt lässt sich mit den zwei wesentlichen Unterschieden beantworten.
@@ -1092,9 +1147,13 @@ Klassendekoratoren sind der erste Schritt zur Metaklasse. Viele Dinge, die man m
 1. Klassendekoratoren werden **NACH** der Erzeugung der Klassendefinition angewandt. Metaklassen werden **VOR** der Erzeugung der Klassendefinition durchgeführt.
 2. Metaklassen werden durch Vererbung weitergeleitet. Ein Klassendekorator wirkt nur auf die Klasse, die damit dekoriert wird.
 
+---
+
 ### 5.1 Allgemein
 
 Klassendekoratoren unterscheiden sich von Funktionsdekoratoren nur in der Weise, dass sie, statt der Funktion, eine Klasse als Inputargument haben und eine Klasse zurückgeben. Da die Klassendekoratoren nach der Erzeugung der Klasse aufgerufen werden hat die Klasse bereits ein vollständig gefülltes Dict, welches alle Inhalte des Class-Bodys enthält.
+
+<br/>
 
 #### 5.1.1 Klassendekorator XXXXXXX
 
@@ -1155,4 +1214,10 @@ Das \_\_main\_\_.PC Object (Welches die Instanz der Klasse ist) ist in diesem Fa
 
 Wer in [1.2.5 \_\_call\_\_ Method](#125-__call__-method) aufgepasst hat wird wissen, dass man eine Funktion auch als Klasse darstellen kann. Man kann damit also eine Klasse mit einer aufrufbaren Klasse dekorieren.
 
+---
+
 ## Kapitel 6 Metaklassen
+
+### 6.1 Klassen Erzeugung
+
+type(clsname, bases, clsdct)
