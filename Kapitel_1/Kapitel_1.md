@@ -290,6 +290,8 @@ Will ich die Instanz meiner Klasse mittels for-Loop durchlaufen, dann benötige 
 <sub>(Randnotiz 1: \_\_len\_\_(self) ist übrigens die Fallback-Methode für \_\_bool\_\_(self). Das heißt, wenn keine Dunder-bool-Method definiert ist wird die Dunder-len-Method verwendet. Alles was >0 ist wird von Python als True interpretiert.)</sub>
 <br/>
 
+Code: [\_6_dunder_other](_6_dunder_other.py)
+
 ```py
 def __add__(self, other):
 # > instance1 + instance2
