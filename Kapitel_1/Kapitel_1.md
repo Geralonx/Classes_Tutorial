@@ -140,6 +140,8 @@ Klassenattribute sind Attribute, welche nicht im Instanz-Dict gespeichert werden
 
 Klassenattribute existieren **nur** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies zieht sich auch durch Vererbungen durch.
 
+Code: [\_2_Klassenattribute_1.py](_2_Klassenattribute_1.py)
+
 ```py
 class PC:
     klassen_attribut = "Ich bin ein Klassenattribut"
@@ -182,6 +184,8 @@ print("Klassen Dict: ", PC.__dict__)
 
 Die leere Instanz hat nun ein eigenes Attribut mit dem Bezeichner 'klassen_attribut' bekommen und das echte Klassenattribut blieb unverändert. Der richtige Weg mit Klassenattributen umzugehen ist immer, dass man über die Instanz auf die Klasse zugreift und anschließend auf das Attribut. Das sieht dann folgendermaßen aus:
 
+Code: [\_3_Klassenattribute_2](_3_Klassenattribute_2.py)
+
 ```py
 class PC:
     klassen_attribut = "Ich bin ein Klassenattribut"
@@ -203,6 +207,8 @@ Zeile 1 und Zeile 2 funktionieren **exakt** gleich, da type(self) immer die eige
 **Vererbung von Klassenattirbuten**<br/>
 
 Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, **aber** es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict der erstellen Klasse, noch im Klassen-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnte, welche sich anschließend auch in den Instanzen der 'Klasse 2' wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute verwendet und macht sie im Zweifel lieber 'privat'.
+
+Code: [\_4_Klassenattribute_3](_4_Klassenattribute_3.py)
 
 ```py
 class PC:
@@ -248,18 +254,20 @@ verwendet haben. 'Dunder'-Methods sind Methoden, welche im allgemeinen Fall **ni
 
 <sub>(Ich kenne ehrlich gesagt keinen Fall indem man außerhalb der Klassendefinition die 'Dunder'-Methods über ihre Bezeichnung verwenden sollte.)</sub>
 
+Code: [\_5_dunder_init.py](_5_dunder_init.py)
+
 ```py
 # 'Falscher' Weg (Funktioniert, aber man macht es nicht)
-# __new__ erstellt eine leere Objekt einer Klasse
-my_class_instance = MyClass.__new__(MyClass)
+# __new__ erstellt ein leers Objekt einer Klasse
+instanz1 = MyClass.__new__(MyClass)
 # __init__ initialisiert die übergebene Instanz
-MyClass.__init__(my_class_instance, arg1, arg2, ...)
+MyClass.__init__(instanz1, arg1, arg2, ...)
 
 
 # Richtiger Weg
 # Beim Instanziieren einer Klasse über den richtigen Konstrukor werden die
 # __new__ (und __prepare__) Methoden automatisch implizit vor der Initialisierung durchgeführt.
-my_class_instance = MyClass(arg1, arg2, ...)
+instanz2 = MyClass(arg1, arg2, ...)
 ```
 
 Dieses Beispiels sollte verdeutlichen, dass man zum einen auch jede 'Dunder'-Methode über ihre Bezeichung aufrufen kann. Außerdem sollte auch klar sein, dass jede Methode einer Klasse direkt über die Klasse selbst aufgerufen werden kann, wenn man an der ersten Stelle die Instanz als das _self_-Argument übergibt.
