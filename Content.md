@@ -20,7 +20,10 @@
     - [1.2.4 \_\_doc\_\_ Attribut](#124-__doc__-attribut)
     - [1.2.5 \_\_call\_\_ Method](#125-__call__-method)
     - [1.2.6 Weitere 'Dunder'-Methods](#126-weitere-'dunder'-methods)
-    - [1.2.7 Attribut Zugriff](#127-attribut-zugriff)
+  - [1.3 Attribut Zugriff](#13-attribut-zugriff)
+    - [1.3.1 Allgemein](#131-allgemein)
+    - [1.3.2 List/Dict Zugriff](#132-list/dict-zugriff)
+    - [1.3.3 Discriptor Zugriff](#133-discriptor-zugriff)
 
 - [Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden](#kapitel-2-spezielle-funktionsdekoratoren-für-klassenmethoden)
   - [2.1 @Classmethod und @Staticmethod](#21-@classmethod-und-@staticmethod)
@@ -320,11 +323,11 @@ Beispiel:
 04         self.gpu = gpu
 05         self.__ram = ram
 06
-07  meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super', 'GSkill')
+07  pc_instanz = PC('Ryzen 7', 'RTX2070Super', 'GSkill')
 08
-09  print(meine_pc_instanz.cpu)
-10  print(meine_pc_instanz.gpu)
-11  print(meine_pc_instanz.__ram)
+09  print(pc_instanz.cpu)
+10  print(pc_instanz.gpu)
+11  print(pc_instanz.__ram)
 ```
 
 <pre>
@@ -332,14 +335,14 @@ Beispiel:
 > RTX2070Super
 > Traceback (most recent call last):
 >   File "f:/Python-Projects/Projects/Classes_Tutorial/name_mangeling.py", line 11, in <module>
->     print(meine_pc_instanz.ram)
+>     print(pc_instanz.ram)
 > AttributeError: 'PC' object has no attribute '__ram'
 </pre>
 
 So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Wenn man wissen will, was in einem Obejkt enthalten ist, dann muss man sich das \_\_dict\_\_ Attribut anschauen. Es enthält **alle** Attribute und Methoden die zu jenem Objekt zugewiesen wurden. Bei einer Instanz heißt das also, alles was zu _self_ zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
 
 ```py
-print(meine_pc_instanz.__dict__)
+print(pc_instanz.__dict__)
 ```
 
 <pre>
@@ -351,7 +354,7 @@ Wir sehen, dass _cpu_ und _gpu_ wie zu erwarten enthalten sind, aber wir sehen a
 Versuche ich folgendes
 
 ```py
-print(meine_pc_instanz._PC__ram)
+print(pc_instanz._PC__ram)
 ```
 
 <pre>
@@ -382,11 +385,11 @@ Klassenattribute existieren **nur** auf Klassenebene. Wenn man über eine Instan
 class PC:
     klassen_attribut = "Ich bin ein Klassenattribut"
 
-meine_pc_instanz = PC()
+pc_instanz = PC()
 
-print("Instanz Dict: ", meine_pc_instanz.__dict__)
+print("Instanz Dict: ", pc_instanz.__dict__)
 print("Klassen Dict: ", PC.__dict__)
-print("Zugriff über Instanz: ", meine_pc_instanz.klassen_attribut)
+print("Zugriff über Instanz: ", pc_instanz.klassen_attribut)
 ```
 
 <pre>
@@ -398,8 +401,8 @@ print("Zugriff über Instanz: ", meine_pc_instanz.klassen_attribut)
 Wenn man weiß, dass man das Klassenattribut über das Instanz-Objekt lesen kann, dann stell ich mir die Frage, was passiert, wenn man es über die Instanz versucht zu schreiben.
 
 ```py
-meine_pc_instanz.klassen_attribut = "Neuer Wert"
-print(meine_pc_instanz.klassen_attribut)
+pc_instanz.klassen_attribut = "Neuer Wert"
+print(pc_instanz.klassen_attribut)
 ```
 
 <pre>
@@ -409,7 +412,7 @@ print(meine_pc_instanz.klassen_attribut)
 Super, das funktioniert auch, aber was ist jetzt passiert? Um wirklich zu wissen, welche Daten zu welcher Instanz/Klasse gehören müssen wir ja nur das \_\_dict\_\_ ausgeben.
 
 ```py
-print("Instanz Dict: ", meine_pc_instanz.__dict__)
+print("Instanz Dict: ", pc_instanz.__dict__)
 print("Klassen Dict: ", PC.__dict__)
 ```
 
@@ -582,8 +585,8 @@ Die Dunder-str-Method ist dazu gedacht, eine Darstellung des Objekts zurückzuge
 
         return msg
 
-meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super')
-print(meine_pc_instanz)
+pc_instanz = PC('Ryzen 7', 'RTX2070Super')
+print(pc_instanz)
 ```
 
 <pre>
@@ -642,9 +645,9 @@ class PC:
         init_string = ', '.join(argument_string_list)
         return f'{self.__class__.__name__}({init_string})'
 
-meine_pc_instanz = PC('Ryzen 7', 'RTX2070Super')
+pc_instanz = PC('Ryzen 7', 'RTX2070Super')
 
-print(repr(meine_pc_instanz))
+print(repr(pc_instanz))
 ```
 
 <pre>
@@ -678,7 +681,7 @@ Würde man das Schließen der Datei vergessen, dann wäre die Datei im System bl
 
 <br/>
 
-### 1.2.4 \_\_doc\_\_ Attribut
+#### 1.2.4 \_\_doc\_\_ Attribut
 
 Dokumentiert eure Sachen. Muss man das noch sagen? In Python kann man die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen am Kopf der Funktion oder Klasse geschrieben (es gehen doppelte \" und einfache \', aber typischerweise werden doppelte verwendet. [PEP 257 - Docstrings](https://www.python.org/dev/peps/pep-0257/)).
 
@@ -770,21 +773,59 @@ Allgemeine Zusammenfassung ist, wenn ihr mit eurer Klasse irgendeine Standardope
 
 <br/>
 
-#### 1.2.7 Attribut Zugriff
+### 1.3 Attribut Zugriff
 
 Man muss zwischen dem Attributzugriff in Python in 3 Kategorien unterscheiden. Die meiste Verwirrung entsteht eigentlich dadurch, dass es zwei Methoden gibt, welche den 'normalen' Zugriff übernehmen.
 
-**Normaler Zugriff**<br/>
+https://twitter.com/raymondh/status/1337505615204106240
+
+https://blog.peterlamut.com/2018/11/04/python-attribute-lookup-explained-in-detail/
+
+#### 1.3.1 Allgemein
+
+Unter dem 'Normalen' Zugriff verbergen sich 2 'Dunder'-Methods
+
 \_\_getattribute\_\_<br/>
 \_\_getattr\_\_
 
-**List/Dict Zugriff**<br/>
-\_\_getitem\_\_
+Der Zugriff auf ein Attribut ist 'Hardwired' auf \_\_getattribute\_\_. Das heißt. Man kommt im ersten Schritt nicht drumherum diese Methode zu umgehen. Wenn eine Klasse diese 'Duner'-Method nicht spezifiziert, dann wird im \_\_mro\_\_ weiter gegangen. (\_\_mro\_\_ wird später im [Kapitel 3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>) weiter im Detail erklärt.)
 
-**Discriptor Zugriff**<br/>
-\_\_get\_\_
+Es gibt eine default Implemenatation im letzten Element des \_\_mro\_\_. Diese führt den Zugriff aus und erhebt einen AttributeError, falls jenes Attribut nicht existiert. Wenn ein AttributError kommt, dann wird als Fallback die \_\_getattr\_\_-Methode durchlaufen.
+
+#### 1.3.2 List/Dict Zugriff
+
+Mit der \_\_getitem\_\_(self, name) ist es möglich, dass ein Zugriff wie bei einer Liste oder einem Dict erfolgt.
+Es gibt dazu eigentlich nicht viel zu sagen. Man umgeht die gesamte '.attr' / \_\_getattribute\_\_ machinery und kommt direkt in die \_\_getitem\_\_ Methode. Wenn man eine Klasse hat, die eine gewisse Datenstruktur abbildet kann dies sicherlich sinnvoll sein.
+
+```py
+instanz[attr_name]
+```
+
+#### 1.3.3 Discriptor Zugriff
+
+Die Discriptor Methode \_\_get\_\_ wird durch die default Implementation der \_\_getattribute\_\_ mit berücksichtig. Das heißt, selbst wenn ein Attribut als Discriptor beschrieben ist, läuft der Prozess vollständig über \_\_getattribute\_\_ hoch in die default Implementation, dort wird überprüft, ob es sich bei dem Attribut um einen Discriptor handelt und anschließend ausgeführt.
+
+[Python 3 Docs: Discriptor HowTo Guid -> invocation from an intsnace](https://docs.python.org/3/howto/descriptor.html#invocation-from-an-instance)
 
 [Stackoverflow: Attribute-Lookup-Tree](https://stackoverflow.com/a/55345947)
+
+#### 1.3.4 Zusammenfassung
+
+Zusammengefasst sollte man über den Attributszugriff folgendes behalten:
+
+1. Es wird immer \_\_getattribute\_\_ bis hoch zur default Implementation durchgefahren.
+2. Dort wird dann überprüft, ob es sich bei dem Attribut um einen Discriptor handelt.
+3. Handelt es sich um ein Discriptor?
+   - Wenn ja, dann benutze \_\_get\_\_ des Discriptors
+   - Wenn nein, dann schaue nach, ob das Attribut im instanz.\_\_dict\_\_
+4. Wenn es nicht im instanz.\_\_dict\_\_ zu finden ist, dann wird ein AttributError erhoben.
+5. Existiert eine \_\_getattr\_\_-Alternative?
+   - Wenn ja, führe sie aus
+   - Wenn nein, Script wird mit dem AttributError beendet
+
+Das ganze gilt auch für \_\_setattr\_\_, \_\_setitem\_\_ und \_\_set\_\_. Alles analog zu diesem hier.
+
+Es gibt keine \_\_setattribute\_\_, da beim Schreiben autoamtisch ein neues Attribut erstellt wird, falls es dies noch nicht gibt. Wenn man das Abfangen möchte -> Metaklassen oder die \_\_setattr\_\_. Gibt ein paar Möglichkeiten.
 
 ---
 
@@ -802,7 +843,7 @@ Jede Methode, welche innerhalb eines 'Class-Body' definiert wird, kann mit diese
 
 #### 2.1.1 @Staticmethod
 
-Die Staticmethod unterscheidet sich in keiner Weise zu ganz normalen Funktionen abgesehen davon, dass sie im Class-Body definiert wird. Anders als die normalen Methoden einer Klasse, hat eine Staticmethod **kein** verpflichtendes self-Argument an erster Position. Es kann einfach leer bleiben oder mit belibigen Argumenten definiert werdern.
+Die Staticmethod unterscheidet sich in keiner Weise zu ganz normalen Funktionen abgesehen davon, dass sie im Class-Body definiert wird. Anders als die normalen Methoden einer Klasse, hat eine Staticmethod **kein** verpflichtendes _self_-Argument an erster Position. Es kann einfach leer bleiben oder mit belibigen Argumenten definiert werdern.
 
 ```py
 class PC:
@@ -817,14 +858,13 @@ print(PC.add_2_to_3())
 > 5
 </pre>
 
-Die Staticmethod muss nichts mit Inhalten der Klasse interagieren. Es ist eine ganz normale Funktion, die lediglich im Namespace der Klasse liegt und demtentsprechend über diesen Namespace aufgerufen werden muss.
+Die Staticmethod muss nicht mit Inhalten der Klasse interagieren. Es ist eine ganz normale Funktion, die lediglich im Namespace der Klasse liegt und demtentsprechend über diesen Namespace aufgerufen werden muss.
 
 <br/>
 
 #### 2.1.2 @Classmethod
 
 Im Gegensatz zu den Staticmethods verhält es sich mit den Classmethods anders. Meines Wissens nach wird die Classmethod hauptsächlich als Factory-Method verwendet. Eine Factory-Method ist eine Methode, welche die Instanz einer Klasse durch andere Parameter erzeugt, als die Standardparameter der \_\_init\_\_ Methode.
-Beispiel:
 
 ```py
 01 class Circle:
@@ -854,13 +894,13 @@ Klassenmethoden sind nicht auf den Aufruf über die Klasse selbst beschränkt. E
 
 <sub>(Randnotiz 1: Die Argumente _self_ und _cls_ sind auch nur Conventionen die alle Leute einhalten (sollten). Auch diese beiden Argumente sind vom Bezeichner her frei wählbar, ABER Methoden bekommen automatisch beim Aufruf die Instanz an der ersten Position übergeben, respektive die Klasse für Klassenmethoden. Python IDEs, oder jene die Syntaxhighlighing für Python unterstüzen, haben _meistens_ unterschiedliche Farbkennzeichnungen für _cls_ und _self_ als für belibige Argumente.)</sub>
 
-<sub>(Randnotiz 2: Eine weitere Idee für Klassenmethoden wäre einen Zugang zu Statistiken über den Gebrauch der Klasse zu schaffen. Informationen über alle Instanzen sammeln oder was weiß ich. Über Metaklassen kann man beispielsweise die Verwendung von Instanzen einer Klasse aufzeichnen, ohne dass der Benutzer davon was mitbekommt ode res selbst implementieren müsste.)</sub>
+<sub>(Randnotiz 2: Eine weitere Idee für Klassenmethoden wäre einen Zugang zu Statistiken über den Gebrauch der Klasse zu schaffen. Informationen über alle Instanzen sammeln oder was weiß ich. Über Metaklassen kann man beispielsweise die Verwendung von Instanzen einer Klasse aufzeichnen, ohne dass der Benutzer davon was mitbekommt oder er es selbst implementieren müsste.)</sub>
 
 ---
 
 ### 2.2 Method Overloading
 
-Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode oder Funktion sich unterschiedlich verhalten kann, abhängig von der Verwendung der Methode. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
+Method Overloading ist ein Konzept, welches einige von euch wahrscheinlich schon unbewusst angewandt haben. Dieses Konzept besagt, dass eine Methode sich unterschiedlich verhalten kann, abhängig von der Verwendung der Methode. Der einfachste Weg um Method-Overloading in Python zu erreichen sind optionale Parameter.
 
 <br/>
 
@@ -882,24 +922,20 @@ retval = adder(10, 20)
 retval = adder(100, 200, debug=True)
 ```
 
-Ausgabe:
-
 <pre>
 > Evaluating 100 + 200:
 > Result = 300
 </pre>
 
-In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion. Und das ohne, dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern. Selbstverstädlich ist diese Art von Overloading auch bei Methoden einer Klasse zulässig.
+In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion. Und das ohne dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern. Selbstverstädlich ist diese Art von Overloading auch bei Methoden einer Klasse zulässig.
 
 <br/>
 
 #### 2.1.2 @property, @fn.setter, @fn.deleter
 
-Die genannten Dekoratoren sind besondere, welche man als Descriptor beschreibt. Auch diese werden zum Method-Overloading verwendet, da sie mehrere Methode mit dem gleicher Bezeichnung so ausstatten, dass diese, aufgrund der Art der Verwendung, sich unterschied verhalten. Da es sich um Dewkoratoren handel müssen sie nur vor der Methode angebracht werden, welche den Bezeichner hat, über den sie mit dem '.'-Operator erreicht werden soll.
+Die genannten Dekoratoren sind besondere, welche man als Descriptor beschreibt. Auch diese werden zum Method-Overloading verwendet, da sie mehrere Methode mit dem gleicher Bezeichnung so ausstatten, dass diese, aufgrund der Art der Verwendung, sich unterschied verhalten. Da es sich um Dekoratoren handelt müssen sie nur vor der Methode angebracht werden, welche den Bezeichner hat, über den sie mit dem '.'-Operator erreicht werden soll.
 
 <sub>(David Beazley spricht in seinem [Tutorial: YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI) von 'owning the dot'. Klingt eigentlich spannender als es ist, weil er mit Discriptoren den Zugriff auf eine Variable in 100 Wegen überprüft. Dazu später mehr.)</sub>
-
-Beispiel:
 
 ```py
 class PC:
@@ -909,6 +945,7 @@ class PC:
 
     @property
     def gpu(self):
+        # Zugriff überprüfen
         # if user.acceslevel > x:
         return self._gpu
 
@@ -919,18 +956,19 @@ class PC:
 
     @gpu.deleter
     def gpu(self):
+        # Löschen aufzeichnen
         # log(f"Gelöscht am: {date} von {user}")
         del self._gpu
 
 
-meine_pc_isntanz = PC(cpu='Ryzen 7', gpu='RTX2070')
+pc_instanz = PC(cpu='Ryzen 7', gpu='RTX2070')
 
-meine_pc_isntanz.gpu                # Lesezuegriff, @property wird aufgerufen
-meine_pc_isntanz.gpu = 'RTX3090'    # Schreibzugriff, @gpu.setter wird aufgerufen
-del meine_pc_isntanz.gpu            # Löschen des Attributs, @gpu.deleter wird aufgerufen
+pc_instanz.gpu                # Lesezuegriff, @property-Method wird aufgerufen
+pc_instanz.gpu = 'RTX3090'    # Schreibzugriff, @gpu.setter-Method wird aufgerufen
+del pc_instanz.gpu            # Löschen des Attributs, @gpu.deleter-Method wird aufgerufen
 ```
 
-Wichtig ist, dass das eigentliche Attribut nicht den gleichen Namen wie die Methode haben darf, da man sonst in einer Endlosschleife landet.
+Wichtig ist, dass in diesem Fall das eigentliche Attribut nicht den gleichen Namen wie die Methode haben darf, da man sonst in einer Endlosschleife landet.
 
 ```py
 @property
@@ -949,18 +987,18 @@ Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @
 
 Und wozu soll das gut sein? Naja, im Vergleich zu dem normalen Zugriff ist es jetzt möglich beim Schreiben eines Attributs ein Value/Type Checking durchzuführen. Man könnte das Löschen des Attributs loggen, Lesezugriffe beschränken etc. Und das alles würde ganz automatisch im Hintergrund passieren, ohne dass der Zugriff über 'instanz.attribut' sich ändern müsste.
 
-Eine weitere Möglichkei, um die Discriptoren der standard Libary zu verwenden ist, dass man sich die Methoden für get, set und delete selbst definiert und dann mit folgender Zeile an das Attribut übergibt.
+Eine weitere Möglichkeit, um die Discriptoren der standard Libary zu verwenden ist, dass man sich die Methoden für get, set und delete selbst definiert und dann mit folgender Zeile an das Attribut übergibt.
 
 ```py
 class PC:
     attr = property(get_func, set_func, delete_func, doc_string)
 ```
 
-Die übergebenen Funktionen können belibig definiert sein und können auch machen was sie wollen. Die 'Built-In'-Property Methode verknüpfte diese nur an ein Attribut. Das heißt:
+Die übergebenen Funktionen können damit sogar an belibgen Orten definiert sein. Die 'Built-In'-Property Methode verknüpfte diese nur an ein Attribut. Das heißt:
 
-- wenn pc_instance.attr verwendet wird, dann wird die get_func ausgeführt.
-- wenn pc_instance.attr = verwendet wird, dann wird die set_func ausgeführt.
-- wenn del pc_instance.attr verwendet wird, dann wird die delete_func ausgeführt.
+- wenn 'pc_instanz.attr' verwendet wird, dann wird die get_func ausgeführt.
+- wenn 'pc_instanz.attr =' verwendet wird, dann wird die set_func ausgeführt.
+- wenn 'del pc_instanz.attr' verwendet wird, dann wird die delete_func ausgeführt.
 
 Was diese Funktionen machen ist euch überlassen. Mit diesem Ansatz kann man die Zugangsmethoden einmalig definieren und sie einfach als property an ein Attribut setzten.
 
@@ -1014,7 +1052,7 @@ student = Student(fname='Max', lname='Mustermann', mat_nr='10142020')
 employee = Employee(fname='Maria', lname='Musterfrau', salary=40000)
 ```
 
-Für die Instanziierung von Kindklassen kann man verschiedene Ansätze wählen. In dem oben gezeigten Beispiel sind im Student-Konstruktor alle Parameter, welche zum Erzeugen einer Instanz benötigt werde, fix definiert. Anders ist es beim Employee. Dort wird das neue Attribut in den Konstruktor eingetragen und der Rest wird einfach als \*\*kwargs eingefangen und als Gesamtpaket weitergeleitet.
+Für die Instanziierung von Kindklassen kann man verschiedene Ansätze wählen. In dem oben gezeigten Beispiel sind im Student-Konstruktor alle Parameter, welche zum Erzeugen einer Instanz benötigt werde, statisch definiert. Bei der Employee-Klasse ist der Ansatz mit \*\*kwargs gewählt worden. Die neuen Attribute decr Kindklasse werden einfach in den Konstruktor eingetragen und der Rest wird einfach als \*\*kwargs eingefangen und als Gesamtpaket weitergeleitet.
 
 <br/>
 
@@ -1034,33 +1072,46 @@ Nachteile:
 **Employee**<br/>
 Vorteile:
 
-- Es können belibige Keywords als Argumente übergeben werden und nur die 'richtigen' werden herausgepickt.
+- Es können belibige Keywords als Argumente übergeben werden und nur die benötigten werden herausgepickt.
 - Die Weiterleitung der Argumente ist kürzer.
 - Kein Modifizieren der Kindklasse nötig, falls sich etwas in der Elternklasse ändert.
 
 Nachteile:
 
 - Help und inspect Methoden liefern einen nicht spezifizierten Konstruktoaufruf zurück. (In diesem Fall eben \_\_init\_\_(salary, \*\*kwargs))
-- Kwargs, welche gar Nicht existieren, werden vom Konstruktor akzeptiert, auch wenn diese nicht verwendet werden.
+- Kwargs, welche gar Nicht existieren, werden vom Konstruktor akzeptiert, auch wenn diese nicht verwendet werden. (Diese würden dann auf dort zum Crash führen, wo keine \*\*kwargs mehr akzeptiert werden. In desem Fall in der Elternklasse Person.)
   <br/><br/>
 
-Wofür man sich entscheidet ist sicherliche Anwendungsabhängig. Was habe ich mit der Klasse noch alles vor? Erwarte ich weitere Kindklassen? Dass man für die Help-Methode eine gesamte Darstellung des Konstruktors bevorzugt macht für den späteren Anwender mehr Sinn. Dieses Problem mit dem zweiten Ansatz und der Tatsache, dass die Darstellung \_\_init\_\_(salary, **kwargs) wenig hilfreich ist, ließe sich aber mit Metaklassen kontrollieren. Obwohl **kwargs verwendet wird, würden dann trotzdem alle benötigten Paramerter der Elternklasse(n) mit angezeigt werden.
+Wofür man sich entscheidet ist sicherliche Anwendungsabhängig. Was habe ich mit der Klasse noch alles vor? Erwarte ich weitere Kindklassen? Dass man für die Help-Methode eine gesamte Darstellung des Konstruktors bevorzugt macht für den späteren Anwender mehr Sinn. Dieses Problem mit dem zweiten Ansatz und der Tatsache, dass die Darstellung \_\_init\_\_(salary, **kwargs) wenig hilfreich ist, ließe sich aber mit Metaklassen kontrollieren. Obwohl **kwargs verwendet wird, würden dann trotzdem alle benötigten Paramerter der Elternklasse(n) mit angezeigt werden. Dadurch verliert man nicht die Dynamik, dass man die Änderungen der Elternklassen mit in die Kindklassen einpfelgen müsste.
 
 ---
 
 ### 3.2 Komponieren von Klassen
 
-Beim Komponieren von Klassen wird eine neue Klasse erzeugt, welche von mehreren Elternklassen erbt. In diesem Beispiel wird der Student mit dem Employee vereint. (Sogesehen eine Stundentische Hilfskraft?) Da die neue Klasse keine neuen Parameter benötigt, muss auch keine init geschrieben werden.
+Beim Komponieren von Klassen wird eine neue Klasse erzeugt, welche von mehreren Elternklassen erbt. In diesem Beispiel wird der Student mit dem Employee vereint. (Sogesehen eine Stundentische Hilfskraft?) Da die neue Klasse keine neuen Parameter benötigt, muss auch kein neuer init-Konstruktor geschrieben werden.
 
 ```py
-class StudentWorker(Student, Employee):
+class StudentWorker_V1(Employee, Student):
     pass
 ```
 
-Die neue Klasse enthält all das, was die beiden Elternklassen enthalten. Die Instanziierung sieht dann folgendermaßen aus.
+Die neue Klasse enthält all das, was die beiden Elternklassen und deren Elternklassen enthalten. Die Instanziierung sieht dann folgendermaßen aus.
 
 ```py
-studentworker1 = StudentWorker(fname='Max', lname='Mustermann', mat_nr='10142020', salary=450.00)
+studentworker1 = StudentWorker_V1(fname='Max', lname='Mustermann', mat_nr='10142020', salary=450.00)
+```
+
+Man verwendet einfach alle Parameter, die von den Elternklasse(n) benötigt werden und gibt sie als Keywordargumente an. Bezüglich den zwei verschiedenen Ansätzen könnte man aber auf ein Problem stoßen.
+
+Wenn man die Vererbungsreihenfolge von Student und Employee vertauscht. Dann landet Student zuerst in der \_\_mro\_\_ Reihenfolge und demenstprechend wird der Konstruktor von dieser Klasse zuerst verwendet.
+
+```py
+class StudentWorker_V2(Student, Employee):
+    pass
+```
+
+```py
+studentworker1 = StudentWorker_V2(fname='Max', lname='Mustermann', mat_nr='10142020', salary=450.00)
 ```
 
 <pre>
@@ -1070,7 +1121,9 @@ studentworker1 = StudentWorker(fname='Max', lname='Mustermann', mat_nr='10142020
 > TypeError: __init__() got an unexpected keyword argument 'salary'
 </pre>
 
-BONK. Problem. Durch den gewählten Ansatz 1 bei der Student Klasse stoßen wir auf ein weiteres Problem mit der Verwendung der einzelnen Keyword-Argumente. Bei der Instanziierung der StundentWorker Klasse wird der Konstruktor des Students zuerst verwendet. Der kennt aber das 'salary' Keyword nicht und schmeißt dementsprechend einen Error. Mit dem Ansatz 2, der bei dem Employee gewähtl wurde, wäre dies nicht passiert, da jene Argumente, welche nicht bekannt sind einfach als kwargs zusammengefasst und weitergeleitet werden. In der obersten Klasse könnte man dort auf \*\*kwargs verzichten, um unbekannte Keywords abzufangen und trotzdem einen Fehler zu schmeißen.
+Durch den gewählten Ansatz 1 bei der Student-Klasse bekommt dieser Konstruktor auch das Keyword 'salary'. Dieser weiß aber nichts damit anzufangen und wirft dementsprechend einen Error.
+
+Mit dem Ansatz 2, der bei dem Employee gewählt wurde, passiert dies nicht, da jene Argumente, welche nicht bekannt sind einfach als kwargs zusammengefasst und weitergeleitet werden. In der obersten Klasse könnte man dort auf \*\*kwargs verzichten, um unbekannte Keywords abzufangen und trotzdem einen Fehler zu schmeißen.
 
 ---
 
@@ -1078,20 +1131,18 @@ BONK. Problem. Durch den gewählten Ansatz 1 bei der Student Klasse stoßen wir 
 
 Sobald Klassenvererbung ein Thema ist sollte man sich im Klaren sein, wie die 'Built-In'-Methode super() funktioniert. Einfach gesagt, die super()-Methode greift auf das nächste Element in der \_\_mro\_\_ Liste zu. MRO steht für 'Method Resolution Order'.
 
-Python ist eine Interpreter-Sprache. Das heißt, ein Skript wird von oben nach unten durchgearbeitet und erst bei erreichen der Zeile evaluiert, was dort passiert. Auch Ausdrücke, welche innerhalb des Class-Bodys definiert sind werden stumpf ausgeführt.
-
 Bei der **Definition** (nicht bei der Instanziierung) einer Klasse wird die \_\_mro\_\_ evaluiert und festgelegt. Dieses Attribut ist Read-Only und existiert auf Klassenebene. Die Evlauation erfolgt über die [Wikipedia: C3-Linearization](https://en.wikipedia.org/wiki/C3_linearization). Ich werde hier nicht tiefer darauf eingehen, lediglich darauf verweisen, falls es jemanden ganz genau wissen will.
 
 https://stackoverflow.com/questions/40478154/does-pythons-mro-c3-linearization-work-depth-first-empirically-it-does-not
 
-Fakt ist aber, dass eine Linearisierung stattfindet. Und auch hier sei wieder gesagt, auch in diesen Prozess lässt sich mittels Metaklassen eingreifen. Wenn ihr aus irgendeinem Grund eine beispielsweise alphabetisch geordnete MRO benötigt, dann ginge das.
+Fakt ist aber, dass eine Linearisierung stattfindet. Und auch hier sei wieder gesagt, in diesen Prozess lässt sich mittels Metaklassen eingreifen. Wenn ihr aus irgendeinem Grund eine beispielsweise alphabetisch geordnete MRO benötigt, dann ginge das.
 
-<sub>(Randnotiz 1: Obwohl das \_\_mro\_\_ Attribut bei der Definition der Klassen evaluiert wird und das Attribut Read-Only ist lässt sich dieses Attribut später dennoch verändern. Denn es wird jedes mal neu evalusiert, wenn sich die \_\_bases\_\_ einer Klasse ändern. Und dieses Attribut ist schreibbar. Man kann theoretisch im Programmablauf einfach zu jederzeit die vererbten Klassen einer Klasse ändern. Ob man das tun sollte, wahrscheinlich eher nicht. Erklärt hat dies Mark Smith auf der PyCon 2019. [Youtube:"It's Pythons All The Way Down: Python Types & Metaclasses Made Simple" - Mark Smith (PyCon AU 2019)](https://www.youtube.com/watch?v=ZpV3tel0xtQ))</sub>
+<sub>(Randnotiz 1: Obwohl das \_\_mro\_\_ Attribut bei der Definition der Klassen evaluiert wird und das Attribut Read-Only ist lässt sich dieses Attribut später dennoch verändern. Denn es wird jedes mal neu evaluiert, wenn sich die \_\_bases\_\_ einer Klasse ändern. Und dieses Attribut ist schreibbar. Man kann theoretisch im Programmablauf einfach zu jederzeit die vererbten Klassen einer Klasse ändern. Ob man das tun sollte, wahrscheinlich eher nicht. Erklärt hat dies Mark Smith auf der PyCon 2019. [Youtube:"It's Pythons All The Way Down: Python Types & Metaclasses Made Simple" - Mark Smith (PyCon AU 2019)](https://www.youtube.com/watch?v=ZpV3tel0xtQ))</sub>
 
-Wenn man sich mit diesem Wissen nun die mro vom StudentWorker anguckt erhält man folgende Reihenfolge.
+Wenn man sich mit diesem Wissen nun die mro vom StudentWorker anguckt, erhält man folgende Reihenfolge.
 
 ```py
-print(StudentWorker.__mro__)
+print(StudentWorker_V2.__mro__)
 ```
 
 ```
@@ -1106,16 +1157,18 @@ In der Definition der Klasse _Student_ steht
 class Student(Person):  # Ansatz 1
     def __init__(self, mat_nr, fname, lname):
         self.mat_nr = mat_nr
-        super().__init__(fname, lname)
+        super().__init__(fname, lname) # -> Zugriff auf Employee.__init__
 ```
 
-die super()-Methode innerhalb der \_\_init\_\_ und greift im Fall der _StudentWorker_ Klasse **NICHT** auf die vererbte Klasse _Person_ zu, sondern geht laut der \_\_mro\_\_ weiter zur Klasse _Employee_. Würde man natürlich die Klasse Student instanziieren, dann würde die super()-Methode zur Klasse _Person_ weiterleiten. Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sollte und außerdem wieso man mit \*\*kwargs arbeiten sollte. Je nachdem, wie die Klassen vererbt werden, kann man gar nicht wissen, an welcher Stelle die Elternklasse der neuen Klasse stehen. Die übergebenen Parameter _fname_ und _lname_ machen im Aufruf des Employee-Konstruktor überhaupt keinen Sinn und würeden dementsprechend einen Fehler generieren.
+die super()-Methode innerhalb der \_\_init\_\_ und greift im Fall der _StudentWorker_V2_ Klasse **NICHT** auf die vererbte Klasse _Person_ zu, sondern geht laut der \_\_mro\_\_ weiter zur Klasse _Employee_. Würde man natürlich die Klasse Student instanziieren, dann würde die super()-Methode zur Klasse _Person_ weiterleiten, da jede Klassendefinition ihre eigene \_\_mro\_\_ Liste hat.
+
+Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sollte und außerdem wieso man mit \*\*kwargs arbeiten sollte. Je nachdem, wie die Klassen vererbt werden, kann man gar nicht wissen, an welcher Stelle die 'Großeleternklassen' der der neuen Klasse stehen. Die übergebenen Parameter _fname_ und _lname_ sind beim Aufruf des Employee-Konstruktor nicht ausreichend, da das _salary_ Argument fehlt.
 
 ---
 
 ## Kapitel 4 Discriptor Protokol
 
-Discriptoren sind Klassen, welche in den Prozess des Attributszugriff eingreifen und zusätzliche Aufgaben durchführen können. Der Vorteil von eigenen Discritopren, gegenüber den Discriptoren der standard Libary ([2.1.2](#212-@property,-@fn.setter,-@fn.deleter)), ist, dass das Protokol für alle Attribute in einer eigene Klasse definiert wird. Dadurch lassen sich Discriptoren einfach warten und erweitern, indem sie in eine neue Klasse vererbt werden und weitere Funktionalität hinzugefügt wird.
+Discriptoren sind Klassen, welche in den Prozess des Attributszugriff eingreifen und zusätzliche Aufgaben durchführen können. Der Vorteil von eigenen Discritopren, gegenüber den Discriptoren der standard Libary ([2.1.2](#212-@property,-@fn.setter,-@fn.deleter)), ist, dass das Protokol für alle Attribute in einer eigene Klasse definiert wird. Dadurch lassen sich Discriptoren einfacher warten und erweitern, indem sie in eine neue Klasse vererbt werden und weitere Funktionalität hinzugefügt wird.
 
 [Python Docs: Discriptor HowTo Guide](https://docs.python.org/3/howto/descriptor.html)
 
@@ -1136,7 +1189,35 @@ Die Discriptor-Klasse wird durch folgende 'Dunder'-Methods beschrieben.
 - \_\_delete\_\_
 - \_\_set_name\_\_
 
-Selbstverstädnlich darf eine Discriptorklasse auch andere Methoden haben
+Ein Attribut, welches mit einme Discriptor arbeiten soll, wird in der Klasse als Klassenattribut definiert.
+
+Bei der Definition, dass ein Attribut ein Discriptor ist wird automatisch die \_\_set_name\_\_ aufgerufen. Dies ist dazu nötig, um die Namen des Attributs für die Zugriffe innerhalb der Discriptorklasse zu haben.
+
+```py
+class Discriptor:
+    def __set_name__(self, owner_cls, name):
+        self.name = name
+
+    def __get__(self, instance, owner_cls=None):
+        print(f"Get {self.name!r}")
+        return instance.__dict__[self.name]
+
+    def __set__(self, instance, value):
+        print(f"Set {self.name!r} to {value!r}")
+        instance.__dict__[self.name] = value
+
+    def __delete__(self, instance):
+        print(f"Delete {self.name!r}")
+        del instance.__dict__[self.name]
+
+class MyClass:
+    attr = Discriptor()
+
+    def __init__(self, attr):
+        self.attr = attr
+```
+
+Das Attribut 'attr' wird in dieser Klasse als Discriptor verwendet. Wenn wir zurück an die [1.1.3 Klassenattribute](#113-klassenattribute) denken, dann könnte man meinen, dass der Zugriff doch einfach Umgangen wird, da ein neues Attribut innerhalb der Instanz erzeugt wird.
 
 ---
 
@@ -1193,10 +1274,10 @@ class PC:
     def power(self, voltage, ampere):
         print(f'I consume {voltage*ampere} W right now.')
 
-meine_pc_instanz = PC('Ryzen 7', 'RTXSuper2070')
+pc_instanz = PC('Ryzen 7', 'RTXSuper2070')
 
-meine_pc_instanz.but_can_it_run_crysis(False)
-meine_pc_instanz.power(ampere=2, voltage=230)
+pc_instanz.but_can_it_run_crysis(False)
+pc_instanz.power(ampere=2, voltage=230)
 ```
 
 <pre>
