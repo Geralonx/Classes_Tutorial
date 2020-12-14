@@ -9,7 +9,7 @@
     - [1.1.3 Klassenattribute](#113-klassenattribute)
   - [1.2 'Dunder'-Methods](#12-'dunder'-methods)
     - [1.2.1 Allgemein](#121-allgemein)
-    - [1.2.2 \_\_repr\_\_() oder \_\_str\_\_()](#122-__repr__-oder-__str__)
+    - [1.2.2 \_\_repr\_\_ oder \_\_str\_\_](#122-__repr__-oder-__str__)
     - [1.2.3 \_\_enter\_\_ und \_\_exit\_\_](#123-__enter__-und-__exit__)
     - [1.2.4 \_\_doc\_\_ Attribut](#124-__doc__-attribut)
     - [1.2.5 \_\_call\_\_ Method](#125-__call__-method)
@@ -184,7 +184,7 @@ print("Klassen Dict: ", PC.__dict__)
 
 Die leere Instanz hat nun ein eigenes Attribut mit dem Bezeichner 'klassen_attribut' bekommen und das echte Klassenattribut blieb unverändert. Der richtige Weg mit Klassenattributen umzugehen ist immer, dass man über die Instanz auf die Klasse zugreift und anschließend auf das Attribut. Das sieht dann folgendermaßen aus:
 
-Code: [\_3_Klassenattribute_2](_3_Klassenattribute_2.py)
+Code: [\_3_Klassenattribute_2.py](_3_Klassenattribute_2.py)
 
 ```py
 class PC:
@@ -208,7 +208,7 @@ Zeile 1 und Zeile 2 funktionieren **exakt** gleich, da type(self) immer die eige
 
 Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, **aber** es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict der erstellen Klasse, noch im Klassen-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnte, welche sich anschließend auch in den Instanzen der 'Klasse 2' wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute verwendet und macht sie im Zweifel lieber 'privat'.
 
-Code: [\_4_Klassenattribute_3](_4_Klassenattribute_3.py)
+Code: [\_4_Klassenattribute_3.py](_4_Klassenattribute_3.py)
 
 ```py
 class PC:
@@ -290,7 +290,7 @@ Will ich die Instanz meiner Klasse mittels for-Loop durchlaufen, dann benötige 
 <sub>(Randnotiz 1: \_\_len\_\_(self) ist übrigens die Fallback-Methode für \_\_bool\_\_(self). Das heißt, wenn keine Dunder-bool-Method definiert ist wird die Dunder-len-Method verwendet. Alles was >0 ist wird von Python als True interpretiert.)</sub>
 <br/>
 
-Code: [\_6_dunder_other](_6_dunder_other.py)
+Code: [\_6_dunder_other.py](_6_dunder_other.py)
 
 ```py
 def __add__(self, other):
@@ -336,6 +336,8 @@ Wenn man gute und ausgereifte Klassen designen will, dann sollte man auf diese b
 **\_\_str\_\_(self)**
 
 Die Dunder-str-Method ist dazu gedacht, eine Darstellung des Objekts zurückzugeben, welche für den Benutzer einfach zu lesen und zu verstehen ist. Sie **muss** einen String zurückgeben. Was ihr am Ende für einen String durch die Dunder-str-Methode zurück gibt ist euch überlassen. Der Sinn sollte am folgenden Beispiel klar werden.
+
+Code: [\_7_dunder_str.py](_7_dunder_str.py)
 
 **PC Beispiel:**
 
@@ -385,6 +387,8 @@ Was heißt das nun, 'der Pythonausdruck, um jene Instanz zu erzeugen'?
 
 **Allgemeines Beispiel eines repr eines 'Built-In' Datentyps:**
 
+Code: [\_8_dunder_repr_simple.py](_8_dunder_repr_simple.py)
+
 ```py
 my_string = 'Hallo'
 
@@ -399,6 +403,8 @@ print(repr(my_string)) # __repr__()
 </pre>
 
 Der repr() zeigt also eine Darstellung, mit der ein neues Objekt jener Instanz erzeugt werden kann.
+
+Code: [\_9_dunder_repr_pc.py](_9_dunder_repr_pc.py)
 
 **PC Beispiel:**
 
