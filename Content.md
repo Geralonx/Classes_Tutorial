@@ -23,7 +23,8 @@
   - [1.3 Attribut Zugriff](#13-attribut-zugriff)
     - [1.3.1 Allgemein](#131-allgemein)
     - [1.3.2 List/Dict Zugriff](#132-list/dict-zugriff)
-    - [1.3.3 Discriptor Zugriff](#133-discriptor-zugriff)
+    - [1.3.3 Descriptor Zugriff](#133-Descriptor-zugriff)
+    - [1.3.4 Zusammenfassung](#134-zusammenfassung)
 
 - [Kapitel 2 Spezielle Funktionsdekoratoren für Klassenmethoden](#kapitel-2-spezielle-funktionsdekoratoren-für-klassenmethoden)
   - [2.1 @Classmethod und @Staticmethod](#21-@classmethod-und-@staticmethod)
@@ -37,7 +38,7 @@
   - [3.1 Spezifizieren von Klassen](#31-spezifizieren-von-klassen)
   - [3.2 Komponieren von Klassen](#32-komponieren-von-klassen)
   - [3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>)
-- [Kapitel 4 Discriptor Protokol](#kapitel-4-discriptor-protokol)
+- [Kapitel 4 Descriptor Protokol](#kapitel-4-Descriptor-protokol)
   - [4.1 Allgemein](#41-allgemein)
 - [Kapitel 5 Klassendekoratoren](#kapitel-5-klassendekoratoren)
 - [Kapitel 6 Metaklassen](#kapitel-6-metaklassen)
@@ -47,17 +48,17 @@
 
 ### Allgemein
 
-So Leude, mein letztes Python-Tutorial ist schon 5 Monate her und inzwischen habe ich einerseits Lust ein neues zu machen und andererseits auch wieder einige Dinge gelernt, welche ich euch überhaupt zeigen könnte.
+So Leude, mein letztes Python-Tutorial ist schon 6 Monate her und inzwischen habe ich einerseits Lust ein neues zu machen und andererseits auch wieder einige Dinge gelernt, welche ich euch überhaupt zeigen könnte.
 
 Der Textteil des Tutorials ist vollständig in deutsch gehalten. Es kann vorkommen, dass gewissen Codebeispiele englische Bezeichnungen enthalten. Dort fehlt es noch etwas an Konsistenz. Dies sollte aber kein Problem bezüglich dem Verständnis sein.
 
-Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger fürs Andere, als für mich selbst. Ich bin der Meinung, wenn man Anderen etwas richtig erklären kann, dann hat man es auch wirklich verstanden. Die Zeit, die ich hier rein investiere, ist in erster Line für mich selbst, um einerseits neue Dinge zu lernen und die Dinge anschließend zu festigen. Die Informationen, die ich für dieses Tutorial zusammentrage, stammen aus vielen Quellen und beispielsweise auch Videomaterial, welches mehrere Stunden beinhaltet. Ich fasse diese Informationen in einer Form zusammen, wie ich sie für sinnvoll und zusammenhängend halte. Für mich entsteht in diesem Prozess ein Dokument, welches die Wesentlichen Dinge zu dem Thema beinhaltet, um die gezeigten Inhalte zu verstehen und dies anschließend auf die nicht gezeigten Inhalte übertragen kann.
+Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger für Andere, als für mich selbst. Ich bin der Meinung, wenn man Anderen etwas richtig erklären kann, dann hat man es auch wirklich verstanden. Die Zeit, die ich hier rein investiere, ist in erster Line für mich selbst, um einerseits neue Dinge zu lernen und die Dinge anschließend zu festigen. Die Informationen, die ich für dieses Tutorial zusammentrage, stammen aus vielen Quellen und beispielsweise auch Videomaterial, welches mehrere Stunden beinhaltet. Ich fasse diese Informationen in einer Form zusammen, wie ich sie für sinnvoll und zusammenhängend halte. Für mich entsteht in diesem Prozess ein Dokument, welches die Wesentlichen Dinge zu dem Thema beinhaltet, um die gezeigten Inhalte zu verstehen und dies anschließend auf die nicht gezeigten Inhalte übertragen kann.
 
 Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als ich. Wer mit der Einstellung, "Warum sollte ich mir **DEIN** Tutorial durchlesen, wenn es andere/bessere gibt?", hierher kommt sollte einfach wieder gehen und sich eben die besseren Tutorials durchlesen und mich nicht mit sowas nerven. Für alle Anderen, die ernsthaft interessiert sind und mein erstes Tutorial sogar ganz gut fanden, stelle ich diese Tutorial Repo gerne zur Verfügung und bin im Anschluss auch für weitere Fragen/Disskussionen gerne da.
 
 In der Repo sind viele einzelne .py-Files, welche die gezeigten Inhalte als Programmschnipsel zur Verfügung stellen. .py-Files welche dem Format '\_E\*\_name.py' Folgend sind zusätzliche Dinge, die nicht im Text angesprochen werden.
 
-DIESE BEISPIELE DIENEN LEDIGLICH ZUR ERKLÄRUNG DER ABLÄUFE UND PROZESSE IN PYTHON. ICH SPRECHE KEINE ALLGEMEINE EMPFEHLUNG AUS, DIE GEZEIGTEN BEISPIELE IN GENAU DIESER FORM ANZUWENDEN.
+DIE BEISPIELE DIENEN LEDIGLICH ZUR ERKLÄRUNG DER ABLÄUFE UND PROZESSE IN PYTHON. ICH SPRECHE KEINE ALLGEMEINE EMPFEHLUNG AUS, DIE GEZEIGTEN BEISPIELE IN GENAU DIESER FORM ANZUWENDEN.
 
 Bitte den [Disclaimer](#disclaimer) beachten.
 
@@ -65,17 +66,17 @@ Bitte den [Disclaimer](#disclaimer) beachten.
 
 ### Für wen ist dieses Tutorial geeignet?
 
-Dieses Tutorial geht schnell über Python-Grundlagen hinaus und befasst sich im Kern mit Klassen und deren speziellen Methoden ('Dunder'-Methods), welche bei der Verwendung von der 'Built-In' Methoden und Syntax verwendet werden. Wenn du nur wissen willst, wie man allgemein Klassen in Python schreibt und verwendet, dann solltest du woanders nachschlagen.
+Dieses Tutorial geht schnell über Python-Grundlagen hinaus und befasst sich im Kern mit Klassen, deren speziellen Methoden ('Dunder'-Methods) und wie im Hintergund impliziete Prozesse bei der Definition und Instanziierung von Klassen durchgeführt werden. Wenn du nur wissen willst, wie man allgemein Klassen in Python schreibt und verwendet, dann wird dieses Tutorial nicht das richtige für dich sein.
 
-David Beazley hat vor vielen jahren ein Tutorial über Metaprogrammierung gegeben, an welchem ich mich auch Teilweise bediene (wird aber alles auch referenziert), in dem er in 3 Stunden vorführt, wie man mit diesem Programmierstil über die Grenzen der normalen Vernwendung von Python hinaus geht.
-
-<sub>(Am Ende 'hackt' er den import, sodass er Sourcecode über ein XML File direkt importieren kann. Ich müsste es noch 10 Mal anschauen, um exakt zu verstehen, wie das dann geht.)</sub>
+David Beazley hat vor einigen jahren ein Tutorial über Metaprogrammierung gegeben, an welchem ich mich auch Teilweise bediene (wird aber alles auch referenziert), in dem er in 3 Stunden vorführt, wie man mit diesem Programmierstil über die Grenzen der normalen Vernwendung von Python hinaus geht.
 
 > "It's basicly walking trough a class and it's like doing brain surgery on it. It's probably a really bad idea." \- David Beazley in [YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI)
 
+<sub>(Am Ende 'hackt' er den import, sodass er Sourcecode über ein XML File direkt importieren kann. Ist ganz interesannt zu sehen, dass auch diese Kern-Machinery von Python offen zur Verfügung steht.)</sub>
+
 <br/>
 
-Wenn man einmal versteht, was bei den Prozessen der Erstellung, Initialisierung, Zugriff, Vererbung, etc. von Klassen stattfindet, dann kann man auch exakt an diesen Stellen seinen eigenen Eingriff vornehmen. Da im Wesentlichen **alles** in Python ein Objekt ist, ist es möglich jedes Objekt so anzupassen, wie man es benötigt. Und das ganze auf einer Ebene, wo der Benutzer der Klassen gar nicht mehr mitbekommtn, was im Hintergrund alles passiert.
+Wenn man einmal versteht, was bei den Prozessen der Erstellung, Initialisierung, Zugriff, Vererbung, etc. von Klassen stattfindet, dann kann man auch exakt an diesen Stellen seinen eigenen Eingriff vornehmen und den Prozess modifizieren. Da im Wesentlichen **alles** in Python ein Objekt ist, ist es möglich jedes Objekt so anzupassen, wie man es benötigt. Und das ganze auf einer Ebene, wo der Endbenutzer der Klassen gar nicht mehr mitbekommt, was im Hintergrund alles passiert.
 
 Metaklassen sind eigentlich für 99% der Nutzer von Python unrelevant. Das benötigen hauptsächlich Framework/Libary Entwickler. Aber bis zu dem Kapitel soll dieses Tutorial allgemein die fortgeschrittene Vernwednung von Klassen beschreiben. Und das ist bestimmt für mehr als 1% der Leute interesannt.
 
@@ -83,21 +84,15 @@ Metaklassen sind eigentlich für 99% der Nutzer von Python unrelevant. Das benö
 
 ### Kritik
 
-Zuerst sei gesagt, ich habe die Kritikpunkte unter dem letzten Tutorial alle gelesen und ich möchte mich auch daran halten. Ersteinmal habe ich in diesem Post auf die Farben verzichtet. Als zweites habe ich das ganze Tutorial auf GitHub gepackt, mit Code, mit Kommentaren und weiteren Texten, welche detaillierter auf die Inhalte eingehen.
+Zuerst sei gesagt, ich habe die Kritikpunkte unter dem letzten Tutorial alle gelesen und ich möchte mich auch daran halten. Ersteinmal habe ich mich für dieses Tutorial entschieden nur einen Info-Post zu erstellen und das Tutorial selbst auf GitHub zu halten. Dort gibt es auch alle Erklärungen mit Beispielcode, welcher in meinen Augen auch sehr detailliert Komentiert ist.
 
-Insagesamt wird dieses Tutorial auf mehrere Beiträge gesplitted, einfach weil das Thema zu groß ist, ja, sogar wenn ich die maximale Größe eines Bildes hier ausnutzen würde, würde ein Beitrag nicht reichen. Außerdem möchte ich die einzelnen Beiträge kürzer halten.
-
----
-
-### Hater
-
-Für die, die sagten pr0 sei nicht die Plattform für sowas, bitte Minus geben und weiterziehn.
+Insgesamt wird dieses Tutorial in mehreren Kapiteln und Unterordnern sortiert sein. Es ist insgesamt sehr groß geworden aber in meinen Augen ist in diesem Tutorial ein sehr großer Teil bezüglich Klassen und Design in Python abgedeckt.
 
 ---
 
 ### Prerequisites / Vorraussetzungen
 
-Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
+Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine int/float/str/list/... - Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
 
 ---
 
@@ -222,7 +217,7 @@ Die List-Comprehension vereinigt 3 Zeilen Code von einer Empty-List-Initialisier
 new_list = [i*i for i in range(10) if i%2 == 0]
 print(new_list)
 
-# Das Gleiche Ergebnis ließe sich beispielsweise mit folgendem Code erreichen
+# Das gleiche Ergebnis ließe sich beispielsweise mit folgendem Code erreichen
 new_list = []
 for i in range(10):
     if i%2 == 0:
@@ -235,7 +230,7 @@ for i in range(10):
 
 List-Comprehensions können die Leserlichkeit verbessern, wenn man sie versteht und lesen kann. Einfache List-Comprehensions schneiden von der Performance meistens auch noch besser ab als die entsprechenden for-Loop Konstrukte. Darauf möchte ich aber nicht tiefer eingehen.
 
-Man kann mit List-Comprehension aber auch ganz schönen Unfug treiben und den Scheiß unendlich tief verschachteln oder vieles mehr. Ich werde dazu auch ein File verlinken, wo ich mal solche Konstrukte zeige und umschreibe.
+Man kann mit List-Comprehensions aber auch ganz schönen Unfug treiben und den Scheiß unendlich tief verschachteln oder vieles mehr. Ich werde dazu auch ein File verlinken, wo ich mal solche Konstrukte zeige und umschreibe.
 
 Hier sind mal ein paar Methoden aus einer Klasse, welche ich zum WebScrapen der Steam-Angebote verwendet habe. Dort habe ich völlig übertrieben, um die List-Comps zu verstehen, aber das geht definitiv zu weit, wenn es um einfach zu verstehenden Code geht.
 
@@ -310,11 +305,9 @@ Meine beste Sprache ist Python, ich habe C und C++ als erste Sprachen gelernt, a
 Man kann eigentlich sagen, dass **ALLES** innerhalb einer Python Klasse public ist. Es gibt Konzepte und Conventionen, welche die Idee von Private und Proteced nachahmen sollen, aber wenn man sich auskennt, dann kann man auch diese Dinge ohne Aufwand umgehen. (An dieser Stelle fehlt mir die Erfahrung in anderen OOP-Sprachen, um zu wissen, ob dies auch dort einfach zu umgehen ist.)
 
 **Private**<br/>
-Wer aus anderen objektorentieren Sprachen kommt wird das Konzept von Public, Proteced und Private kennen. Soetwas gibt es in Python nicht. Wer jetzt schonmal die Basics von Klassen in Python kennt wird vielleicht den Finger heben und Fragen: "Was ist denn mit den \_\_vars und \_\_methods()?" (Zwei Unterstriche, falls dies im Text nicht deutlich raus kommt.)
+Wer aus anderen objektorentieren Sprachen kommt wird das Konzept von Public, Proteced und Private kennen. Soetwas gibt es in Python nicht. Wer jetzt schonmal die Basics von Klassen in Python kennt wird vielleicht den Finger heben und Fragen: "Was ist denn mit den \_\_vars und \_\_methods()?" (Zwei führende Unterstriche, falls dies im Text nicht deutlich raus kommt.)
 
 Wenn der Python-Interpreter innerhalb einer Klasse ein Attrribut oder Methode mit zwei führenden Unterstrichen und maximal einem nachfolgenden Unterstrich erkennt, führt dieser ein sogenanntes 'Name Mangling' durch. Das heißt, er bennent die Attribute und die Methoden, die dieser Form folgen, schlicht und ergreifend einfach um.
-
-Beispiel:
 
 ```py
 01  class PC:
@@ -335,7 +328,7 @@ Beispiel:
 > RTX2070Super
 > Traceback (most recent call last):
 >   File "f:/Python-Projects/Projects/Classes_Tutorial/name_mangeling.py", line 11, in <module>
->     print(pc_instanz.ram)
+>     print(pc_instanz.__ram)
 > AttributeError: 'PC' object has no attribute '__ram'
 </pre>
 
@@ -361,7 +354,9 @@ print(pc_instanz._PC__ram)
 > GSkill
 </pre>
 
-habe ich dennoch Zugang zu den eigentlich 'privaten' Attributen innerhalb einer Klasse. Dennoch findet diese Form Anwendung. Das Name Mangling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form. Denn würde ich ein weiteres \_\_ram Attribut in einer vererbten Klasse erstellen, dann würde dies durch das Name Mangling den Namen der vererbten Klasse vorgestellt bekommen. Damit würden sich die beiden Attribute von der Bezeichnung unterscheiden.
+habe ich dennoch Zugang zu den eigentlich 'privaten' Attributen innerhalb einer Klasse.
+
+Dennoch findet diese Form Anwendung. Das Name Mangling verhindert eben Namespace Kollisionen, wenn die Klasse vererbt wird. Das heißt, wenn ich aus irgendeinem Grund sicherstellen muss, dass ein Attribut oder eine Methode für eine Klasse durch Vererbung nicht verändert werden darf, dann erreiche ich das mit dieser Form. Denn würde ich ein weiteres \_\_ram Attribut in einer vererbten Klasse erstellen, dann würde dies durch das Name Mangling den Namen der vererbten Klasse vorgestellt bekommen. Damit würden sich die beiden Attribute von der Bezeichnung unterscheiden.
 
 <sub>(Randnotiz 1: Warum kann ich innerhalb von Klassen dann mit self.\_\_ram an das Attribut kommen? Ganz einfach, der Interpretert bennent innerhalb einer Klasse ALLE vorkommenden Attribute und Methoden mit 2 führenden Untersichten mittels Name Mangling um. Außerhalb von Klassen eben nicht.)
 </sub>
@@ -377,7 +372,7 @@ Unter Python Entwicklern gibt es die Convention, dass 'protected' innerhalb von 
 
 #### 1.1.3 Klassenattribute
 
-Klassenattribute sind Attribute, welche nicht im Instanz-Dict gespeichert werden, sondern bereits vor der Instanziierung auf Klassenebene existieren.
+Klassenattribute sind Attribute, welche nicht im Instanz-Dict gespeichert werden, sondern bereits vor der Instanziierung in das Klassen-Dict eingetragen sind.
 
 Klassenattribute existieren **nur** auf Klassenebene. Wenn man über eine Instanz auf ein Klassenattribut zugreift ist das möglich, weil Python, sobald das Attribut auf Instanzebene nicht zu finden ist, in der Klasse weiter sucht. Dies zieht sich auch durch Vererbungen durch.
 
@@ -436,11 +431,14 @@ class PC:
 Zeile 1 und Zeile 2 funktionieren **exakt** gleich, da type(self) immer die eigene Klasse zurück gibt, welche aber auch bereits in self.\_\_class\_\_ enthalten ist (Ihr könnt ja beide Statements mal ausgeben, dann werdet ihr es ja sehen). Ich persönlich bevorzuge die Schreibweise von Zeile 1.
 
 **Hardcoding, wie in Zeile 3, sollte immer vermieden werden**. Spätestens, wenn diese Klassen vererbt werden, bekommt ihr Probleme. Einfache Zeile 3 vergessen. Im Kapitel zu Vererbungen zeige ich da nochmal ein ähnliches Beispiel.
+
+<sub>(Randnotiz 1: Ja, auch wenn das Klassenattribut nur innerhalb der Klasse verwendet wird sollte man explizit über die self.**class** drauf zugreifen. Warum? Stellt euch vor, eure Klasse verwendet intern ein Klassenattribut und ein Benutzer der Klasse von außen weiß dies aber nicht. Nun schreibt er von Hand in seine Instanz exakt dieses Attribut herrein, warum auch immer. Würde man innerhalb der Klasse mit der Instanz drauf zugreifen, dann würde man plötzlich das neue Attribut der Instanz verwenden, statt dem richtigen der Klasse.)
+</sub>
 <br/><br/>
 
 **Vererbung von Klassenattirbuten**<br/>
 
-Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, **aber** es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict der erstellen Klasse, noch im Klassen-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnten, welche sich anschließend auch in den Instanzen der Kindklassen wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute aus Elternklassen verwendet.
+Durch Vererbung von 'Klasse 1' (Elternklasse) auf 'Klasse 2' (Kindklasse) ist das Klassenattribut auch dort verfügbar, **aber** es wird nicht im \_\_dict\_\_ der 'Klasse 2' aufgeführt. Erstellt ihr eine Instanz von 'Klasse 2' habt ihr mit einem Klassenattribut innerhalb 'Klasse 1' Zugriff auf ein Attribut, welches ihr weder im Instanz-Dict der erstellen Klasse, noch im Klassen-Dict der verwendeten Klasse seht. Das ist meiner Meinung nach... Naja beschissen, zumal ein Klassenattribut der 'Klasse 1' durch die Instanzen von Klasse 1 verändert werden könnte, welche sich anschließend auch in den Instanzen der 'Klasse 2' wiederspiegeln. Seid einfach Vorsichtigt, wenn ihr Klassenattribute verwendet und macht sie im Zweifel lieber 'privat'.
 
 ```py
 class PC:
@@ -482,13 +480,13 @@ Jeder der in Python bereits eine Klasse geschrieben hat wird mindestens die
 def __init__(self, arg1, arg2, ...)
 ```
 
-verwendet haben. 'Dunder'-Methods sind Methoden, welche im allgemeinen Fall **nicht** direkt über ihre Bezeichnung aufgerufen, sondern über die Syntax oder andere 'Built-In' Methods von Python. Sie **können** zwar über die Bezeichnung der 'Dunder'-Methods direkt aufgerufen werden, aber es widerspricht ihrem Sinn. (Ausgenommen innerhalb der Klassendefinition selbst, dazu später mehr.)
-<br/>
+verwendet haben. 'Dunder'-Methods sind Methoden, welche im allgemeinen Fall **nicht** direkt über ihre Bezeichnung aufgerufen werden, sondern über die Syntax oder andere 'Built-In' Methods von Python. Sie **können** zwar über die Bezeichnung der 'Dunder'-Methods direkt aufgerufen werden, aber es widerspricht ihrem Sinn. (Ausgenommen innerhalb der Klassendefinition selbst, dazu später mehr.)
+
 <sub>(Ich kenne ehrlich gesagt keinen Fall indem man außerhalb der Klassendefinition die 'Dunder'-Methods über ihre Bezeichnung verwenden sollte.)</sub>
 
 ```py
 # 'Falscher' Weg (Funktioniert, aber man macht es nicht)
-# __new__ erstellt eine leere Instanz einer Klasse
+# __new__ erstellt eine leere Objekt einer Klasse
 my_class_instance = MyClass.__new__(MyClass)
 # __init__ initialisiert die übergebene Instanz
 MyClass.__init__(my_class_instance, arg1, arg2, ...)
@@ -496,11 +494,13 @@ MyClass.__init__(my_class_instance, arg1, arg2, ...)
 
 # Richtiger Weg
 # Beim Instanziieren einer Klasse über den richtigen Konstrukor werden die
-# __new__ (und __prepare__) Methoden automatisch vor der Initialisierung durchgeführt.
+# __new__ (und __prepare__) Methoden automatisch implizit vor der Initialisierung durchgeführt.
 my_class_instance = MyClass(arg1, arg2, ...)
 ```
 
-Dieses Beispiels sollte verdeutlichen, dass man zum einen jede 'Dunder'-Method über ihre Bezeichung aufrufen kann. Außerdem sollte auch klar sein, dass jede Methode einer Klasse direkt über die Klasse selbst aufgerufen werden kann, wenn man an der ersten Stelle die Instanz als das _self_-Argument übergibt.
+Dieses Beispiels sollte verdeutlichen, dass man zum einen auch jede 'Dunder'-Methode über ihre Bezeichung aufrufen kann. Außerdem sollte auch klar sein, dass jede Methode einer Klasse direkt über die Klasse selbst aufgerufen werden kann, wenn man an der ersten Stelle die Instanz als das _self_-Argument übergibt.
+
+<sub>(Randnotiz 1: Der Aufruf über die Instanz selbst übergibt das _self_-Argument implizit.)</sub>
 
 <br/>
 Beispiel für die Verwendung von 'Dunder'-Methods durch 'Built-In'-Methods:
@@ -515,10 +515,8 @@ Sobald man aber in dieses Thema des fortgeschrittenen Designs kommt ist man mind
 
 Will ich die Instanz meiner Klasse mittels for-Loop durchlaufen, dann benötige ich die 'Dunder'-Methods \_\_iter\_\_ und \_\_next\_\_. Will ich zwei Instanzen miteinander verrechnen oder vergleichen können, dann benötige ich die 'Dunder'-Methods \_\_add\_\_, \_\_sub\_\_, \_\_gt\_\_, ... usw.
 
-<sub>(Randnotiz: \_\_len\_\_(self) ist übrigens die Fallback-Methode für \_\_bool\_\_(self). Das heißt, wenn keine Dunder-bool-Method definiert ist wird die Dunder-len-Method verwendet. Alles was >0 ist wird von Python als True interpretiert.)</sub>
-<br/><br/>
-
-Für Vergleiche oder arithmetische Operationen gilt das Gleiche. Will ich die Instanzen meiner Klasse miteinander addieren können, dann brauche ich die \_\_add\_\_ Method usw.
+<sub>(Randnotiz 1: \_\_len\_\_(self) ist übrigens die Fallback-Methode für \_\_bool\_\_(self). Das heißt, wenn keine Dunder-bool-Method definiert ist wird die Dunder-len-Method verwendet. Alles was >0 ist wird von Python als True interpretiert.)</sub>
+<br/>
 
 ```py
 def __add__(self, other):
@@ -534,11 +532,9 @@ def __gt__(self, other):
 ...
 ```
 
-<sub>(Randnotiz 1: Das _other_ Argument in den Vergleichs- und Rechenoperationen kann **alles** sein, was auf der rechten Seite des '+' steht. Behaltet es im Hinterkopf, an solchen stellen evnetuell ein instance/type Checking durchzuführen, damit ihr das abfangt, falls nötig. [_5_dunder_other.py]) </sub>
+<sub>(Randnotiz 2: Das _other_ Argument in den Vergleichs- und Rechenoperationen kann **alles** sein, was auf der rechten Seite des '+' steht. Behaltet es im Hinterkopf, an solchen stellen evnetuell ein instance/type Checking durchzuführen, damit ihr das abfangt, falls nötig. [_5_dunder_other.py]) </sub>
 
 <sub>(Hint: Die standard Libary functools bietet einen Classdecorator (@total_ordering), welcher einen Shortcut für die Vergleichsoperationen liefert. Das heißt, statt alle Dunder-Methoden für '>', '<', '==', '!=', '>=', '<=' selbst zu implementieren müsstet ihr nur '==' und eine der größer oder kleiner als Methode implementieren und hättet dennoch alle Verglichsoperationen zur verfügung.)</sub>
-
-<br/>
 
 Ich selbst hatte keine Idee, wie man eine allgemeine Zusammenfassung für die 'Dunder'-Methods formulieren könnte. Das hat jemand anderes aber sehr gut hinbekommen.
 
@@ -630,8 +626,6 @@ print(repr(my_string)) # __repr__()
 
 Der repr() zeigt also eine Darstellung, mit der ein neues Objekt jener Instanz erzeugt werden kann.
 
-<br/>
-
 **PC Beispiel:**
 
 ```py
@@ -685,7 +679,7 @@ Würde man das Schließen der Datei vergessen, dann wäre die Datei im System bl
 
 Dokumentiert eure Sachen. Muss man das noch sagen? In Python kann man die Dokumentation einer Klasse oder Funktion als _doc_-String hinterlegen. Der String wird in 3 Anführungszeichen am Kopf der Funktion oder Klasse geschrieben (es gehen doppelte \" und einfache \', aber typischerweise werden doppelte verwendet. [PEP 257 - Docstrings](https://www.python.org/dev/peps/pep-0257/)).
 
-Das \_\_doc\_\_ Attribut ist in jedem Objekt vorhanden, auch wenn keiner gesetzt wird. Falls keiner vom Author geschrieben wird, ist der Wert None.
+Das \_\_doc\_\_ Attribut ist in jedem Objekt vorhanden, auch wenn keiner vom Autor gesetzt wird. Dann is der Wert eben None.
 
 Lest euch die Style-Guides zu dem Doc-Attribut durch. Dort gibt es schöne Anregungen, wie man eine Klasse oder Funktion ordentlich dokumentiert.
 
@@ -724,9 +718,9 @@ print(outer_func.__doc__, "\n")
 > Das funktioniert auch bei einfachen Funktionen!
 </pre>
 
-Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Welcher Datentyp sie haben, was passiert, welche restricstions gelten. Also alles weis irgendwie hilfreich ist, um den Teil eben zu verwenden.
+Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Welcher Datentyp sie haben, was passiert, welche restricstions gelten. Also alles was irgendwie hilfreich ist, um den Teil zu verwenden.
 
-Es gibt des Weiteren ein standard Libary names _doctest_. Dieses Modul kann die Funktion von einem Objekt mittels dem Docstring überprüfen, sofern der Docstring dazu designed wurde. Ob man das machen sollte oder nicht, keine Ahnung. Es gibt die Möglichkeit, aber auch dort sollte man es nicht übertreiben und versuchen _unittests_ zu ersetzten.
+Es gibt des Weiteren ein standard Libary names _doctest_. Dieses Modul kann die Funktion von einem Objekt mittels dem Docstring überprüfen, sofern der Docstring dazu designed wurde. Ob man das machen sollte oder nicht, keine Ahnung. Es gibt die Möglichkeit, aber auch dort sollte man es nicht übertreiben und versuchen damit _unittests_ zu ersetzten.
 
 <br/>
 
@@ -742,7 +736,7 @@ print(type(func))
 ```
 
 <pre>
-> >class 'function'<
+> class 'function'
 </pre>
 
 Dies ließe sich auch 1 zu 1 so implementieren:
@@ -761,7 +755,7 @@ print(my_instance(1))
 > 2
 </pre>
 
-Die \_\_call\_\_-Method wird noch interesannt und wichtig, wenn man Metaklassen verwendet. Nicht für alle, aber für manche benötigt man dies.
+Die \_\_call\_\_-Method wird noch interesannt und wichtig, wenn man Metaklassen verwendet. Nicht für alle, aber für manche benötigt man diese.
 
 <br/>
 
@@ -771,26 +765,30 @@ Während den Recherchen habe ich diese Seite gefunden, welche nochmal einen deta
 
 Allgemeine Zusammenfassung ist, wenn ihr mit eurer Klasse irgendeine Standardoperation (+, -, <, >, aufruf, len(), bool(), str(), dir(), ...) verwenden wollte, dann schaut einfach nach der speziellen 'Dunder'-Method dafür nach und ihr könnt das sauber dafür implementieren, statt euch irgendwelche Adapter workarounds zu basteln.
 
-<br/>
+---
 
 ### 1.3 Attribut Zugriff
 
-Man muss zwischen dem Attributzugriff in Python in 3 Kategorien unterscheiden. Die meiste Verwirrung entsteht eigentlich dadurch, dass es zwei Methoden gibt, welche den 'normalen' Zugriff übernehmen.
+Man muss zwischen dem Attributzugriff in Python in 3 Kategorien unterscheiden. Der Punkt, warum ich dies extra erkläre ist, dass dort häufig eine Verwirrung entsteht, wie dieser überhaupt abläuft. Die meiste Verwirrung entsteht eigentlich dadurch, dass es zwei Methoden gibt, welche den 'normalen' Zugriff übernehmen.
 
 https://twitter.com/raymondh/status/1337505615204106240
 
 https://blog.peterlamut.com/2018/11/04/python-attribute-lookup-explained-in-detail/
 
+<br/>
+
 #### 1.3.1 Allgemein
 
-Unter dem 'Normalen' Zugriff verbergen sich 2 'Dunder'-Methods
+Unter dem 'Normalen' Zugriff verbergen sich zwei 'Dunder'-Methods
 
 \_\_getattribute\_\_<br/>
 \_\_getattr\_\_
 
-Der Zugriff auf ein Attribut ist 'Hardwired' auf \_\_getattribute\_\_. Das heißt. Man kommt im ersten Schritt nicht drumherum diese Methode zu umgehen. Wenn eine Klasse diese 'Duner'-Method nicht spezifiziert, dann wird im \_\_mro\_\_ weiter gegangen. (\_\_mro\_\_ wird später im [Kapitel 3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>) weiter im Detail erklärt.)
+Der Zugriff auf ein Attribut ist 'Hardwired' auf \_\_getattribute\_\_. Das heißt, man kommt im ersten Schritt nicht drumherum dieser Methode auszuweichen. Wenn eine Klasse eine Method nicht spezifiziert, dann wird im \_\_mro\_\_ weiter gegangen. (\_\_mro\_\_ wird später im [Kapitel 3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>) weiter im Detail erklärt.) Im letzten Element des \_\_mro\_\_ ist eine default Implementation der \_\_getattribute\_\_ enthalten. Diese führt den Zugriff aus und erhebt einen AttributeError, falls jenes Attribut nicht existiert. Wenn ein AttributError kommt, dann wird als Fallback die \_\_getattr\_\_-Methode durchlaufen.
 
-Es gibt eine default Implemenatation im letzten Element des \_\_mro\_\_. Diese führt den Zugriff aus und erhebt einen AttributeError, falls jenes Attribut nicht existiert. Wenn ein AttributError kommt, dann wird als Fallback die \_\_getattr\_\_-Methode durchlaufen.
+Selbstverstädnlich könnte in eurer Klasse die \_\_getattribute\_\_ selbst definieren und die Weiterleitung nicht durchführen, aber das ist häufig nicht zu Empfehlen, da in der default Implementation noch andere weitere Dinge passieren, die über den Zugriff hinaus gehen. (Descriptor Zugriff)
+
+<br/>
 
 #### 1.3.2 List/Dict Zugriff
 
@@ -798,34 +796,40 @@ Mit der \_\_getitem\_\_(self, name) ist es möglich, dass ein Zugriff wie bei ei
 Es gibt dazu eigentlich nicht viel zu sagen. Man umgeht die gesamte '.attr' / \_\_getattribute\_\_ machinery und kommt direkt in die \_\_getitem\_\_ Methode. Wenn man eine Klasse hat, die eine gewisse Datenstruktur abbildet kann dies sicherlich sinnvoll sein.
 
 ```py
-instanz[attr_name]
+instanz[attr_name] # -> __getitem__(self, name)
 ```
 
-#### 1.3.3 Discriptor Zugriff
+<br/>
 
-Die Discriptor Methode \_\_get\_\_ wird durch die default Implementation der \_\_getattribute\_\_ mit berücksichtig. Das heißt, selbst wenn ein Attribut als Discriptor beschrieben ist, läuft der Prozess vollständig über \_\_getattribute\_\_ hoch in die default Implementation, dort wird überprüft, ob es sich bei dem Attribut um einen Discriptor handelt und anschließend ausgeführt.
+#### 1.3.3 Descriptor Zugriff
 
-[Python 3 Docs: Discriptor HowTo Guid -> invocation from an intsnace](https://docs.python.org/3/howto/descriptor.html#invocation-from-an-instance)
+Ein Descriptor ist eine Klasse, welche den Zugriff auf ein Attribut spezialisiert. Auch dazu gibt es später ein eigenes Kapitel. Aber dennoch muss man wissen, an welche Stelle des Attributzugriffs der Descriptor angesprochen wird.
+
+Die Descriptor Methode \_\_get\_\_ wird durch die default Implementation der \_\_getattribute\_\_ mit berücksichtig. Das heißt, selbst wenn ein Attribut als Descriptor beschrieben ist, läuft der Prozess vollständig über \_\_getattribute\_\_ hoch in die default Implementation und dort wird überprüft, ob es sich bei dem Attribut um einen Descriptor handelt. Wenn ja, wird dieser ausgeführt.
+
+[Python 3 Docs: Descriptor HowTo Guid -> invocation from an intsnace](https://docs.python.org/3/howto/descriptor.html#invocation-from-an-instance)
 
 [Stackoverflow: Attribute-Lookup-Tree](https://stackoverflow.com/a/55345947)
+
+<br/>
 
 #### 1.3.4 Zusammenfassung
 
 Zusammengefasst sollte man über den Attributszugriff folgendes behalten:
 
-1. Es wird immer \_\_getattribute\_\_ bis hoch zur default Implementation durchgefahren.
-2. Dort wird dann überprüft, ob es sich bei dem Attribut um einen Discriptor handelt.
-3. Handelt es sich um ein Discriptor?
-   - Wenn ja, dann benutze \_\_get\_\_ des Discriptors
-   - Wenn nein, dann schaue nach, ob das Attribut im instanz.\_\_dict\_\_
-4. Wenn es nicht im instanz.\_\_dict\_\_ zu finden ist, dann wird ein AttributError erhoben.
+1. Es wird immer \_\_getattribute\_\_ bis hoch zur default Implementation durchgefahren. (Sofern eine Klasse auf dem Weg dies nicht Abfängt)
+2. Dort wird dann überprüft, ob es sich bei dem Attribut um einen Descriptor handelt.
+3. Handelt es sich um ein Descriptor?
+   - Wenn ja, dann benutze \_\_get\_\_ des Descriptors.
+   - Wenn nein, dann schaue nach, ob das Attribut im instanz.\_\_dict\_\_ vorhanden ist.
+4. Wenn es nicht im instanz.\_\_dict\_\_ zu finden ist, dann wird ein AttributError erhoben. Der AttributError triggert in diesem Fall dann eine Suche nach der Fallbackmethode \_\_getattr\_\_.
 5. Existiert eine \_\_getattr\_\_-Alternative?
    - Wenn ja, führe sie aus
    - Wenn nein, Script wird mit dem AttributError beendet
 
 Das ganze gilt auch für \_\_setattr\_\_, \_\_setitem\_\_ und \_\_set\_\_. Alles analog zu diesem hier.
 
-Es gibt keine \_\_setattribute\_\_, da beim Schreiben autoamtisch ein neues Attribut erstellt wird, falls es dies noch nicht gibt. Wenn man das Abfangen möchte -> Metaklassen oder die \_\_setattr\_\_. Gibt ein paar Möglichkeiten.
+Es gibt keine \_\_setattribute\_\_, da beim Schreiben autoamtisch ein neues Attribut erstellt wird, falls es dies noch nicht gibt. Wenn man das Abfangen möchte -> Metaklassen oder in der \_\_setattr\_\_ ein Abfrage implementieren. Gibt ein paar Möglichkeiten.
 
 ---
 
@@ -927,7 +931,7 @@ retval = adder(100, 200, debug=True)
 > Result = 300
 </pre>
 
-In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion. Und das ohne dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern. Selbstverstädlich ist diese Art von Overloading auch bei Methoden einer Klasse zulässig.
+In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendung von dem optionalen Parameter 'debug' ändert sich das Verhalten der Funktion und das, ohne dass der Code verändert werden muss. Das Verhalten lässt sich also durch die übergebenen Argumente direkt steuern. Selbstverstädlich ist diese Art von Overloading auch bei Methoden einer Klasse zulässig.
 
 <br/>
 
@@ -935,7 +939,7 @@ In beiden Fälle gibt die Funktion das Ergebnis zurück, aber durch die Verwendu
 
 Die genannten Dekoratoren sind besondere, welche man als Descriptor beschreibt. Auch diese werden zum Method-Overloading verwendet, da sie mehrere Methode mit dem gleicher Bezeichnung so ausstatten, dass diese, aufgrund der Art der Verwendung, sich unterschied verhalten. Da es sich um Dekoratoren handelt müssen sie nur vor der Methode angebracht werden, welche den Bezeichner hat, über den sie mit dem '.'-Operator erreicht werden soll.
 
-<sub>(David Beazley spricht in seinem [Tutorial: YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI) von 'owning the dot'. Klingt eigentlich spannender als es ist, weil er mit Discriptoren den Zugriff auf eine Variable in 100 Wegen überprüft. Dazu später mehr.)</sub>
+<sub>(David Beazley spricht in seinem [Tutorial: YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI) von 'owning the dot'. Klingt eigentlich spannender als es ist, weil er mit Descriptoren den Zugriff auf eine Variable in 100 Wegen überprüft. Dazu später mehr.)</sub>
 
 ```py
 class PC:
@@ -976,7 +980,7 @@ def gpu(self):
     return self.gpu
 ```
 
-Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @property-Methode aufgerufen wird. Das Gleiche gilt für die setter und deleter Methoden. (Endless Rekursion... Pythons Default Limit 1000)
+Die Zeile 'return self.gpu' würde darin enden, dass durch 'self.gpu' wieder die @property-Methode aufgerufen wird. Das Gleiche gilt für die setter und deleter Methoden. (Endless Rekursion... Pythons Default Limit 1000)
 
 <pre>
 > Traceback (most recent call last):
@@ -987,14 +991,14 @@ Die Zeile 'return self.gpu' würde darin enden, dass durch self.gpu wieder die @
 
 Und wozu soll das gut sein? Naja, im Vergleich zu dem normalen Zugriff ist es jetzt möglich beim Schreiben eines Attributs ein Value/Type Checking durchzuführen. Man könnte das Löschen des Attributs loggen, Lesezugriffe beschränken etc. Und das alles würde ganz automatisch im Hintergrund passieren, ohne dass der Zugriff über 'instanz.attribut' sich ändern müsste.
 
-Eine weitere Möglichkeit, um die Discriptoren der standard Libary zu verwenden ist, dass man sich die Methoden für get, set und delete selbst definiert und dann mit folgender Zeile an das Attribut übergibt.
+Eine weitere Möglichkeit, um die Descriptoren der standard Libary zu verwenden ist, dass man sich die Methoden für get, set und delete selbst definiert und dann mit folgender Zeile an das Attribut übergibt.
 
 ```py
 class PC:
     attr = property(get_func, set_func, delete_func, doc_string)
 ```
 
-Die übergebenen Funktionen können damit sogar an belibgen Orten definiert sein. Die 'Built-In'-Property Methode verknüpfte diese nur an ein Attribut. Das heißt:
+Die übergebenen Funktionen können damit sogar an einem belibgen Orten definiert sein. Die 'Built-In'-Property Methode verknüpfte diese nur an ein Attribut. Das heißt:
 
 - wenn 'pc_instanz.attr' verwendet wird, dann wird die get_func ausgeführt.
 - wenn 'pc_instanz.attr =' verwendet wird, dann wird die set_func ausgeführt.
@@ -1002,7 +1006,7 @@ Die übergebenen Funktionen können damit sogar an belibgen Orten definiert sein
 
 Was diese Funktionen machen ist euch überlassen. Mit diesem Ansatz kann man die Zugangsmethoden einmalig definieren und sie einfach als property an ein Attribut setzten.
 
-Da Discriptoren meiner Meinung nach eine coole Sache sind und für ein fortgeschrittenes Klassendesign sehr hilfreich sein können, gibt es zu diesen noch ein eigenes Kapitel, wie man eigene Discriptoren erstellt.
+Da Descriptoren meiner Meinung nach eine coole Sache sind und für ein fortgeschrittenes Klassendesign sehr hilfreich sein können, gibt es zu diesen noch ein eigenes Kapitel, wie man eigene Descriptoren erstellt.
 
 <sub>(Randnotiz 1: Auch bei der Zuweisung in der \_\_init\_\_ wird die @attr.setter Method durchgeführt, da der Attributzugriff über self.attr innerhalb einer Klasse keinen Unterschied zu dem Zugriff instance.attr außerhalb einer Klasse darstellt.)</sub>
 
@@ -1010,23 +1014,21 @@ Da Discriptoren meiner Meinung nach eine coole Sache sind und für ein fortgesch
 
 #### 2.1.3 Weiteres Overloading
 
-Das Standard Package _typing_ enthält einene Dekorator names '@overload', aber damit habe ich micht nicht tiefer beschäftigt.
+Das Standard Package _typing_ enthält einene Dekorator names '@overload', aber damit habe ich micht nicht tiefer beschäftigt. Sollte hier lediglich ein Hinweis sein.
 
-Wenn man mal darüber nachdenkt, dann sind bereits die 'Built-In' Operatoren auch schon überladen. Mit '+' kann ich Floats, Ints, Strings, Lists, ... etc addieren und erhalte trotzdem ein Ergebnis zurück.
+Wenn man mal darüber nachdenkt, dann sind bereits die 'Built-In' Operatoren auch schon überladen. Mit '+' kann ich Floats, Ints, Strings, Lists, ... etc addieren und erhalte trotzdem ein Ergebnis zurück, obwohl sich die Argumente vom Typ her sehr unterschieden können.
 
 ---
 
 ## Kapitel 3: Klassenvererbung
 
-Das Vererben von Klassen kann man in zwei wesentliche Kategorien unterteilen. Der erste Grund, und meiner Meinung nach der häufigere, ist, um eine Klasse zu speifizieren. Der zweite Grund ist, um mehrere Klassen zu einer Gesamtklasse zu komponieren. Dies findet beispielsweise im Fall von "Descriptors" Anwendung.
-
-<sub>(Randnotiz 1: Im folgenden Kapitel bauen die Code-Teile aufeinander auf.)</sub>
+Das Vererben von Klassen kann man in zwei wesentliche Kategorien unterteilen. Der erste Grund, und meiner Meinung nach der häufigere, ist, um eine Klasse zu speifizieren. Der zweite Grund ist, um mehrere Klassen zu einer Gesamtklasse zu komponieren. Dies findet beispielsweise im Fall von _Descriptors_ Anwendung.
 
 ---
 
 ### 3.1 Spezifizieren von Klassen
 
-Um in Python Klassen zu vererben muss bei deklaration der Kindklasse in Klammern die Elternklasse(n) angegeben werden. Im einfachsten Fall hat eine Kindklasse eine einzige Elternklasse, aber mehrere sind auch möglich.
+Um in Python Klassen zu vererben muss bei deklaration der Kindklasse in Klammern die Elternklasse(n) angegeben werden. Im einfachsten Fall hat eine Kindklasse eine einzige Elternklasse, mehrere sind auch möglich.
 
 Im folgenden Beispiel ist die Elternklasse 'Person' und zwei getrennte Kindklassen, welche von 'Person' erben.
 
@@ -1052,7 +1054,9 @@ student = Student(fname='Max', lname='Mustermann', mat_nr='10142020')
 employee = Employee(fname='Maria', lname='Musterfrau', salary=40000)
 ```
 
-Für die Instanziierung von Kindklassen kann man verschiedene Ansätze wählen. In dem oben gezeigten Beispiel sind im Student-Konstruktor alle Parameter, welche zum Erzeugen einer Instanz benötigt werde, statisch definiert. Bei der Employee-Klasse ist der Ansatz mit \*\*kwargs gewählt worden. Die neuen Attribute decr Kindklasse werden einfach in den Konstruktor eingetragen und der Rest wird einfach als \*\*kwargs eingefangen und als Gesamtpaket weitergeleitet.
+Für die Instanziierung von Kindklassen kann man verschiedene Ansätze wählen. In dem oben gezeigten Beispiel sind im Student-Konstruktor alle Parameter, welche zum Erzeugen einer Instanz benötigt werde, statisch definiert.
+
+Bei der Employee-Klasse hingegen ist der Ansatz mit \*\*kwargs gewählt worden. Die neuen Attribute der Kindklasse werden einfach in den Konstruktor eingetragen und der Rest wird einfach als \*\*kwargs eingefangen und als Gesamtpaket an die 'nächsthöhere' Klasse weitergeleitet.
 
 <br/>
 
@@ -1082,7 +1086,7 @@ Nachteile:
 - Kwargs, welche gar Nicht existieren, werden vom Konstruktor akzeptiert, auch wenn diese nicht verwendet werden. (Diese würden dann auf dort zum Crash führen, wo keine \*\*kwargs mehr akzeptiert werden. In desem Fall in der Elternklasse Person.)
   <br/><br/>
 
-Wofür man sich entscheidet ist sicherliche Anwendungsabhängig. Was habe ich mit der Klasse noch alles vor? Erwarte ich weitere Kindklassen? Dass man für die Help-Methode eine gesamte Darstellung des Konstruktors bevorzugt macht für den späteren Anwender mehr Sinn. Dieses Problem mit dem zweiten Ansatz und der Tatsache, dass die Darstellung \_\_init\_\_(salary, **kwargs) wenig hilfreich ist, ließe sich aber mit Metaklassen kontrollieren. Obwohl **kwargs verwendet wird, würden dann trotzdem alle benötigten Paramerter der Elternklasse(n) mit angezeigt werden. Dadurch verliert man nicht die Dynamik, dass man die Änderungen der Elternklassen mit in die Kindklassen einpfelgen müsste.
+Wofür man sich entscheidet ist sicherliche Anwendungsabhängig. Was habe ich mit der Klasse noch alles vor? Erwarte ich weitere Kindklassen? Werden die Klassen eventuell soagr zusammen vererbt? Dass man für die Help-Methode eine gesamte Darstellung des Konstruktors bevorzugt macht für den späteren Anwender mehr Sinn. Dieses Problem mit dem zweiten Ansatz und der Tatsache, dass die Darstellung \_\_init\_\_(salary, **kwargs) wenig hilfreich ist, ließe sich aber mit Metaklassen kontrollieren. Obwohl **kwargs verwendet wird, würden dann trotzdem alle benötigten Paramerter der Elternklasse(n) mit angezeigt werden. Dadurch verliert man nicht die Dynamik, dass man die Änderungen der Elternklassen mit in die Kindklassen einpfelgen müsste.
 
 ---
 
@@ -1139,7 +1143,9 @@ Fakt ist aber, dass eine Linearisierung stattfindet. Und auch hier sei wieder ge
 
 <sub>(Randnotiz 1: Obwohl das \_\_mro\_\_ Attribut bei der Definition der Klassen evaluiert wird und das Attribut Read-Only ist lässt sich dieses Attribut später dennoch verändern. Denn es wird jedes mal neu evaluiert, wenn sich die \_\_bases\_\_ einer Klasse ändern. Und dieses Attribut ist schreibbar. Man kann theoretisch im Programmablauf einfach zu jederzeit die vererbten Klassen einer Klasse ändern. Ob man das tun sollte, wahrscheinlich eher nicht. Erklärt hat dies Mark Smith auf der PyCon 2019. [Youtube:"It's Pythons All The Way Down: Python Types & Metaclasses Made Simple" - Mark Smith (PyCon AU 2019)](https://www.youtube.com/watch?v=ZpV3tel0xtQ))</sub>
 
-Wenn man sich mit diesem Wissen nun die mro vom StudentWorker anguckt, erhält man folgende Reihenfolge.
+<br/>
+
+Wenn man sich mit diesem Wissen nun die \_\_mro\_\_ vom StudentWorker_V2 anguckt, erhält man folgende Reihenfolge.
 
 ```py
 print(StudentWorker_V2.__mro__)
@@ -1166,35 +1172,38 @@ Dort zeigt sich nocheinmal, wieso man das **Hardcoding** unbedingt vermeiden sol
 
 ---
 
-## Kapitel 4 Discriptor Protokol
+## Kapitel 4 Descriptor Protokol
 
-Discriptoren sind Klassen, welche in den Prozess des Attributszugriff eingreifen und zusätzliche Aufgaben durchführen können. Der Vorteil von eigenen Discritopren, gegenüber den Discriptoren der standard Libary ([2.1.2](#212-@property,-@fn.setter,-@fn.deleter)), ist, dass das Protokol für alle Attribute in einer eigene Klasse definiert wird. Dadurch lassen sich Discriptoren einfacher warten und erweitern, indem sie in eine neue Klasse vererbt werden und weitere Funktionalität hinzugefügt wird.
+Descriptoren sind Klassen, welche in den Prozess des Attributszugriff eingreifen und zusätzliche Funkionalität hinzufügen. Der Vorteil von eigenen Discritopren, gegenüber den Descriptoren der standard Libary ([2.1.2 @property, @fn.setter, @fn.deleter](#212-@property,-@fn.setter,-@fn.deleter)), ist, dass das Protokol für alle Instanzen des Descriptors in einer eigene Klasse definiert wird. Dadurch lassen sich Descriptoren einfacher warten und erweitern, indem sie in eine neue Klasse vererbt werden und weitere Funktionalität hinzugefügt wird.
 
-[Python Docs: Discriptor HowTo Guide](https://docs.python.org/3/howto/descriptor.html)
+[Python Docs: Descriptor HowTo Guide](https://docs.python.org/3/howto/descriptor.html)
 
-[Python Docs: Implementing Discriptors](https://docs.python.org/3/reference/datamodel.html?highlight=__get__#implementing-descriptors)
+[Python Docs: Implementing Descriptors](https://docs.python.org/3/reference/datamodel.html?highlight=__get__#implementing-descriptors)
 
-[Stackoverflow: When and why use an discriptor over property()](https://stackoverflow.com/questions/5842593/when-and-why-might-i-assign-an-instance-of-a-descriptor-class-to-a-class-attribu)
-
----
+[Stackoverflow: When and why use an Descriptor over property()](https://stackoverflow.com/questions/5842593/when-and-why-might-i-assign-an-instance-of-a-descriptor-class-to-a-class-attribu)
 
 ### 4.1 Allgemein
 
-Bei Discriptoren unterscheidet man zwischen 'Data-Discriptor' und 'Non-Data-Discrptor'. 'Non-Data-Discriptors' sind dadurch definiert, dass sie **nur** die \_\_get\_\_-Method enthalten. Für 'Data-Discriptros' muss die \_\_set\_\_ und/oder die \_\_delete\_\_ Method definieren werden. Man unterscheidet aus dem Grund zwischen diesen Typen, da ein 'Non-Data-Discriptor' beispielsweise auch den Zugriff auf eine Methode steuer kann und deswegen nur die \_\_get\_\_-Method benötigt.
+Bei Descriptoren unterscheidet man zwischen 'Data-Descriptor' und 'Non-Data-Descriptor'. 'Non-Data-Descriptors' sind dadurch definiert, dass sie **nur** die \_\_get\_\_-Method enthalten. Für 'Data-Discriptros' muss die \_\_set\_\_ und/oder die \_\_delete\_\_ Method definieren werden. Man unterscheidet aus dem Grund zwischen diesen Typen, da ein 'Non-Data-Descriptor' beispielsweise auch den Zugriff auf eine Methode steuer kann und deswegen nur die \_\_get\_\_-Method benötigt.
 
-Die Discriptor-Klasse wird durch folgende 'Dunder'-Methods beschrieben.
+Die Descriptor-Klasse wird durch folgende 'Dunder'-Methods beschrieben.
 
 - \_\_get\_\_
 - \_\_set\_\_
 - \_\_delete\_\_
 - \_\_set_name\_\_
 
-Ein Attribut, welches mit einme Discriptor arbeiten soll, wird in der Klasse als Klassenattribut definiert.
+<sub>(Randnotiz 1: Es ist natürlich völlig in Ordnung weitere Methoden in der Descriptorklasse zu definieren. Lediglich die oben genannten Methoden machen eine Klasse erst zu einem Descriptor)
+</sub>
 
-Bei der Definition, dass ein Attribut ein Discriptor ist wird automatisch die \_\_set_name\_\_ aufgerufen. Dies ist dazu nötig, um die Namen des Attributs für die Zugriffe innerhalb der Discriptorklasse zu haben.
+#### 4.1.1 Anwendung
+
+Ein Attribut, welches mit einem Descriptor arbeiten soll, wird in der Klasse als Klassenattribut deklariert.
+
+Bei der Deklaration, dass ein Attribut ein Descriptor ist, wird automatisch die \_\_set_name\_\_ aufgerufen. Dies wird häufig dazu verwendet, um die Namen des Attributs für die Zugriffe innerhalb der Descriptorklasse zu haben. Diese Methode ist aber optional.
 
 ```py
-class Discriptor:
+class Descriptor:
     def __set_name__(self, owner_cls, name):
         self.name = name
 
@@ -1211,13 +1220,23 @@ class Discriptor:
         del instance.__dict__[self.name]
 
 class MyClass:
-    attr = Discriptor()
+    attr = Descriptor()
 
     def __init__(self, attr):
         self.attr = attr
+
+instanz = MyClass('value_1')
+instanz.attr
+del instanz.attr
+# Set 'attr' to 'value_1' -> Hervorgerufen durch 'self.attr = attr' in der init
+# Get 'attr'
+# Delete 'attr'
+
 ```
 
-Das Attribut 'attr' wird in dieser Klasse als Discriptor verwendet. Wenn wir zurück an die [1.1.3 Klassenattribute](#113-klassenattribute) denken, dann könnte man meinen, dass der Zugriff doch einfach Umgangen wird, da ein neues Attribut innerhalb der Instanz erzeugt wird.
+Das Attribut 'attr' wird in dieser Klasse als Descriptor erzeugt. Wenn wir zurück an die [1.1.3 Klassenattribute](#113-klassenattribute) denken, dann könnte man meinen, dass der Zugriff doch einfach Umgangen wird, da ein neues Attribut innerhalb der Instanz erzeugt wird, aber dem ist nicht so.
+
+Durch die default Implementation der \_\_getattribute\_\_ Methode wird aber vor dem Zugriff überprüft, ob das Attribut auf Klassenebene als Descriptor deklariert ist. Wenn ja, dann wird dieser auch verwendet.
 
 ---
 
@@ -1226,7 +1245,7 @@ Das Attribut 'attr' wird in dieser Klasse als Discriptor verwendet. Wenn wir zur
 Klassendekoratoren sind der erste Schritt zur Metaklasse. Viele Dinge, die man mit Metaklassen realisieren kann, könnte man auch mit Klassendekoratoren erreichen. Die Frage wozu man Metklassen dann überhaupt lässt sich mit den zwei wesentlichen Unterschieden beantworten.
 
 1. Klassendekoratoren werden **NACH** der Erzeugung der Klassendefinition angewandt. Metaklassen werden **VOR** der Erzeugung der Klassendefinition durchgeführt.
-2. Metaklassen werden durch Vererbung weitergeleitet. Ein Klassendekorator wirkt nur auf die Klasse, die damit dekoriert wird.
+2. Metaklassen verbreiten sich durch die Vererbung der Grundklasse fort. Ein Klassendekorator wirkt nur auf die Klasse, die damit dekoriert wird.
 
 ---
 
@@ -1239,11 +1258,13 @@ Klassendekoratoren unterscheiden sich von Funktionsdekoratoren nur in der Weise,
 #### 5.1.1 Klassendekorator XXXXXXX
 
 ```py
+from functools import wraps
 from datetime import datetime
 
 def debugger(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
-        print(f"\nFunktionsaufruf am {datetime.now()}: Übergabeparameter: {args}, {kwargs}.")
+        print(f"\n{func.__qualname__!r} aufgerufen am {datetime.now()}: Übergabeparameter: {args}, {kwargs}.")
         return func(*args, **kwargs)
     return wrapper
 
@@ -1254,7 +1275,7 @@ def debug_all_cls_methods(cls):
         if callable(element):
             # Rausfiltern der 'Dunder'-Methods (Wenn man möchte)
             if not key.startswith('__') :
-                # Anbringen des 'debug'-Dekorator und zurück ins Klassendictionary schreiben
+                # Die orginale Methode der Klasse wird einfach an der gleichen Stelle durch die dekorierte Methode überschrieben
                 setattr(cls, key, debugger(element))
     # Rückgabe der modifizierten Klassen
     return cls
@@ -1281,16 +1302,16 @@ pc_instanz.power(ampere=2, voltage=230)
 ```
 
 <pre>
-> Funktionsaufruf am 2020-12-07 19:11:46.998121: Übergabeparameter: (<__main__.PC object at 0x0000019368148880>, False), {}.
+> 'PC.but_can_it_run_crysis' aufgerufen am 2020-12-14 19:02:13.323263: Übergabeparameter: (<__main__.PC object at 0x000001F276717940>, False), {}.
 > No it can't.
->
-> Funktionsaufruf am 2020-12-07 19:11:47.155469: Übergabeparameter: (<__main__.PC object at 0x0000019368148880>,), {'ampere': 2, 'voltage': 230}.
+
+> 'PC.power' aufgerufen am 2020-12-14 19:02:13.336117: Übergabeparameter: (<__main__.PC object at 0x000001F276717940>,), {'ampere': 2, 'voltage': 230}.     
 > I consume 460 W right now.
 </pre>
 
 Das \_\_main\_\_.PC Object (Welches die Instanz der Klasse ist) ist in diesem Fall das _self_-Argument, welches automatisch bei dem Aufruf übergeben wird. Wir sehen aber, dass **ALLE** Methoden der Klasse mittels des Debug-Dekorator erweitert wurden. Würde man nur auf Funktionsdekoratoren zurückgreifen, dann müsste man jede Methode einzeln mit einem Ausstatten.
 
-<sub>(Kleine Denkaufgabe: Warum kann ich im Klassdekorator die 'Dunder'-Methods nur anhand der vorhergehenden Unterstriche identifizieren und muss nicht noch nach den nachfolgenden Unterstrichen suchen, um sicherzustellen, dass es sich um kein privates Attribut/Methode handelt?)</sub>
+<sub>(Kleine Denkaufgabe: Warum kann ich im Klassdekorator die 'Dunder'-Methods nur anhand der 2 führenden Unterstriche identifizieren und muss nicht noch nach den nachfolgenden Unterstrichen suchen, um sicherzustellen, dass es sich um kein privates Attribut/Methode handelt?)</sub>
 <br/><br/>
 
 Wer in [1.2.5 \_\_call\_\_ Method](#125-__call__-method) aufgepasst hat wird wissen, dass man eine Funktion auch als Klasse darstellen kann. Man kann damit also eine Klasse mit einer aufrufbaren Klasse dekorieren.
