@@ -337,7 +337,7 @@ Wenn man gute und ausgereifte Klassen designen will, dann sollte man auf diese b
 
 Die Dunder-str-Method ist dazu gedacht, eine Darstellung des Objekts zurückzugeben, welche für den Benutzer einfach zu lesen und zu verstehen ist. Sie **muss** einen String zurückgeben. Was ihr am Ende für einen String durch die Dunder-str-Methode zurück gibt ist euch überlassen. Der Sinn sollte am folgenden Beispiel klar werden.
 
-Code: [\_7_dunder_str.py](_7_dunder_str.py)
+Code: [\_7_dunder_str_pc.py](_7_dunder_str_pc.py)
 
 **PC Beispiel:**
 
@@ -440,6 +440,8 @@ Enter und Exit werden von den sogeannten 'Contextmanagern' verwendet. Im Wesentl
 
 Wenn man eine Datei öffnet, dann sollte man sie auch wieder schließen. Die _open()_ Methode führt das Schließen mittels der \_\_exit\_\_ aus, wenn ein Contextmanager verwendet wird. Der Contextmanager wird mit dem Keyword _with_ verwendet. Ein anderes Beispiel sind Frameworks die eine Verbindung irgendwohin erstellen (Server, Datenbank, ...). Im Enter werden diese Verbindugen aufgebaut und im Exit wird diese Verbindung eben geschlossen. Schaut euch dazu einfach weitere Beispiele an, falls ihr das benötigt.
 
+[Kein Code Beispiel]
+
 ```py
 with open('sample_file.txt') as f:  # Hier wird die Enter Methode ausgeführt
     content = f.read()
@@ -463,6 +465,8 @@ Das \_\_doc\_\_ Attribut ist in jedem Objekt vorhanden, auch wenn keiner vom Aut
 
 Lest euch die Style-Guides zu dem Doc-Attribut durch. Dort gibt es schöne Anregungen, wie man eine Klasse oder Funktion ordentlich dokumentiert.
 
+Code: [\_10_pc_doc.py](_10_pc_doc.py)
+
 ```py
 class PC:
     """Dies ist die Dokumentation der Klasse: PC
@@ -470,15 +474,23 @@ class PC:
     Multiline-Strings sind automatisch mit berücksichtig.
     Es wird sogar mit formatiert. Klasse! Oder?"""
 
-    def __init__(self, prozessor, grafikkarte):
-        """Jetzt Dokumentieren wir die __init__
-        Was eine schöne Funktion."""
-        self.prozessor = prozessor
-        self.grafikkarte = grafikkarte
+    def __init__(self, cpu, gpu):
+        '''Das funktioniert auch bei einfachen Funktionen!
+            Parameters:
+                arg1: any
+
+            Rückgabe: 1'''
+        self.cpu = cpu
+        self.gpu = gpu
 
 def outer_func(arg1):
-    """Das funktioniert auch bei einfachen Funktionen!"""
+    '''Das funktioniert auch bei einfachen Funktionen!
+    Parameters:
+        arg1: any
+
+    Rückgabe: 1'''
     print(arg1)
+    return 1
 
 
 print(PC.__doc__, "\n")
@@ -496,6 +508,10 @@ print(outer_func.__doc__, "\n")
 >         Was eine schöne Funktion.
 >
 > Das funktioniert auch bei einfachen Funktionen!
+>     Parameters:
+>         arg1: any
+
+>     Rückgabe: 1
 </pre>
 
 Bei komplexeren Methoden werden häufig Input- und Outputargumente erklärt. Welcher Datentyp sie haben, was passiert, welche restricstions gelten. Also alles was irgendwie hilfreich ist, um den Teil zu verwenden.
@@ -506,7 +522,9 @@ Es gibt des Weiteren ein standard Libary names _doctest_. Dieses Modul kann die 
 
 #### 1.2.5 \_\_call\_\_ Method
 
-Mittels der Dunder-call-Method kann man die Instanzen einer Klasse aufrufbar machen. Wer sich mit Funktionen und deren Implementation schon tiefer auskennt wird auch wissen, dass Funktionen in Python genau so impementiert sind.
+Mittels der Dunder-call-Method kann man die Instanzen einer Klasse aufrufbar machen. Wer sich mit Funktionen und deren Implementation schon tiefer auskennt wird auch wissen, dass Funktionen in Python auch nur ein Objekt der Klasse 'function' sind.
+
+Code: [\_11_function_class.py](_11_function_class.py)
 
 ```py
 def func(x):
@@ -526,16 +544,16 @@ class func_class:
     def __call__(self, x):
         return x+1
 
-my_instance = func_class()
+instanz = func_class()
 
-print(my_instance(1))
+print(instanz(1))
 ```
 
 <pre>
 > 2
 </pre>
 
-Die \_\_call\_\_-Method wird noch interesannt und wichtig, wenn man Metaklassen verwendet. Nicht für alle, aber für manche benötigt man diese.
+Die \_\_call\_\_-Method wird noch interesannt und wichtig, wenn man Metaklassen verwendet, da der Metklassen-Call bei der Instanziierung vor der \_\_init\_\_ der eigentlichen Klasse durchgeführt wird. Für manche Anwendungsfälle ist diese Tatsache hilfreich, dass man mittels Metaklasse in den Prozess der Instanziierung eingreifen kann.
 
 <br/>
 
@@ -564,9 +582,11 @@ Unter dem 'Normalen' Zugriff verbergen sich zwei 'Dunder'-Methods
 \_\_getattribute\_\_<br/>
 \_\_getattr\_\_
 
-Der Zugriff auf ein Attribut ist 'Hardwired' auf \_\_getattribute\_\_. Das heißt, man kommt im ersten Schritt nicht drumherum dieser Methode auszuweichen. Wenn eine Klasse eine Method nicht spezifiziert, dann wird im \_\_mro\_\_ weiter gegangen. (\_\_mro\_\_ wird später im [Kapitel 3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>) weiter im Detail erklärt.) Im letzten Element des \_\_mro\_\_ ist eine default Implementation der \_\_getattribute\_\_ enthalten. Diese führt den Zugriff aus und erhebt einen AttributeError, falls jenes Attribut nicht existiert. Wenn ein AttributError kommt, dann wird als Fallback die \_\_getattr\_\_-Methode durchlaufen.
+Der Zugriff auf ein Attribut ist 'Hardwired' auf \_\_getattribute\_\_. Das heißt, man kann dem Aufruf dieser 'Dunder'-Method nicht ausweichen. Wenn eine Klasse eine Method nicht spezifiziert, dann wird im \_\_mro\_\_-Verlauf weiter nach dem einer passenden Methode gesucht. (\_\_mro\_\_ wird später im [Kapitel 3.3 \_\_mro\_\_ und super()](<#33-__mro__-und-super()>) weiter im Detail erklärt.)
 
-Selbstverstädnlich könnte in eurer Klasse die \_\_getattribute\_\_ selbst definieren und die Weiterleitung nicht durchführen, aber das ist häufig nicht zu Empfehlen, da in der default Implementation noch andere weitere Dinge passieren, die über den Zugriff hinaus gehen. (Descriptor Zugriff)
+Das letzte Element im \_\_mro\_\_ ist das 'object', welches eine default Implementation der \_\_getattribute\_\_ beinhaltet. Diese führt den Zugriff aus und erhebt einen AttributeError, falls jenes Attribut nicht existiert. Wenn ein AttributError kommt, dann wird als Fallback die \_\_getattr\_\_-Methode durchlaufen.
+
+Es ist natürlich möglich, dass ihr in eurer Klasse eine \_\_getattribute\_\_-Method definiert und den Zugriff dort nicht weiterleitet oder umleitet, wenn ihr das wollt. Aber das ist häufig nicht zu Empfehlen, da in der default Implementation vor dem eigentlichen Zugriff noch einige Dinge überprüft werden. Beispielsweise ob es sich bei dem angefragten Attribut um einee Discriptor Instanz handelt.
 
 <br/>
 
@@ -597,7 +617,7 @@ Die Descriptor Methode \_\_get\_\_ wird durch die default Implementation der \_\
 
 Zusammengefasst sollte man über den Attributszugriff folgendes behalten:
 
-1. Es wird immer \_\_getattribute\_\_ bis hoch zur default Implementation durchgefahren. (Sofern eine Klasse auf dem Weg dies nicht Abfängt)
+1. Bei einem Zugriff wird die \_\_getattribute\_\_ bis hoch zur default Implementation durchgefahren. (Sofern eine Klasse auf dem Weg dies nicht Abfängt)
 2. Dort wird dann überprüft, ob es sich bei dem Attribut um einen Descriptor handelt.
 3. Handelt es sich um ein Descriptor?
    - Wenn ja, dann benutze \_\_get\_\_ des Descriptors.
