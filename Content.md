@@ -56,10 +56,6 @@ Warum mach ich das überhaupt? Ehrlich gesagt mache ich das weniger für Andere,
 
 Andere Leute machen auch Tutorials und wahrscheinlich sogar deutlich besser als ich. Wer mit der Einstellung, "Warum sollte ich mir **DEIN** Tutorial durchlesen, wenn es andere/bessere gibt?", hierher kommt sollte einfach wieder gehen und sich eben die besseren Tutorials durchlesen und mich nicht mit sowas nerven. Für alle Anderen, die ernsthaft interessiert sind und mein erstes Tutorial sogar ganz gut fanden, stelle ich diese Tutorial Repo gerne zur Verfügung und bin im Anschluss auch für weitere Fragen/Disskussionen gerne da.
 
-In der Repo sind viele einzelne .py-Files, welche die gezeigten Inhalte als Programmschnipsel zur Verfügung stellen. .py-Files welche dem Format '\_E\*\_name.py' Folgend sind zusätzliche Dinge, die nicht im Text angesprochen werden.
-
-DIE BEISPIELE DIENEN LEDIGLICH ZUR ERKLÄRUNG DER ABLÄUFE UND PROZESSE IN PYTHON. ICH SPRECHE KEINE ALLGEMEINE EMPFEHLUNG AUS, DIE GEZEIGTEN BEISPIELE IN GENAU DIESER FORM ANZUWENDEN.
-
 Bitte den [Disclaimer](#disclaimer) beachten.
 
 ---
@@ -95,6 +91,14 @@ Insgesamt wird dieses Tutorial in mehreren Kapiteln und Unterordnern sortiert se
 Um die gezeigten Inhalte zu verstehen solltet ihr bereits die Grundlagen von Python kennen. Dazu gehört allgemein die Syntax, wie man Funktionen und Klassen erstellt und eventuell soagr, dass **alles** in Python Objekte sind. Klassen sind Objekte, Funktionen sind Objekte, selbst eine int/float/str/list/... - Variable ist nur ein Objekt einer bestimmten Klasse. Des Weiteren solltet ihr auch ungefähr wissen was Vererbungen/Inheritance sind. Ich werde es nochmal im Detail erklären, dennoch geht es auch bei dem Thema eher um die Tiefe statt die einfache Anwendung. Dictionarys! In Python findet man überall Dictonarys, weswegen es essentiell ist, dass ihr diese im Vorfeld kennt und wisst was man damit machen kann. (dict.keys(), dict.values(), dict.items(), Dicts sind mutable Objekte...) Die letzte Vorraussetzung sind dann noch 'Closures / Decorators', welche ich bereits in meinem ersten 'Tutorial' erklärt habe (Link im Kommentar).
 
 ---
+
+### Source-Code und Kommentare
+
+Für jedes gezeigte Beispiel im Text gibt es ein entsprechendes File, auf das auch verlinkt wird. Source-Code-Files die mit einem \_E beginnen sind zusätzliche Beispiele, die **NICHT** im Tutorial-Text vorkommen.
+
+Um den Fließtext im Tutorial möglichst kompakt zu halten habe ich dort auf einfache Kommentare verzichtet, aber in den Source-Code-Files sind immer Kommentare vorhanden.Auch wenn dieses Tutorial sich nicht primär an Anfänger richtet und ich auch in den Vorraussetzungen geschrieben habe, dass dies für Leute gedacht ist, die die Grundlagen von Klassen bereits kennen habe ich mich dazu entschieden, für dieses Tutorial **ALLES** zu kommentieren, egal wie lächerlich einfach/übertrieben/offensichtlich es ist. Damit bnekommen auch unerfahrene die Chance dies zu lesen und zu verstehen.
+
+DIE BEISPIELE DIENEN LEDIGLICH ZUR ERKLÄRUNG DER ABLÄUFE UND PROZESSE IN PYTHON. ICH SPRECHE KEINE ALLGEMEINE EMPFEHLUNG AUS, DIE GEZEIGTEN BEISPIELE IN GENAU DIESER FORM ANZUWENDEN.
 
 ### IDE
 
