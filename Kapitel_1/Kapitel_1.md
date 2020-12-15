@@ -20,6 +20,10 @@
     - [1.3.3 Descriptor Zugriff](#133-Descriptor-zugriff)
     - [1.3.4 Zusammenfassung](#134-zusammenfassung)
 
+<br/>
+
+---
+
 ## Kapitel 1: Fortgeschrittenes Klassen Design
 
 Das Thema von fortgeschrittenem Design hat den wesentlichen Hintergrund des 'Code Reuse'. Die Inhalte gehen auch hauptsächlich in diese Richtung, um zu zeigen, an welchen Stellen man 'sorgfältiger' arbeiten sollte, um die Wiederverwendung möglichst sicher und einfach zu gesalten.
