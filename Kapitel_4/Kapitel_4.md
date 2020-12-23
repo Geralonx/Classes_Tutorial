@@ -3,6 +3,8 @@
 - [Kapitel 4 Descriptor Protokol](#kapitel-4-Descriptor-protokol)
   - [4.1 Allgemein](#41-anwendung)
     - [4.1.1 Anwendung](#411-allgemein)
+    - [4.1.2 Type- und Valuechecking](#412-type--und-valuechecking)
+    - [4.1.3 Zusammenfassung](#413-zusammenfassung)
 
 ## Kapitel 4 Descriptor Protokol
 
