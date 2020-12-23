@@ -76,7 +76,7 @@ Durch die default Implementation der \_\_getattribute\_\_ Methode wird vor dem Z
 
 Aus Descriptoren lässt sich sehr einfach ein allgemeines System zum Type und Valuechecking einführen.
 
-Der nachfolgende Code stammt zum Teil aus dem Tutorial von David Beazley [YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI))
+Der nachfolgende Code stammt zum großen Teil aus dem Tutorial von David Beazley [YouTube: Python 3 Metaprogramming](https://youtu.be/sPiWg5jSoZI))
 
 Code: [\_3_typed_descriptor.py](_3_typed_descriptor.py)
 
@@ -130,3 +130,7 @@ PostGetDescriptor(?)<br/>
 ...
 
 Man könnte in den set/get Methoden des Descriptors ja auch Zugriffe über externe Verbindungen durchführen, wieso auch nicht, der einzige Unterschied ist ledgilich, wie jene Methoden aufgerufen werden.
+
+#### 4.1.3 Zusammenfassung
+
+Immer wenn man für Attribute einen besonderen Zugriff benötigt oder eine automatische Weiterleitung in Erwähgung zieht, dann sollte man Descriptoren in Betracht ziehen.

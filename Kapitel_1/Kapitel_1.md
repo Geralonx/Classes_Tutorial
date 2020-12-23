@@ -100,7 +100,7 @@ Code: [\_1_public_private.py](_1_public_private.py)
 > AttributeError: 'PC' object has no attribute '__ram'
 </pre>
 
-So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Wenn man wissen will, was in einem Obejkt enthalten ist, dann muss man sich das \_\_dict\_\_ Attribut anschauen. Es enthält **alle** Attribute und Methoden die zu jenem Objekt zugewiesen wurden. Bei einer Instanz heißt das also, alles was zu _self_ zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
+So gesehen besteht von Außen kein direkter Zugriff auf das Attribut \_\_ram. Der Grund dafür ist, es gibt dieses Attribut gar nicht mehr. Wenn man wissen will, was in einem Objekt enthalten ist, dann muss man sich das \_\_dict\_\_ Attribut anschauen. Es enthält **alle** Attribute und Methoden die zu jenem Objekt zugewiesen wurden. Bei einer Instanz heißt das also, alles was zu _self_ zugewiesen wird. Gebe ich dieses \_\_dict\_\_ nun aus sehen wir, was die Instanz wirklich enthält.
 
 ```py
 print(pc_instanz.__dict__)
