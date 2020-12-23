@@ -1,16 +1,11 @@
 # Inhalt
 
 - [Kapitel 6 Metaklassen](#kapitel-6-metaklassen)
-
   - [6.1 Pythons Weg der Klassenerzeugung](#61-pythons-weg-der-klassenerzeugung)
-
     - [6.1.1 Durchführung](#611-durchführung)
     - [6.1.2 Erläuterung der Ausführlichkeit](#612-erläuterung-der-ausführlichkeit)
-
   - [6.2 Metaklasse Basics](#62-metaklasse-basics)
-
     - [6.2.1 Überprüfung der Instanzargumente](#621-überprüfung-der-instanzargumente)
-
   - [Und weiter?](#und-weiter?)
     <br/>
 
